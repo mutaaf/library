@@ -233,6 +233,16 @@
     var typing = 0;
     q.addEventListener('input', function () { clearTimeout(typing); typing = setTimeout(function () { read(); apply(); }, 90); });
     q.addEventListener('keydown', function (e) { if (e.key === 'Escape' && q.value) { q.value = ''; read(); apply(); } });
+    var form = q.form;
+    if (form && document.querySelector('.page-home')) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        read(); apply();
+        var books = $('books'); if (books) books.scrollIntoView({ behavior: still ? 'auto' : 'smooth' });
+      });
+      var m = /[?&]q=([^&#]*)/.exec(location.search);
+      if (m) { q.value = decodeURIComponent(m[1].replace(/\+/g, ' ')); read(); apply(); }
+    }
     shelf.querySelector('.filters').addEventListener('change', function () { read(); glide(apply); });
     var reset = function () {
       q.value = '';
@@ -422,7 +432,8 @@
 
   var nav = $('nav');
   if (nav && document.querySelector('.page-home')) {
-    var onScroll = function () { nav.classList.toggle('scrolled', window.pageYOffset > 24); };
+    var night = document.querySelector('.night');
+    var onScroll = function () { nav.classList.toggle('scrolled', window.pageYOffset > (night ? night.offsetHeight - 80 : 24)); };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }
