@@ -34,6 +34,7 @@ export function build({ quiet } = {}) {
   writeFileSync(path.join(OUT, 'library.js'), js);
   writeFileSync(path.join(OUT, 'shapes.js'), shapes);
   cpSync(path.join(ROOT, 'web', 'icon.svg'), path.join(OUT, 'icon.svg'));
+  for (const f of ['room.jpg', 'room-800.jpg']) cpSync(path.join(ROOT, 'web', f), path.join(OUT, f));
   if (existsSync(path.join(ROOT, 'content', 'covers'))) cpSync(path.join(ROOT, 'content', 'covers'), path.join(OUT, 'covers'), { recursive: true });
   cpSync(path.join(NM, 'aurora-field', 'dist', 'aurora-field.min.js'), path.join(OUT, 'vendor', 'aurora-field.min.js'));
   const fonts = {

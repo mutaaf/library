@@ -60,15 +60,22 @@ ${jsonld ? '  <script type="application/ld+json">' + JSON.stringify(jsonld).repl
 function nav(page) {
   const h = page === 'home' ? '' : BASE;
   return `<a class="skip" href="#main">Skip to content</a>
-  <header class="nav" id="nav">
-    <a class="wordmark" href="${BASE}" aria-label="The Leadership Library home"><span class="glyph" aria-hidden="true"><i></i><i></i><i></i></span>library</a>
+  <header class="nav nav-${page}" id="nav">
+    <a class="mono" href="${BASE}" aria-label="MA, The Leadership Library home"><span aria-hidden="true">M<i>A</i></span></a>
     <nav aria-label="Library">
-      <a class="nav-link" href="${h}#books">Books</a>
+      <a class="nav-link" href="${BASE}"${page === 'home' ? ' aria-current="page"' : ''}>Home</a>
+      <a class="nav-link" href="${h}#books">Library</a>
       <a class="nav-link" href="${h}#journey">Journey</a>
       <a class="nav-link" href="${h}#themes">Themes</a>
       <a class="nav-link" href="${h}#insights">Insights</a>
-      <a class="nav-cta" href="${h}#books">Browse</a>
+      <a class="nav-link" href="/#control">About</a>
     </nav>
+    <form class="nav-search" role="search" action="${BASE}#books" method="get">
+      <svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg>
+      <label class="vh" for="q">Search books, ideas or topics</label>
+      <input type="search" id="q" name="q" placeholder="Search books, ideas, or topics…" autocomplete="off" enterkeyhint="search">
+    </form>
+    <a class="avatar" href="/" aria-label="MA, Mutaaf Aziz at mutaafaziz.com"><span aria-hidden="true">MA</span></a>
   </header>`;
 }
 
@@ -125,19 +132,21 @@ function shelf(pub, current) {
   return `<${Tag} class="shelf leaf leaf-shelf" id="shelf" aria-labelledby="shelf-title" data-view="grid">
       <span class="anchor" id="books"></span>
       <header class="shelf-head">
-        <div><h2 id="shelf-title">${current ? 'The shelf' : 'All Books'}</h2><p class="shelf-sub">Explore the collection, organized by theme. Every book carries my status, my rating and my notes.</p></div>
+        <div><h2 id="shelf-title">${current ? 'The shelf' : 'All Books'}</h2><p class="shelf-sub">Explore the full collection, organized by themes and categories.</p></div>
       </header>
-      <div class="cats" role="group" aria-label="Category">
-        <button type="button" class="cat" data-cat="" aria-pressed="true">All <span>(${pub.books.length})</span></button>
-        ${cats.map((c) => `<button type="button" class="cat" data-cat="${c}" aria-pressed="false">${esc(CATEGORIES[c])}</button>`).join('\n        ')}
-      </div>
-      <div class="tools" role="search">
-        <label class="search"><span class="vh">Search the library</span><svg aria-hidden="true" viewBox="0 0 20 20"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><input type="search" id="q" placeholder="Search books, ideas or topics" autocomplete="off" enterkeyhint="search"></label>
-        <button type="button" class="tool-btn" id="filterBtn" aria-controls="filters" aria-expanded="false">Filters<span class="badge" id="filterCount" hidden></span></button>
-        <div class="seg" role="group" aria-label="Show the books as">
-          <button type="button" data-set-view="grid" aria-pressed="true" title="Grid"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h6v6H3zM11 3h6v6h-6zM3 11h6v6H3zM11 11h6v6h-6z"/></svg><span class="vh">Grid</span></button>
-          <button type="button" data-set-view="shelf" aria-pressed="false" title="Shelf"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h3v12H3zM7.5 6h3v10h-3zM12 3h2.6v13H12zM15.5 5.5l2.6-.7 2.4 10.4-2.6.7z"/></svg><span class="vh">Shelf</span></button>
-          <button type="button" data-set-view="list" aria-pressed="false" title="List"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h14v2H3zM3 9h14v2H3zM3 14h14v2H3z"/></svg><span class="vh">List</span></button>
+      <div class="shelf-bar">
+        <div class="cats" role="group" aria-label="Category">
+          <button type="button" class="cat" data-cat="" aria-pressed="true">All <span>(${pub.books.length})</span></button>
+          ${cats.map((c) => `<button type="button" class="cat" data-cat="${c}" aria-pressed="false">${esc(CATEGORIES[c])}</button>`).join('\n          ')}
+        </div>
+        <div class="tools">
+          <div class="seg" role="group" aria-label="Show the books as">
+            <button type="button" data-set-view="grid" aria-pressed="true" title="Grid"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h6v6H3zM11 3h6v6h-6zM3 11h6v6H3zM11 11h6v6h-6z"/></svg><span class="vh">Grid</span></button>
+            <button type="button" data-set-view="shelf" aria-pressed="false" title="Shelf"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h3v12H3zM7.5 6h3v10h-3zM12 3h2.6v13H12zM15.5 5.5l2.6-.7 2.4 10.4-2.6.7z"/></svg><span class="vh">Shelf</span></button>
+            <button type="button" data-set-view="list" aria-pressed="false" title="List"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 4h14v2H3zM3 9h14v2H3zM3 14h14v2H3z"/></svg><span class="vh">List</span></button>
+          </div>
+          <label class="sort"><span class="vh">Sort</span><select id="sort"><option value="rank">Sort: Curated</option><option value="rating">Sort: My rating</option><option value="title">Sort: Title</option><option value="year">Sort: Year</option><option value="updated">Sort: Recently updated</option></select></label>
+          <button type="button" class="tool-btn" id="filterBtn" aria-controls="filters" aria-expanded="false">Filters<span class="badge" id="filterCount" hidden></span></button>
         </div>
       </div>
       <div class="filters" id="filters" role="dialog" aria-label="Filter and sort" hidden>
@@ -146,7 +155,6 @@ function shelf(pub, current) {
         <fieldset><legend>Status</legend><div class="chips">${statuses.map((s) => `<label class="chip"><input type="checkbox" name="status" value="${s}"><span>${esc(s === 'shelf' ? 'On the shelf' : STATUS[s])}</span></label>`).join('')}</div></fieldset>
         <div class="selects">
           <label>Author<select id="author"><option value="">Any author</option>${authors.map((a) => `<option>${esc(a)}</option>`).join('')}</select></label>
-          <label>Sort<select id="sort"><option value="rank">Curated</option><option value="rating">My rating</option><option value="title">Title</option><option value="year">Year published</option><option value="updated">Recently updated</option></select></label>
         </div>
         <div class="sheet-actions"><button type="button" class="btn-ghost" id="resetFilters">Reset</button><button type="button" class="btn" id="doneFilters">Done</button></div>
       </div>
@@ -163,15 +171,18 @@ function shelf(pub, current) {
     </${Tag}>`;
 }
 
-// The hero's stack: nine books lying on the desk, each a 3D object and a link.
+// The hero's stack: the nine books lying on the table, real boxes in CSS 3D. A book's
+// thickness comes from its page count; its top face is its cover; the end shows its pages.
 function stack(pub) {
   const order = pub.books.slice().reverse();
   return `<ol class="stack" aria-label="The nine books">${order.map((b, i) => {
-    const w = 78 + ((b.title.length * 7 + i * 13) % 20);
-    const tilt = ((i * 37) % 5) - 2;
-    const shift = ((i * 53) % 7) - 3;
+    const t = Math.round(Math.min(46, Math.max(26, (b.pages || 260) * 0.085)));
+    const len = 300 + ((b.title.length * 11 + i * 7) % 46);
+    const shift = (((i * 53) % 9) - 4) * 5;
+    const turn = (((i * 37) % 5) - 2) * 0.9;
+    const img = b.coverImage ? `<img src="${BASE}${esc(b.coverImage.file)}" alt="" loading="lazy" decoding="async">` : '';
     return `
-          <li class="stk" style="${coverVars(b.cover)};--w:${w}%;--tilt:${tilt * 0.6}deg;--shift:${shift * 6}px;--i:${i}"><a class="stk-link" href="${BASE}${b.slug}/"><span class="stk-face" data-type="${b.cover.type}"><span class="stk-title">${esc(b.title)}</span><span class="stk-author">${esc(b.authors.length > 1 ? shortAuthors(b.authors) : b.authors[0])}</span></span><span class="stk-pages" aria-hidden="true"></span><span class="vh"> by ${esc(authorsText(b.authors))}</span></a></li>`;
+          <li class="stk" style="${coverVars(b.cover)};--t:${t}px;--len:${len}px;--shift:${shift}px;--turn:${turn}deg;--i:${i}"><a class="stk-link" href="${BASE}${b.slug}/"><span class="stk-face" data-type="${b.cover.type}"><span class="stk-title">${esc(b.title)}</span><span class="stk-author">${esc(b.authors.length > 1 ? shortAuthors(b.authors) : b.authors[0])}</span></span><span class="stk-top" aria-hidden="true">${img}</span><span class="stk-pages" aria-hidden="true"></span><span class="vh"> by ${esc(authorsText(b.authors))}</span></a></li>`;
   }).join('')}
         </ol>`;
 }
@@ -210,9 +221,9 @@ function journey(pub) {
       <div class="mtn" aria-hidden="true"><svg viewBox="0 0 1200 300" preserveAspectRatio="none"><path d="M0 300V170l90-60 70 40 110-95 90 70 80-50 120 105 90-70 130 80 100-90 120 85 90-45 110 70v80z" fill="#28313a"/><path d="M0 300V210l120-40 90 30 140-70 110 60 100-30 150 70 120-50 110 40 130-60 100 50 130-20v110z" fill="#1c2329"/><path d="M0 300v-50l160-20 200 25 220-30 240 30 200-25 180 20v50z" fill="#12171b"/></svg></div>
       <div class="journey-inner">
         <header class="journey-head">
-          <div><h2 id="journey-title">My Reading Journey</h2><p>A timeline of the books, and how my thinking has moved.</p></div>
+          <div><h2 id="journey-title">My Reading Journey</h2><p>A timeline of books, insights, and how my thinking has evolved.</p></div>
           <div class="seg seg-dark" role="group" aria-label="Show">
-            <button type="button" data-jf="" aria-pressed="true">All</button><button type="button" data-jf="finished" aria-pressed="false">Completed</button><button type="button" data-jf="reading" aria-pressed="false">In progress</button><button type="button" data-jf="queued" aria-pressed="false">Planned</button>
+            <button type="button" data-jf="" aria-pressed="true">All</button><button type="button" data-jf="finished" aria-pressed="false">Completed</button><button type="button" data-jf="reading" aria-pressed="false">In Progress</button><button type="button" data-jf="queued" aria-pressed="false">Planned</button>
           </div>
         </header>
         <div class="track-wrap"><div class="track" style="--n:${N}">
@@ -240,16 +251,19 @@ const ICONS = {
 const THEME_COLORS = ['#C8553D', '#6E9E73', '#D9A441', '#4F7CAC', '#8E6BB0', '#C78B3C', '#3F8F8B', '#B4566F', '#5D7FA8', '#9A7B4F'];
 
 function themesHub(pub) {
-  const nodes = pub.themes.map((t, i) => ({ t, books: pub.books.filter((b) => b.themes[0].slug === t.slug).concat(pub.books.filter((b) => b.themes[0].slug !== t.slug && b.themes.some((x) => x.slug === t.slug))), c: THEME_COLORS[i % THEME_COLORS.length] })).filter((n) => n.books.length);
+  let nodes = pub.themes.map((t, i) => ({ t, books: pub.books.filter((b) => b.themes[0].slug === t.slug).concat(pub.books.filter((b) => b.themes[0].slug !== t.slug && b.themes.some((x) => x.slug === t.slug))), c: THEME_COLORS[i % THEME_COLORS.length] })).filter((n) => n.books.length);
+  // At most eight around the hub: the themes that carry the most books.
+  const keep = new Set(nodes.slice().sort((x, y) => y.books.length - x.books.length).slice(0, 8));
+  nodes = nodes.filter((n) => keep.has(n));
   const N = nodes.length;
   const pos = nodes.map((_, i) => { const a = -Math.PI / 2 + (i / N) * Math.PI * 2; return { x: 50 + Math.cos(a) * 37, y: 50 + Math.sin(a) * 38 }; });
   return `<section class="hub" id="themes" aria-labelledby="themes-title">
-      <header><h2 id="themes-title">Key Themes Across Books</h2><p>How the ideas in different books connect, complement, or argue with each other.</p></header>
+      <header><h2 id="themes-title">Key Themes Across Books</h2><p>How ideas from different books connect, complement, or challenge each other.</p></header>
       <div class="hub-map">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${pos.map((p) => `<line x1="50" y1="50" x2="${p.x.toFixed(2)}" y2="${p.y.toFixed(2)}"/>`).join('')}</svg>
         <div class="hub-core"><b>High-performing teams</b></div>
         <ul>${nodes.map((n, i) => `
-          <li style="--x:${pos[i].x.toFixed(2)}%;--y:${pos[i].y.toFixed(2)}%;--c:${n.c}"><a href="${BASE}${n.books[0].slug}/"><span class="hub-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n.t.slug] || '<circle cx="12" cy="12" r="5"/>'}</svg></span><span class="hub-t"><b>${esc(n.t.name)}</b><span>${n.books.slice(0, 2).map((b) => esc(b.title.replace(/^The /, '').replace(/^Become an Effective Software Engineering Manager$/, 'Effective SE Manager'))).join(', ')}${n.books.length > 2 ? ' +' + (n.books.length - 2) : ''}</span></span></a></li>`).join('')}
+          <li style="--x:${pos[i].x.toFixed(2)}%;--y:${pos[i].y.toFixed(2)}%;--c:${n.c}"><a href="${BASE}${n.books[0].slug}/"><span class="hub-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n.t.slug] || '<circle cx="12" cy="12" r="5"/>'}</svg></span><span class="hub-t"><b>${esc(n.t.name)}</b><span>(${esc(n.books[0].title.replace(/^The /, '').replace(/^Become an Effective Software Engineering Manager$/, 'Effective SE Manager').replace(/ Explained$/, ''))})</span></span></a></li>`).join('')}
         </ul>
       </div>
     </section>`;
@@ -267,9 +281,9 @@ function insights(pub) {
   const item = ({ b, r }) => `
           <li><a href="${BASE}${b.slug}/#r-${r.id}">${cover(b, 'xs')}<span class="in-body"><b>${esc(r.title || b.title)}</b><span class="in-text">${esc(excerpt(r.body))}</span><span class="in-from">From: ${esc(b.title)}</span></span><span class="in-side"><time datetime="${r.date}">${esc(fmtDate(r.date))}</time>${r.tags[0] ? `<span class="in-tag">${esc(r.tags[0])}</span>` : ''}</span></a></li>`;
   return `<section class="insights" id="insights" aria-labelledby="insights-title">
-      <header><h2 id="insights-title">Latest Insights</h2><span class="in-count">${all.length} notes</span></header>
-      <ol class="in-list">${all.slice(0, 4).map(item).join('')}</ol>
-      ${all.length > 4 ? `<details class="in-more"><summary>View all ${all.length}</summary><ol class="in-list">${all.slice(4).map(item).join('')}</ol></details>` : ''}
+      <header><h2 id="insights-title">Latest Insights</h2><a class="in-count" href="#insights-all">View all <span aria-hidden="true">→</span></a></header>
+      <ol class="in-list">${all.slice(0, 3).map(item).join('')}</ol>
+      ${all.length > 3 ? `<details class="in-more" id="insights-all"><summary>All ${all.length} insights</summary><ol class="in-list">${all.slice(3).map(item).join('')}</ol></details>` : ''}
     </section>`;
 }
 
@@ -283,42 +297,39 @@ export function home(pub, opts = {}) {
   ${nav('home')}
   <main id="main" class="spread">
     <div class="night">
+      <picture class="room" aria-hidden="true"><source media="(max-width: 800px)" srcset="${BASE}room-800.jpg"><img src="${BASE}room.jpg" alt="" fetchpriority="high" decoding="async"></picture>
+      <div class="room-shade" aria-hidden="true"></div>
       <div class="sky" aria-hidden="true">
         <canvas id="field"></canvas>
         <div class="stage" id="stage"></div>
-        <div class="sky-fade"></div>
       </div>
       <section class="hero" data-shape="lib-book" aria-labelledby="hero-title">
         <div class="hero-copy">
           <h1 id="hero-title">The Leadership Library</h1>
           <p class="hero-tag">Books that shape how I think. Lessons that shape how I lead.</p>
-          <p class="lede">A collection of books on engineering, leadership, teams, strategy and personal growth, with my summaries, key ideas, reflections, and how I’m applying them in real life.</p>
+          <p class="lede">A collection of books on engineering, leadership, teams, strategy and personal growth, with summaries, key ideas, my reflections, and how I’m applying them in real life.</p>
           <div class="ctas">
             <a class="cta" href="#books">Explore the Library <span aria-hidden="true">→</span></a>
-            <a class="cta-ghost" href="#how"><span class="play" aria-hidden="true"></span>How I read</a>
+            <a class="cta-ghost" href="#how"><span class="play" aria-hidden="true"></span>How I read <span class="cta-note">1 min</span></a>
           </div>
-          ${ep ? `<blockquote class="epigraph"><p>${esc(ep.text)}</p><footer>— ${esc(ep.by)}</footer></blockquote>` : ''}
         </div>
         <div class="desk">
           ${stack(pub)}
         </div>
-        <p class="shape-label" id="shapeLabel" aria-hidden="true">the argument</p>
-      </section>
-      <div class="stats-wrap">${counts(pub)}</div>
-      <section class="story" id="how" aria-labelledby="how-title">
-        <header class="story-head">
-          <p class="kicker">How I read</p>
-          <h2 id="how-title">Four voices, never blurred.</h2>
-          <p>Every block on a book’s page says whose claim it is, so you always know what the book argues and what I think of it.</p>
-        </header>
-        <ol class="steps">
-          <li class="step" data-shape="lib-book"><span class="step-n">01</span>${claim('book')}<h3>What the book argues</h3><p>A short summary in my own words and the book’s own model. Never a long quotation, never my opinion dressed as the author’s.</p></li>
-          <li class="step" data-shape="mind"><span class="step-n">02</span>${claim('interpretation')}<h3>What I take from it</h3><p>What the idea means for engineering teams, and for the AI agents I run under the same rules.</p></li>
-          <li class="step" data-shape="teams"><span class="step-n">03</span>${claim('application')}<h3>What I do with it</h3><p>Practices, and the questions I ask my own teams. Steal them.</p></li>
-          <li class="step" data-shape="lib-scales"><span class="step-n">04</span>${claim('critique')}<h3>Where I push back</h3><p>Where a book is dated, overreaches, or is only true in some rooms. A shelf of agreement teaches nothing.</p></li>
-        </ol>
+        ${ep ? `<blockquote class="epigraph"><p>${esc(ep.text)}</p><footer>— ${esc(ep.by)}</footer></blockquote>` : ''}
+        <div class="stats-wrap">${counts(pub)}</div>
       </section>
     </div>
+    <section class="how" id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How I read</h2>
+      <p>Every block on a book’s page says whose claim it is.</p>
+      <ol>
+        <li>${claim('book')}<span>A summary of what the book argues, and its own model. Never a long quotation.</span></li>
+        <li>${claim('interpretation')}<span>What I take from it, for engineering teams and for the AI agents I run.</span></li>
+        <li>${claim('application')}<span>What I do with it, and the questions I ask my own teams.</span></li>
+        <li>${claim('critique')}<span>Where it’s dated, overreaches, or is only true in some rooms.</span></li>
+      </ol>
+    </section>
     ${shelf(pub, null)}
     <div class="gutter" aria-hidden="true"></div>
     <aside class="leaf leaf-book colophon" aria-labelledby="colo-title">
@@ -331,8 +342,8 @@ export function home(pub, opts = {}) {
         <a class="colo-feature" href="${BASE}${featured.slug}/">${cover(featured, 'sm')}<span><span class="kicker">Start here</span><b>${esc(featured.title)}</b><span>${esc(authorsText(featured.authors))}</span></span></a>
       </div>
     </aside>
-    ${journey(pub)}
     <div class="duo-row">
+      ${journey(pub)}
       ${themesHub(pub)}
       ${insights(pub)}
     </div>
