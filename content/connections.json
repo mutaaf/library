@@ -70,5 +70,37 @@
     "explanation": "Greene’s tactics are a recipe for Lencioni’s base dysfunction. Concealing intentions and guarding position destroy the trust everything else is built on.",
     "claim": "critique",
     "visibility": "published"
+  },
+  {
+    "from": "accelerate",
+    "to": "extreme-programming-explained",
+    "theme": "engineering-excellence",
+    "explanation": "XP described the practices: small releases, tests first, continuous integration. Accelerate brought the evidence that they pay off at scale. I read Beck for the how and Forsgren for the proof.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "accelerate",
+    "to": "an-elegant-puzzle",
+    "theme": "delivery-performance",
+    "explanation": "Larson tells me what state a team is in; Accelerate gives me four numbers to check whether my fix is working. Together they turn org design from opinion into an experiment.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "clean-code",
+    "to": "extreme-programming-explained",
+    "theme": "engineering-excellence",
+    "explanation": "Clean Code is the craft inside XP’s practices. Refactoring, simple design and tests only work if the code is readable enough to change safely.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "clean-code",
+    "to": "accelerate",
+    "theme": "delivery-performance",
+    "explanation": "They disagree about where quality comes from. Martin puts it in the individual’s craft; Accelerate puts it in the system of capabilities. I side with the system, then use craft as the standard the system enforces.",
+    "claim": "critique",
+    "visibility": "published"
   }
 ]

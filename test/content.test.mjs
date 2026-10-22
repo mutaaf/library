@@ -26,10 +26,10 @@ test('drafts never reach a rendered page; published blocks do', () => {
   assert.ok(html.includes('PUBLISHED-FRAMEWORK-ITEM') && !html.includes('DRAFT-PULLQUOTE-SECRET'));
 });
 
-test('the real catalog: nine books, each once, nothing personal published, no unverified links', () => {
+test('the real catalog: every book once, honest reading data, no unverified links', () => {
   const { all, pub } = load(ROOT);
-  assert.equal(pub.books.length, 9);
-  assert.equal(new Set(pub.books.map((b) => b.title)).size, 9);
+  assert.equal(pub.books.length, 11);
+  assert.equal(new Set(pub.books.map((b) => b.title)).size, 11);
   for (const b of all.books) {
     // Owner decision 2026-10-22: personal sections and reading data are published in the
     // owner's voice, but every reading entry must say whether the owner has confirmed it.
@@ -39,6 +39,11 @@ test('the real catalog: nine books, each once, nothing personal published, no un
     if (b.coverImage) assert.ok(b.coverImage.url.startsWith('https://covers.openlibrary.org/'), b.slug + ' cover source');
   }
   assert.equal(pub.bySlug.get('radical-candor').authors.join(), 'Kim Scott');
+  assert.deepEqual(pub.bySlug.get('accelerate').authors, ['Nicole Forsgren', 'Jez Humble', 'Gene Kim']);
+  assert.equal(pub.bySlug.get('clean-code').authors.join(), 'Robert C. Martin');
+  // Every book the philosophy cites is on the shelf.
+  const ph = JSON.parse(readFileSync(path.join(ROOT, 'content/philosophy.json'), 'utf8'));
+  for (const n of [ph.core].concat(ph.loop)) for (const s of n.books) assert.ok(pub.bySlug.has(s), 'philosophy cites ' + s);
 });
 
 test('build output contains no draft text and valid JSON-LD', () => {
@@ -47,7 +52,7 @@ test('build output contains no draft text and valid JSON-LD', () => {
   const files = [];
   const walk = (d) => readdirSync(d).forEach((f) => { const p = path.join(d, f); statSync(p).isDirectory() ? walk(p) : p.endsWith('.html') && files.push(p); });
   walk(path.join(ROOT, 'dist', 'library'));
-  assert.equal(files.length, 1 + 9 + 1);
+  assert.equal(files.length, 1 + pub.books.length + 1);
   const drafts = [];
   for (const b of all.books) {
     b.sections.filter((s) => s.visibility === 'draft' && s.body.trim()).forEach((s) => drafts.push(s.body.trim().slice(0, 60)));

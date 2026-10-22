@@ -433,7 +433,11 @@
   var nav = $('nav');
   if (nav && document.querySelector('.page-home')) {
     var night = document.querySelector('.night');
-    var onScroll = function () { nav.classList.toggle('scrolled', window.pageYOffset > (night ? night.offsetHeight - 80 : 24)); };
+    var onScroll = function () {
+      var y = window.pageYOffset, past = y > (night ? night.offsetHeight - 80 : 24);
+      nav.classList.toggle('scrolled', past);
+      nav.classList.toggle('floating', !past && y > 24); // dark glass while still over the photo
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
   }

@@ -2,12 +2,12 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const TITLES = ['Become an Effective Software Engineering Manager', 'An Elegant Puzzle', 'The Manager’s Path', 'Peopleware', 'Extreme Programming Explained', 'The Five Dysfunctions of a Team', 'Drive', 'Radical Candor', 'The 48 Laws of Power'];
+const TITLES = ['Become an Effective Software Engineering Manager', 'An Elegant Puzzle', 'The Manager’s Path', 'Peopleware', 'Extreme Programming Explained', 'The Five Dysfunctions of a Team', 'Drive', 'Radical Candor', 'The 48 Laws of Power', 'Clean Code', 'Accelerate'];
 const noOverflow = (page) => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
 
 test.describe('app form', () => {
   for (const [w, h] of [[320, 640], [390, 844], [1024, 768], [1440, 900]]) {
-    test(`all nine books, no horizontal scroll at ${w}px`, async ({ page }) => {
+    test(`every book, no horizontal scroll at ${w}px`, async ({ page }) => {
       await page.setViewportSize({ width: w, height: h });
       await page.goto('/library/');
       for (const t of TITLES) await expect(page.locator('.bk-title', { hasText: t }).first()).toBeAttached();
@@ -27,7 +27,7 @@ test.describe('app form', () => {
     await page.fill('#q', 'zzzz-nothing');
     await expect(page.locator('#empty')).toBeVisible();
     await page.click('#clearAll');
-    await expect(page.locator('.bk:not([hidden])')).toHaveCount(9);
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(TITLES.length);
     await page.click('#filterBtn');
     await page.locator('.chip', { hasText: 'Motivation' }).click();
     await expect(page.locator('.bk:not([hidden])')).toHaveCount(1);
@@ -37,7 +37,7 @@ test.describe('app form', () => {
     await page.locator('.cat[data-cat="teams-people"]').click();
     await expect(page.locator('.bk:not([hidden])')).toHaveCount(3);
     await page.click('#resetFilters');
-    await expect(page.locator('.bk:not([hidden])')).toHaveCount(9);
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(TITLES.length);
     await expect(page.locator('.bk').first()).toHaveAttribute('data-slug', 'become-an-effective-software-engineering-manager');
   });
 
@@ -72,7 +72,7 @@ test.describe('app form', () => {
   test('unknown pages 404 with a way back', async ({ page }) => {
     const res = await page.goto('/library/not-a-book/');
     expect(res.status()).toBe(404);
-    await expect(page.locator('.lost-list a')).toHaveCount(9);
+    await expect(page.locator('.lost-list a')).toHaveCount(TITLES.length);
   });
 
   for (const path of ['/library/', '/library/the-48-laws-of-power/']) {
@@ -89,7 +89,7 @@ test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
   test('every book and every published section still renders', async ({ page }) => {
     await page.goto('/library/');
-    await expect(page.locator('.bk-link:visible')).toHaveCount(9);
+    await expect(page.locator('.bk-link:visible')).toHaveCount(TITLES.length);
     for (const t of TITLES) await expect(page.locator('.bk-link', { hasText: t }).first()).toBeVisible();
     await page.goto('/library/radical-candor/');
     await expect(page.locator('#thesis')).toBeVisible();

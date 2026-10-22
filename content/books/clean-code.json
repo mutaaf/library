@@ -1,0 +1,202 @@
+{
+  "slug": "clean-code",
+  "title": "Clean Code",
+  "subtitle": "A Handbook of Agile Software Craftsmanship",
+  "authors": [
+    "Robert C. Martin"
+  ],
+  "firstPublishedYear": 2008,
+  "publisher": "Prentice Hall",
+  "isbn13": "9780132350884",
+  "pages": 431,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780132350884.json",
+      "https://openlibrary.org/works/OL17618370W",
+      "https://www.informit.com/store/clean-code-a-handbook-of-agile-software-craftsmanship-9780132350884"
+    ]
+  },
+  "category": "engineering-leadership",
+  "themes": [
+    "engineering-excellence"
+  ],
+  "featuredRank": 10,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2022-06",
+    "finishedAt": "2022-08",
+    "rating": 4,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#0E1726",
+    "ink": "#F4F1EA",
+    "foil": "#E86A4A",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/clean-code.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9780132350884-L.jpg"
+  },
+  "oneLine": {
+    "text": "Code is read far more than it is written, so write it for the next reader: small, named, tested, honest.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Clean code is a team agreement, not a personal virtue. Put the agreement in CI and stop arguing about it in review.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The craft, chapter by chapter",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Meaningful names",
+        "gist": "Names should reveal intent, so a reader never has to decode them."
+      },
+      {
+        "name": "Small functions",
+        "gist": "A function should do one thing, at one level of abstraction, with few arguments."
+      },
+      {
+        "name": "Comments",
+        "gist": "Prefer code that explains itself; a comment often marks a failure to express intent in code."
+      },
+      {
+        "name": "Formatting",
+        "gist": "Consistent layout is communication; a team should agree on one style and follow it."
+      },
+      {
+        "name": "Error handling",
+        "gist": "Use exceptions rather than error codes, and don’t return or pass null."
+      },
+      {
+        "name": "Unit tests",
+        "gist": "Tests deserve the same care as production code: fast, independent, repeatable, self-validating, timely."
+      },
+      {
+        "name": "Classes",
+        "gist": "Keep classes small, with a single reason to change."
+      },
+      {
+        "name": "The Boy Scout Rule",
+        "gist": "Leave the code a little cleaner than you found it, every time."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Clean Code is the book that gave a generation of engineers, me included, a shared language for code quality. I keep it on the shelf less as a rulebook and more as a reminder that readable code is a kindness to the next person, and now to the next agent, that has to change it."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Martin argues that code is read far more often than it is written, so the main cost of software is understanding and changing it. Clean code is code a reader can follow without effort: well-named, small, tested and free of surprises. Writing it is a discipline of continuous small improvements rather than occasional big rewrites."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- I treat readability as a team standard, not a matter of taste: we agree on conventions once and let linters and formatters enforce them, so review time goes to design, not style.\n- “CI lands the work” is the rule my agent fleet runs under, and clean code is what makes that safe: small, well-tested changes are the only kind a required check can judge.\n- I ask for the Boy Scout Rule in every change: leave the touched code a little better, and keep the cleanup in the same small PR.\n- When an agent writes code, I hold it to the same bar as a person. Names, small functions and tests are what let a reviewer, human or AI, actually review it."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Could a new engineer explain what this module does after ten minutes of reading?\n- Which of our naming or style arguments could a tool settle for us?\n- When did we last leave code cleaner than we found it, in a change that wasn’t a dedicated refactor?\n- Are our tests clear enough to read as documentation?\n- Where are we tolerating a function nobody wants to touch, and why?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "The core claim is right and has aged well: code is read far more than it is written, and the cost of a codebase is the cost of understanding it. Small, well-named units and tests you can trust are still the foundation of a team that moves fast safely."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "The examples are dated and Java-centric, and some rules are contested in practice. Very small functions can scatter logic across files and make code harder to follow, not easier, and a blanket suspicion of comments undersells comments that explain why. Followed as dogma, the book produces cleverness in the name of cleanliness; it works best as a set of defaults a team adapts and agrees on."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Write for the reader; that reader is now often an agent too.\n- Agree on standards once, then automate them.\n- Small, safe improvements beat big rewrites.\n- Treat test code as production code.\n- Rules are defaults, not dogma."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Extreme Programming Explained**: Clean Code is the craft inside the practices; XP is the system that makes the craft routine."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you want current, language-specific guidance; it’s a 2008 book with Java examples. It misleads teams that turn its heuristics into hard rules and fight about function length in review."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Code is read more than written",
+      "summary": "Most of the time spent on code goes into reading and understanding it, so optimizing for the reader pays off.",
+      "caveat": "How much this matters depends on the code’s lifespan; throwaway scripts don’t need the same care.",
+      "claim": "book",
+      "visibility": "published",
+      "example": "A service that many teams touch gets cheaper to change every time someone improves its names."
+    },
+    {
+      "title": "Functions should do one thing",
+      "summary": "Small functions at a single level of abstraction are easier to name, test and understand.",
+      "caveat": "Pushed too far, tiny functions fragment logic and make flow harder to follow.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Comments are often a smell",
+      "summary": "Prefer expressing intent in code; comments drift out of date and can hide unclear code.",
+      "caveat": "Comments that explain why, or record a decision, remain valuable and are often missing.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Tests are first-class code",
+      "summary": "Tests should be clean, fast and independent, because a suite nobody trusts gets ignored.",
+      "caveat": "Test style is also contested; the book’s preferences aren’t the only workable approach.",
+      "claim": "book",
+      "visibility": "published",
+      "example": "A team with readable tests uses them as documentation for how the system is meant to behave."
+    },
+    {
+      "title": "Leave it cleaner than you found it",
+      "summary": "Continuous small improvements keep a codebase healthy without big rewrites.",
+      "caveat": "Opportunistic cleanup can bloat changes; keep it small and reviewable.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.informit.com/store/clean-code-a-handbook-of-agile-software-craftsmanship-9780132350884",
+      "provider": "InformIT (Pearson)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

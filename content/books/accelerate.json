@@ -1,0 +1,208 @@
+{
+  "slug": "accelerate",
+  "title": "Accelerate",
+  "subtitle": "The Science of Lean Software and DevOps: Building and Scaling High Performing Technology Organizations",
+  "authors": [
+    "Nicole Forsgren",
+    "Jez Humble",
+    "Gene Kim"
+  ],
+  "firstPublishedYear": 2018,
+  "publisher": "IT Revolution Press",
+  "isbn13": "9781942788331",
+  "pages": 288,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781942788331.json",
+      "https://openlibrary.org/works/OL19542983W",
+      "https://itrevolution.com/product/accelerate/"
+    ]
+  },
+  "category": "engineering-leadership",
+  "themes": [
+    "delivery-performance",
+    "engineering-excellence"
+  ],
+  "featuredRank": 11,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2025-04",
+    "finishedAt": "2025-05",
+    "rating": 5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#3B3E42",
+    "ink": "#F2F4F5",
+    "foil": "#3FB6E3",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/accelerate.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781942788331-L.jpg"
+  },
+  "oneLine": {
+    "text": "Speed and stability aren’t a trade-off: four metrics and a set of capabilities predict high-performing delivery.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Measure the system, not the people. Four numbers, recounted honestly, tell you more than any status meeting.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "Four key metrics, and the capabilities behind them",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Deployment frequency",
+        "gist": "How often the team releases to production."
+      },
+      {
+        "name": "Lead time for changes",
+        "gist": "How long from code committed to code running in production."
+      },
+      {
+        "name": "Time to restore service",
+        "gist": "How quickly the team recovers when something breaks."
+      },
+      {
+        "name": "Change failure rate",
+        "gist": "What share of changes cause a failure that needs fixing."
+      },
+      {
+        "name": "Continuous delivery",
+        "gist": "Version control, deployment automation, trunk-based development, test automation and shifting security left."
+      },
+      {
+        "name": "Architecture",
+        "gist": "Loosely coupled systems and teams that can test and deploy independently."
+      },
+      {
+        "name": "Product and process",
+        "gist": "Small batches, customer feedback, visible work and room to experiment."
+      },
+      {
+        "name": "Lean management and monitoring",
+        "gist": "Lightweight change approval, monitoring, WIP limits and visual management."
+      },
+      {
+        "name": "Culture",
+        "gist": "A generative, high-trust culture where information flows and failure leads to learning."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Accelerate is the book I hand people who think speed and quality are a trade-off. It turned delivery from opinion into something you can measure, and it shaped how I think about running both engineering teams and an agent fleet: measure the system honestly, then improve the capabilities that move the numbers."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Drawing on several years of State of DevOps survey research, the authors argue that software delivery performance can be measured with four metrics (deployment frequency, lead time, time to restore and change failure rate) and that high performers are better on speed and stability at the same time. They identify a set of technical, process, management and cultural capabilities that predict that performance, and link it to organizational outcomes."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Re-establishing weekly releases at Disney Entertainment & ESPN’s Watch Experiences was an Accelerate move: smaller batches, more frequent deploys, less risk per change.\n- “Measured, never typed” is a rule in my operating model: the fleet’s numbers are recounted nightly by a deterministic script, and CI fails if the page drifts from the data. That’s Accelerate’s instinct applied to AI agents.\n- Measuring honestly is how I found that only about a quarter of agent PRs were reviewed before merging. The fix was a capability, not a pep talk: review became a required check.\n- I use the four metrics to talk about the system with leaders, never to rank individual engineers."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- How often do we deploy, and what stops us from deploying more often?\n- How long does a one-line change take to reach production?\n- When production breaks, how long until users are fine again?\n- What share of our changes cause an incident or a rollback?\n- Which approval step adds delay without adding safety?\n- Do people bring bad news early, or does it surface late?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "The central finding has held up in my experience: the teams that ship more often also break less, because small batches and fast feedback reduce risk. Treating culture as a capability you can build, alongside automation and architecture, is the book’s most useful idea for leaders."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "The research is survey-based and self-reported, and the claims about what predicts performance rest on statistical modeling that critics have questioned; correlation does a lot of work in the book. The four metrics are also easy to game once they become targets: deploy trivial changes, redefine “failure”, shrink “restore”. Used as a leaderboard, they stop measuring anything."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Speed and stability go together; small batches are how.\n- Measure the delivery system with four honest numbers.\n- Capabilities move the numbers; targets just distort them.\n- Culture is a capability you can build.\n- Never turn the metrics into a ranking of people."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Extreme Programming Explained**: XP describes the practices; Accelerate shows the evidence that they pay off at scale."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you want a how-to; it’s a research summary, and the practical detail lives in Continuous Delivery and the DORA reports. It misleads leaders who adopt the metrics as targets without building the capabilities behind them."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Speed and stability aren’t a trade-off",
+      "summary": "High performers deploy more often and also fail less and recover faster.",
+      "caveat": "Based on survey data; it shows association across teams, not a guaranteed result for yours.",
+      "claim": "book",
+      "visibility": "published",
+      "example": "A team that moves to small, frequent releases usually finds each release less risky, not more."
+    },
+    {
+      "title": "Four metrics capture delivery performance",
+      "summary": "Deployment frequency, lead time, time to restore and change failure rate together describe throughput and stability.",
+      "caveat": "Any metric can be gamed when it becomes a target; they describe the system, not people.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Capabilities drive performance",
+      "summary": "Practices like trunk-based development, test automation and loosely coupled architecture predict better delivery.",
+      "caveat": "The causal claims depend on the research model, which has its critics.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Culture is measurable and changeable",
+      "summary": "A generative, high-trust culture, in Westrum’s sense, predicts better delivery and outcomes.",
+      "caveat": "Culture surveys are self-reported and sensitive to how safe people feel answering them.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Heavyweight change approval doesn’t help",
+      "summary": "External approval boards slow delivery without improving stability; peer review and automation do better.",
+      "caveat": "Regulated environments may still require formal approvals; the point is to make them lightweight.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://itrevolution.com/product/accelerate/",
+      "provider": "IT Revolution",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

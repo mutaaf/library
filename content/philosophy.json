@@ -1,0 +1,33 @@
+{
+  "kicker": "My leadership philosophy",
+  "headline": "Build the system. Earn the trust. Let autonomy do the rest.",
+  "lede": "Give engineers, and people, the space and autonomy to succeed, with the right tools and systems in place, and you can reach a great result every time. The craft is the balance between alignment and autonomy. But the true value of a team is whether its people trust each other: a psychologically safe place where making mistakes, asking questions and moving forward are all part of the work.",
+  "core": {
+    "name": "Trust & psychological safety",
+    "text": "Mistakes, questions and moving forward are all part of it. Everything else runs on this.",
+    "books": ["five-dysfunctions-of-a-team", "peopleware", "radical-candor"]
+  },
+  "loop": [
+    {
+      "name": "Alignment",
+      "text": "Take the complexity of everything we know and put it into a systemic process: clear goals, clear constraints, shared context.",
+      "books": ["an-elegant-puzzle", "the-managers-path", "accelerate"]
+    },
+    {
+      "name": "Systems & tools",
+      "text": "The right tools and systems make the right thing the easy thing, so success never depends on heroics.",
+      "books": ["accelerate", "extreme-programming-explained", "clean-code"]
+    },
+    {
+      "name": "Autonomy",
+      "text": "Autonomy flows from that alignment: room to decide, own and solve, inside guardrails everyone understands.",
+      "books": ["drive", "become-an-effective-software-engineering-manager"]
+    },
+    {
+      "name": "Learn & grow",
+      "text": "A cycle of learning and growing: we ship, we look honestly at what happened, we get better, and we go again.",
+      "books": ["extreme-programming-explained", "accelerate", "peopleware"]
+    }
+  ],
+  "closing": "Anyone can be successful here. Partnership and collaboration are how we get there."
+}
