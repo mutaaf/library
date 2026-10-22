@@ -1,0 +1,11 @@
+{
+  // library: the Leadership Library at mutaafaziz.com/library/. Static assets only; no
+  // Worker code, no database, no secrets. The route takes precedence over the
+  // mutaafaziz.com Custom Domain (the personal site), as Hearth's and COLD GAS's do.
+  "name": "library",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "preview_urls": true,
+  "assets": { "directory": "./dist", "not_found_handling": "404-page" },
+  "routes": [{ "pattern": "mutaafaziz.com/library*", "zone_name": "mutaafaziz.com" }]
+}

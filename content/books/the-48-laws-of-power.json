@@ -1,0 +1,106 @@
+{
+  "slug": "the-48-laws-of-power",
+  "title": "The 48 Laws of Power",
+  "authors": [
+    "Robert Greene"
+  ],
+  "firstPublishedYear": 1998,
+  "publisher": "Viking",
+  "isbn13": "9780670881468",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780670881468.json",
+      "https://openlibrary.org/isbn/9780140280197.json",
+      "https://openlibrary.org/works/OL1968368W"
+    ]
+  },
+  "themes": [
+    "power-and-influence"
+  ],
+  "featuredRank": 9,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#151B20",
+    "ink": "#E9DCC0",
+    "foil": "#B48A48",
+    "type": "serif"
+  },
+  "oneLine": {
+    "text": "A historical map of how power is gained, kept and lost, read critically rather than as a manual.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Greene distills episodes from history into 48 maxims about how power is gained, held and lost. He argues that power games are unavoidable in any group, and that understanding them is a form of self-protection."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "note",
+      "claim": "context",
+      "visibility": "published",
+      "body": "This book is on the shelf as a map of how power is played, not as a guide to follow. Many of its tactics are manipulative, and none of them are endorsed here. The ideas below describe the book’s claims, each with an ethical caveat."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Never outshine the master",
+      "summary": "Greene argues that making superiors feel insecure about their position invites resentment, so ambitious people should let those above them appear to shine.",
+      "caveat": "As advice it rewards insecurity; healthy organizations should want people who outshine their leaders, and good leaders should notice when someone is hiding their abilities.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Conceal your intentions",
+      "summary": "The book claims that people who reveal their goals give others the means to block them.",
+      "caveat": "Hidden agendas destroy trust once discovered; transparent leadership trades short-term advantage for long-term credibility.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Guard your reputation",
+      "summary": "Reputation is presented as the foundation of power, worth defending carefully and, in Greene’s telling, attacking in rivals.",
+      "caveat": "Protecting your own credibility is reasonable; undermining others’ reputations is not.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Assume formlessness",
+      "summary": "The final law argues that adaptability, rather than a fixed position, keeps power durable.",
+      "caveat": "Adaptability is a genuine strength; as Greene frames it, it can also become a lack of principles.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

@@ -1,0 +1,109 @@
+{
+  "slug": "become-an-effective-software-engineering-manager",
+  "title": "Become an Effective Software Engineering Manager",
+  "subtitle": "How to Be the Leader Your Development Team Needs",
+  "authors": [
+    "James Stanier"
+  ],
+  "firstPublishedYear": 2020,
+  "publisher": "The Pragmatic Bookshelf",
+  "isbn13": "9781680507249",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://pragprog.com/titles/jsengman/become-an-effective-software-engineering-manager/",
+      "https://openlibrary.org/isbn/9781680507249.json"
+    ]
+  },
+  "themes": [
+    "management-craft",
+    "feedback-and-coaching"
+  ],
+  "featuredRank": 1,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#1F3A5F",
+    "ink": "#F2EBDD",
+    "foil": "#C9A45C",
+    "type": "grotesk"
+  },
+  "oneLine": {
+    "text": "Management is a separate craft from engineering, built from deliberate everyday habits.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Engineering management is a different job from engineering, not a promotion of it. The manager’s work is to create the conditions in which the team does its best work, and that comes from deliberate, repeatable habits: managing your own time, holding regular one-to-ones, giving feedback, delegating, and hiring well."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Your output is the team’s output",
+      "summary": "Once you manage, your contribution is measured by what the team achieves, not by what you produce yourself.",
+      "caveat": "The feedback loop is slow; new managers often feel unproductive for months and are tempted to retreat into coding.",
+      "example": "A new manager who keeps taking the hardest tickets can become the team’s bottleneck instead of its multiplier.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Manage yourself first",
+      "summary": "A manager’s calendar fills up by default, so time, attention and a reliable system for tasks have to be managed on purpose.",
+      "caveat": "The right system is personal; the point is having one, not copying a particular tool.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "One-to-ones are the core habit",
+      "summary": "Regular, private conversations with each report are where trust, feedback and career growth happen.",
+      "caveat": "They decay into status updates unless the report owns much of the agenda.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Delegate to grow people",
+      "summary": "Delegation is a development tool: hand over work that stretches someone, with clear expectations and support.",
+      "caveat": "Handing off work without context or backing is abdication, not delegation.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Hiring is high leverage",
+      "summary": "Who joins the team shapes it for years, so hiring deserves a structured, consistent process.",
+      "caveat": "Structure reduces bias and noise but does not remove them.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

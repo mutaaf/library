@@ -1,0 +1,109 @@
+{
+  "slug": "drive",
+  "title": "Drive",
+  "subtitle": "The Surprising Truth About What Motivates Us",
+  "authors": [
+    "Daniel H. Pink"
+  ],
+  "firstPublishedYear": 2009,
+  "publisher": "Riverhead Books",
+  "isbn13": "9781594488849",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781594488849.json",
+      "https://openlibrary.org/works/OL15016965W"
+    ]
+  },
+  "themes": [
+    "motivation",
+    "feedback-and-coaching"
+  ],
+  "featuredRank": 7,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#1E4D5C",
+    "ink": "#F2EBDD",
+    "foil": "#B48A48",
+    "type": "serif"
+  },
+  "oneLine": {
+    "text": "For creative work, autonomy, mastery and purpose motivate better than carrots and sticks.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "For work that needs creativity and judgment, rewards and punishments often underperform and can even backfire. Pink argues that people do their best work when organizations support intrinsic motivation through autonomy, mastery and purpose, once pay is fair enough to take money off the table."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Carrots and sticks have limits",
+      "summary": "Contingent “if-then” rewards help with routine, rule-based tasks but can narrow focus and hurt performance on open-ended ones.",
+      "caveat": "The research is debated; some studies and meta-analyses find rewards less harmful than Pink suggests.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Take money off the table",
+      "summary": "Pay has to be fair and adequate first; intrinsic motivation is not a substitute for it.",
+      "caveat": "What counts as fair is contested, and pay gaps can undermine everything else.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Autonomy",
+      "summary": "People are more engaged with control over what they do, when, how and with whom.",
+      "caveat": "Autonomy needs clear goals and constraints, or it turns into confusion.",
+      "example": "A team trusted to choose how it meets a goal often finds better approaches than one handed a detailed plan.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Mastery",
+      "summary": "Getting better at something that matters is a strong motivator, but it takes effort and is never fully reached.",
+      "caveat": "Not every role offers room for mastery, and organizations rarely budget time for it.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Purpose",
+      "summary": "People work harder for a cause larger than themselves than for profit alone.",
+      "caveat": "Purpose statements that do not match reality can breed cynicism.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

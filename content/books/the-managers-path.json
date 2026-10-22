@@ -1,0 +1,109 @@
+{
+  "slug": "the-managers-path",
+  "title": "The Manager’s Path",
+  "subtitle": "A Guide for Tech Leaders Navigating Growth and Change",
+  "authors": [
+    "Camille Fournier"
+  ],
+  "firstPublishedYear": 2017,
+  "publisher": "O’Reilly Media",
+  "isbn13": "9781491973899",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781491973899.json",
+      "https://openlibrary.org/works/OL19860807W"
+    ]
+  },
+  "themes": [
+    "leadership-progression",
+    "management-craft",
+    "scaling-organizations"
+  ],
+  "featuredRank": 3,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#6B2A2A",
+    "ink": "#F4E9D8",
+    "foil": "#D4B06A",
+    "type": "slab"
+  },
+  "oneLine": {
+    "text": "Each step up the technical leadership ladder is a different job that asks for new skills.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Technical leadership is a ladder of distinct jobs: being managed, mentoring, tech lead, managing people, managing teams, managing managers and senior leadership. Each level asks a leader to let go of some of what made them successful at the last one and build new skills, so knowing what the next level demands is the best preparation for it."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Learn to be managed",
+      "summary": "Getting the most from your own manager, by owning your career and bringing the agenda to one-to-ones, is the first leadership skill.",
+      "caveat": "It assumes a manager who is willing to engage; with an absent manager, people have to look for mentorship elsewhere.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Tech lead is its own role",
+      "summary": "A tech lead balances hands-on work with coordinating the project and representing the team, and has to accept writing less code.",
+      "caveat": "How much coding a tech lead keeps varies widely between companies.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Managing managers changes how you see",
+      "summary": "Once you manage managers you lose direct visibility, so you rely on skip-level conversations and on diagnosing teams through their leaders.",
+      "caveat": "Skip-levels can undermine a manager if they turn into a back channel.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Senior leadership sets direction",
+      "summary": "At the executive level the job becomes setting technical strategy, aligning with the business and shaping the organization.",
+      "caveat": "Titles such as CTO and VP of Engineering mean different things at different companies.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Culture is built on purpose",
+      "summary": "As a team grows, its culture should be shaped deliberately, by writing down values and building processes that reflect them.",
+      "caveat": "Written values that do not match how decisions are actually made can do more harm than none.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

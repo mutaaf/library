@@ -1,0 +1,118 @@
+{
+  "slug": "peopleware",
+  "title": "Peopleware",
+  "subtitle": "Productive Projects and Teams",
+  "authors": [
+    "Tom DeMarco",
+    "Timothy Lister"
+  ],
+  "firstPublishedYear": 1987,
+  "edition": "3rd edition, 2013",
+  "publisher": "Addison-Wesley",
+  "isbn13": "9780321934116",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780321934116.json",
+      "https://openlibrary.org/isbn/9780932633057.json",
+      "https://openlibrary.org/works/OL38240W"
+    ]
+  },
+  "themes": [
+    "team-culture",
+    "trust-and-accountability"
+  ],
+  "featuredRank": 4,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#C08A2E",
+    "ink": "#151B20",
+    "foil": "#473426",
+    "type": "serif"
+  },
+  "oneLine": {
+    "text": "Most project problems are about people, not technology.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "The hardest problems on software projects are sociological, not technological. Productivity depends far more on the environment, the people and how a team comes together than on tools or pressure, so managers should protect focus, hire well, and remove the obstacles that keep teams from jelling."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "note",
+      "claim": "context",
+      "visibility": "published",
+      "body": "First published in 1987. This summary follows the third edition (2013), which keeps the original argument and adds newer chapters."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "It’s the people",
+      "summary": "Projects fail more often from human and organizational causes than from technical ones, yet managers tend to focus on the technical.",
+      "caveat": "Technology choices still matter; the claim is about where the larger risks usually lie.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Protect flow",
+      "summary": "Deep work needs uninterrupted time, and noisy, interruption-heavy workplaces quietly destroy productivity.",
+      "caveat": "Much of the original evidence predates remote and hybrid work, which change the shape of the problem.",
+      "example": "A team that is interrupted constantly by chat and meetings may be busy all day and still struggle to finish hard work.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Pressure buys little",
+      "summary": "Overtime and aggressive deadlines tend to trade short-term speed for lower quality and later slowdowns.",
+      "caveat": "Occasional, voluntary pushes before a real deadline are different from a permanent state of pressure.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Teams jell, they aren’t built",
+      "summary": "A jelled team is far more effective than its members alone, and managers cannot force it, only create the conditions and avoid what prevents it.",
+      "caveat": "Jelling is hard to measure, so it is easy to claim and hard to verify.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Teamicide",
+      "summary": "Common management habits, such as defensive control, bureaucracy, splitting people across many projects and phony deadlines, reliably stop teams from forming.",
+      "caveat": "Some constraints, such as regulation or shared specialists, cannot always be removed.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

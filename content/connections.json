@@ -1,0 +1,50 @@
+[
+  {
+    "from": "peopleware",
+    "to": "five-dysfunctions-of-a-team",
+    "theme": "trust-and-accountability",
+    "explanation": "Both treat team cohesion as the real engine of results: Peopleware describes the conditions that let a team jell, and Lencioni names the trust that has to exist before a team can argue, commit and hold each other to account.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  },
+  {
+    "from": "drive",
+    "to": "radical-candor",
+    "theme": "feedback-and-coaching",
+    "explanation": "Autonomy works best alongside honest coaching: Drive argues for giving people control over their work, and Radical Candor describes the direct, caring feedback that helps them master it.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  },
+  {
+    "from": "an-elegant-puzzle",
+    "to": "the-managers-path",
+    "theme": "scaling-organizations",
+    "explanation": "One looks at scaling from the structure's point of view (team sizes, migrations, systems), the other from the leader's (how each step up changes the job); together they cover both sides of growth.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  },
+  {
+    "from": "extreme-programming-explained",
+    "to": "peopleware",
+    "theme": "team-culture",
+    "explanation": "XP's technical practices rest on human conditions Peopleware describes: sustainable pace, sitting together, respect and room to focus.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  },
+  {
+    "from": "the-48-laws-of-power",
+    "to": "radical-candor",
+    "theme": "power-and-influence",
+    "explanation": "A study in contrasts: Greene maps the political games people play, while Scott argues for leading through transparency and care; reading both helps a leader recognize manipulation without adopting it.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  },
+  {
+    "from": "become-an-effective-software-engineering-manager",
+    "to": "the-managers-path",
+    "theme": "management-craft",
+    "explanation": "Stanier focuses on the daily craft of managing one team well; Fournier zooms out to how that craft has to change at each level of leadership.",
+    "claim": "interpretation",
+    "visibility": "draft"
+  }
+]

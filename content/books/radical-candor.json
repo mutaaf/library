@@ -1,0 +1,110 @@
+{
+  "slug": "radical-candor",
+  "title": "Radical Candor",
+  "subtitle": "Be a Kick-Ass Boss Without Losing Your Humanity",
+  "authors": [
+    "Kim Scott"
+  ],
+  "firstPublishedYear": 2017,
+  "publisher": "St. Martin’s Press",
+  "isbn13": "9781250103505",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781250103505.json",
+      "https://openlibrary.org/works/OL17803541W"
+    ]
+  },
+  "themes": [
+    "feedback-and-coaching",
+    "trust-and-accountability",
+    "power-and-influence"
+  ],
+  "featuredRank": 8,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#D9C9A8",
+    "ink": "#4A1F1F",
+    "foil": "#8C3B2E",
+    "type": "slab"
+  },
+  "oneLine": {
+    "text": "Good bosses care personally and challenge directly, at the same time.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Good leadership comes from caring personally about people while challenging them directly. Scott maps feedback on those two dimensions and shows how falling short on either one produces common failures, and she argues that a boss’s job is to build relationships that make honest guidance possible in both directions."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Two dimensions, four quadrants",
+      "summary": "Care personally and challenge directly; missing one produces obnoxious aggression, ruinous empathy or manipulative insincerity.",
+      "caveat": "The quadrants describe behaviour in a moment, not fixed types of people.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Ruinous empathy is common",
+      "summary": "The most frequent failure is being so nice that people never hear the criticism they need.",
+      "caveat": "Avoiding feedback can also come from overload or unclear expectations, not only from niceness.",
+      "example": "A manager who softens every review may leave someone surprised by a poor performance rating.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Ask for criticism first",
+      "summary": "Before giving feedback, a leader should ask for it and show they can receive it well.",
+      "caveat": "Power differences mean reports may still hold back, however sincerely the boss asks.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Praise in public, criticize in private",
+      "summary": "Specific, sincere praise and private, timely criticism keep feedback useful rather than performative.",
+      "caveat": "Some people prefer private praise; norms vary by person and culture.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Growth paths differ",
+      "summary": "Some people want steep growth and others stability, and both deserve support suited to where they are.",
+      "caveat": "Labels for people’s growth trajectories can harden into a fixed category if not revisited.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

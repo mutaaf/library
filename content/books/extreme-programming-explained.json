@@ -1,0 +1,118 @@
+{
+  "slug": "extreme-programming-explained",
+  "title": "Extreme Programming Explained",
+  "subtitle": "Embrace Change",
+  "authors": [
+    "Kent Beck",
+    "Cynthia Andres"
+  ],
+  "firstPublishedYear": 1999,
+  "edition": "2nd edition, 2004 (with Cynthia Andres)",
+  "publisher": "Addison-Wesley",
+  "isbn13": "9780321278654",
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780321278654.json",
+      "https://openlibrary.org/isbn/9780201616415.json",
+      "https://openlibrary.org/works/OL1961693W"
+    ]
+  },
+  "themes": [
+    "engineering-excellence",
+    "team-culture"
+  ],
+  "featuredRank": 5,
+  "readingStatus": null,
+  "statusVisibility": "draft",
+  "cover": {
+    "bg": "#2F3B45",
+    "ink": "#E9F0EA",
+    "foil": "#83947B",
+    "type": "mono"
+  },
+  "oneLine": {
+    "text": "Short feedback loops and technical discipline make change cheap and safe.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Software can respond to change cheaply when a team works in short cycles, gets continuous feedback and keeps its technical discipline high. The second edition frames Extreme Programming as values (communication, simplicity, feedback, courage and respect), principles that connect them to daily work, and practices a team adopts incrementally."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": ""
+    },
+    {
+      "kind": "note",
+      "claim": "context",
+      "visibility": "published",
+      "body": "The first edition (1999, Kent Beck) introduced XP as a fixed set of practices. The second edition (2004, Kent Beck with Cynthia Andres) was substantially rewritten around values, principles, and primary and corollary practices adopted gradually. This summary follows the second edition."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Values, principles, practices",
+      "summary": "Practices only make sense when tied to values through principles; copying practices without the values tends to fail.",
+      "caveat": "The framing is abstract, and teams sometimes adopt the vocabulary without changing behaviour.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Shorten every feedback loop",
+      "summary": "Weekly and quarterly cycles, continuous integration and a fast build keep the gap between a decision and its consequences small.",
+      "caveat": "Some domains, such as hardware or regulated releases, limit how short certain loops can be.",
+      "example": "A team whose build takes an hour will integrate less often and find conflicts later.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Test first, design incrementally",
+      "summary": "Writing tests before code and improving the design a little every day keeps the cost of change low over time.",
+      "caveat": "Test-first takes practice, and incremental design still needs someone thinking about the larger architecture.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Pairing and sitting together",
+      "summary": "Pair programming and a team that works side by side spread knowledge, catch mistakes early and keep communication high.",
+      "caveat": "Pairing all day is tiring and does not suit every person or task; remote teams need other ways to stay close.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Energized work",
+      "summary": "Sustainable hours produce better software than exhaustion, so a team should work only as many hours as it can stay productive.",
+      "caveat": "Teams under real external pressure can find this hard to defend without leadership support.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

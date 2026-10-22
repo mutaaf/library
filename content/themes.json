@@ -1,0 +1,12 @@
+[
+  { "slug": "management-craft", "name": "Management craft", "description": "The day-to-day practice of managing engineers: one-to-ones, feedback, delegation, hiring and running a team." },
+  { "slug": "organizational-design", "name": "Organizational design", "description": "How teams are sized, structured and connected, and how those structures shape the work." },
+  { "slug": "leadership-progression", "name": "Leadership progression", "description": "How the job changes as a leader moves from individual contributor to managing teams, managers and organizations." },
+  { "slug": "team-culture", "name": "Team culture", "description": "The human and environmental conditions that let a team do good work together." },
+  { "slug": "engineering-excellence", "name": "Engineering excellence", "description": "Technical practices and feedback loops that keep software easy and safe to change." },
+  { "slug": "trust-and-accountability", "name": "Trust and accountability", "description": "How trust, healthy conflict and mutual accountability let a team commit to shared results." },
+  { "slug": "motivation", "name": "Motivation", "description": "What drives people to do their best work, and how incentives help or get in the way." },
+  { "slug": "feedback-and-coaching", "name": "Feedback and coaching", "description": "Giving and receiving guidance that helps people grow." },
+  { "slug": "power-and-influence", "name": "Power and influence", "description": "How power, perception and politics work inside organizations, and how to engage with them ethically." },
+  { "slug": "scaling-organizations", "name": "Scaling organizations", "description": "What changes, for structures and for leaders, as an engineering organization grows." }
+]
