@@ -21,6 +21,8 @@ npm run build          # content/ → dist/library/
 npm run preview        # http://127.0.0.1:4391/library/
 npm test               # schema, draft-leak and sanitizer tests
 npm run e2e            # Playwright, WebKit + Chromium
+npm run stack          # production locally: the site at / and the library at /library/
+                       # (needs ../mutaafaziz-site; http://127.0.0.1:8790/)
 ```
 
 Add `?duo=open`, `?duo=closed` or `?duo=auto` to any URL to see the book form on a desktop.

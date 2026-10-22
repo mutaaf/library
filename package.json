@@ -13,7 +13,8 @@
     "preview": "node scripts/serve.mjs",
     "test": "node --test \"test/*.test.mjs\"",
     "e2e": "playwright test",
-    "check": "npm run build && npm test && npm run e2e"
+    "check": "npm run build && npm test && npm run e2e",
+    "stack": "npm run build && node scripts/stack.mjs"
   },
   "homepage": "https://mutaafaziz.com/library/",
   "repository": {
