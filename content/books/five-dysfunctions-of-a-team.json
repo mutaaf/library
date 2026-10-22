@@ -1,0 +1,189 @@
+{
+  "slug": "five-dysfunctions-of-a-team",
+  "title": "The Five Dysfunctions of a Team",
+  "subtitle": "A Leadership Fable",
+  "authors": [
+    "Patrick Lencioni"
+  ],
+  "firstPublishedYear": 2002,
+  "publisher": "Jossey-Bass",
+  "isbn13": "9780787960759",
+  "pages": 240,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780787960759.json",
+      "https://openlibrary.org/works/OL31272706W"
+    ]
+  },
+  "category": "teams-people",
+  "themes": [
+    "trust-and-accountability",
+    "team-culture"
+  ],
+  "featuredRank": 6,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2024-01",
+    "finishedAt": "2024-02",
+    "rating": 5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#A3201F",
+    "ink": "#F5EBDD",
+    "foil": "#E8CFA0",
+    "type": "serif"
+  },
+  "coverImage": {
+    "file": "covers/five-dysfunctions-of-a-team.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9780787960759-L.jpg"
+  },
+  "oneLine": {
+    "text": "Trust makes conflict safe, which makes commitment, accountability and shared results possible.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Accountability that isn’t built into the system doesn’t exist. Neither does trust that the leader doesn’t go first on.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The five dysfunctions, from the bottom up",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Absence of trust",
+        "gist": "People won’t admit mistakes or weaknesses, so they spend energy protecting themselves."
+      },
+      {
+        "name": "Fear of conflict",
+        "gist": "Without trust, teams avoid honest debate and settle for artificial harmony."
+      },
+      {
+        "name": "Lack of commitment",
+        "gist": "Without debate, people never truly buy in, even when they nod along."
+      },
+      {
+        "name": "Avoidance of accountability",
+        "gist": "Without commitment, peers won’t call each other on falling short."
+      },
+      {
+        "name": "Inattention to results",
+        "gist": "Without accountability, individual status and ego replace collective results."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "It is the simplest model of team failure I know, and the most useful. I use it with engineering teams, with leadership teams and on the basketball court, because the pyramid holds in all three."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Told as a fable about a new CEO and her executive team, the book argues that teams fail through five connected dysfunctions: absence of trust, fear of conflict, lack of commitment, avoidance of accountability and inattention to results. Each builds on the one beneath it, so the work starts with trust that lets people be open about their weaknesses."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- When accountability is weak, I look one level down first: is there real commitment, and was there real debate before it?\n- I go first on vulnerability: admitting what I got wrong, in public, makes it safe for others.\n- My agent fleet taught me the top of the pyramid. Our scoreboard found only about a quarter of agent PRs were reviewed before merging. Nobody was hiding anything; accountability simply wasn’t built into the system. Making review a required check fixed it.\n- With the teams I coach, “brotherhood” is the trust layer. Without it, hunger and discipline turn into blame."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- When did someone on this team last say “I was wrong” in a meeting?\n- Do our meetings ever have real disagreement, or does it happen afterwards in private?\n- After a decision, can everyone state it the same way?\n- Who calls out a peer who misses a commitment: the peer, or only me?\n- Are we measured on team results, or does everyone have their own scoreboard?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "The ordering is the insight: you can’t fix accountability by demanding it, because it rests on commitment, conflict and trust beneath it. The fable format makes it stick in a way a framework list wouldn’t."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "It is a fable, not research, and the pyramid is a clean story laid over messy reality. It underplays structural causes (bad incentives, unclear ownership, overloaded teams) and can push leaders to treat a systems problem as a personality problem. Its executive-team setting also maps imperfectly to engineering teams with on-call, product pressure and remote members."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Trust is the foundation, and it means vulnerability.\n- Healthy conflict comes before real commitment.\n- The best accountability is peer to peer.\n- Accountability that isn’t built into the system doesn’t exist."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Peopleware** for the conditions that let teams jell, and **Radical Candor** for how to have the conflict this book says you need."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you need evidence; it offers none. It misleads when used to blame individuals for problems the org chart or incentives created."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Trust means vulnerability",
+      "summary": "The trust that matters is people being willing to admit mistakes, weaknesses and the need for help without fear.",
+      "caveat": "Psychological safety depends on the whole environment, not only on individual willingness to be vulnerable.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Conflict is productive",
+      "summary": "Teams with trust can argue openly about ideas; teams without it settle for artificial harmony and hidden disagreement.",
+      "caveat": "The line between healthy debate and personal conflict needs to be actively protected.",
+      "example": "A design review where nobody disagrees may be a warning sign, not a success.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Commitment without consensus",
+      "summary": "People can commit to a decision they argued against if they were heard and the decision is clear.",
+      "caveat": "It needs clear decision owners; otherwise disagreement simply resurfaces later.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Peers hold each other accountable",
+      "summary": "The strongest accountability comes from teammates, not only from the leader.",
+      "caveat": "Peer accountability can turn punitive without the trust layer underneath it.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Collective results come first",
+      "summary": "Team results have to matter more than individual status or the goals of each member’s own department.",
+      "caveat": "Incentives that reward individuals can work directly against this.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.wiley.com/en-us/The+Five+Dysfunctions+of+a+Team%3A+A+Leadership+Fable-p-9780787960759",
+      "provider": "Wiley (Jossey-Bass)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

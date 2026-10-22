@@ -1,0 +1,198 @@
+{
+  "slug": "extreme-programming-explained",
+  "title": "Extreme Programming Explained",
+  "subtitle": "Embrace Change",
+  "authors": [
+    "Kent Beck",
+    "Cynthia Andres"
+  ],
+  "firstPublishedYear": 1999,
+  "edition": "2nd edition, 2004 (with Cynthia Andres)",
+  "publisher": "Addison-Wesley",
+  "isbn13": "9780321278654",
+  "pages": 224,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780321278654.json",
+      "https://openlibrary.org/isbn/9780201616415.json",
+      "https://openlibrary.org/works/OL1961693W"
+    ]
+  },
+  "category": "engineering-leadership",
+  "themes": [
+    "engineering-excellence",
+    "team-culture"
+  ],
+  "featuredRank": 5,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2024-05",
+    "finishedAt": "2024-06",
+    "rating": 4.5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#F4F3EF",
+    "ink": "#1F2A44",
+    "foil": "#B3262B",
+    "type": "serif"
+  },
+  "coverImage": {
+    "file": "covers/extreme-programming-explained.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9780321278654-L.jpg"
+  },
+  "oneLine": {
+    "text": "Short feedback loops and technical discipline make change cheap and safe.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Tests are the contract, CI is the gate, short loops are the culture. It turns out that’s how you run agents too.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The five values",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Communication",
+        "gist": "Most problems trace back to someone not knowing something; make knowledge flow."
+      },
+      {
+        "name": "Simplicity",
+        "gist": "Build the simplest thing that could work today, and change it tomorrow."
+      },
+      {
+        "name": "Feedback",
+        "gist": "Shorten the loop between a decision and learning whether it was right."
+      },
+      {
+        "name": "Courage",
+        "gist": "Act on what you know: delete code, raise problems, change direction."
+      },
+      {
+        "name": "Respect",
+        "gist": "Everyone on the team matters, and the work only works if they care."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "XP is where most of what I believe about shipping software comes from: short loops, tests first, continuous integration, sustainable pace. It is also, unexpectedly, the best book I know on running AI agents."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Software can respond to change cheaply when a team works in short cycles, gets continuous feedback and keeps its technical discipline high. The second edition frames Extreme Programming as values (communication, simplicity, feedback, courage and respect), principles that connect them to daily work, and practices a team adopts incrementally."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- “CI lands the work” is rule two of my agent operating model, and it is straight XP: nothing merges unless the tests are green, and every merge deploys.\n- I treat test-first as non-negotiable for agents. A failing test is the clearest possible contract for a model to satisfy.\n- I keep release cycles short. Weekly releases make each change smaller, safer and easier to review.\n- I use the values as a review checklist: if a process doesn’t serve communication, simplicity, feedback, courage or respect, it’s ceremony."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- How long from a merged change to a user seeing it?\n- What percentage of our changes land with a test written first?\n- When the build breaks, how long until someone fixes it, and is that someone obvious?\n- Which process do we follow that no longer serves any of the five values?\n- Is our pace sustainable, or are we borrowing from next quarter?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Its bet on feedback has aged better than anything else in the agile canon: CI/CD, trunk-based development and test-first all descend from it. The second edition’s shift from rigid rules to values and principles was the right correction."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Some practices are contested: full-time pair programming exhausts many people and doesn’t fit distributed teams well, and the book’s evidence is mostly experience, not data. The second edition is also looser than the first, which makes it easier to claim you “do XP” while skipping the hard parts."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Shorten every feedback loop.\n- Practices without values become cargo cults.\n- Tests are the contract; write them first.\n- Sustainable pace is a quality practice."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Peopleware**: XP’s technical discipline only works on the human foundation Peopleware describes."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip the first edition unless you’re interested in history. And be careful applying it to teams with no automated test culture yet; start with CI and tests before pairing and story cards."
+    },
+    {
+      "kind": "note",
+      "claim": "context",
+      "visibility": "published",
+      "body": "The first edition (1999, Kent Beck) introduced XP as a fixed set of practices. The second edition (2004, Kent Beck with Cynthia Andres) was substantially rewritten around values, principles, and primary and corollary practices adopted gradually. This summary follows the second edition."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Values, principles, practices",
+      "summary": "Practices only make sense when tied to values through principles; copying practices without the values tends to fail.",
+      "caveat": "The framing is abstract, and teams sometimes adopt the vocabulary without changing behaviour.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Shorten every feedback loop",
+      "summary": "Weekly and quarterly cycles, continuous integration and a fast build keep the gap between a decision and its consequences small.",
+      "caveat": "Some domains, such as hardware or regulated releases, limit how short certain loops can be.",
+      "example": "A team whose build takes an hour will integrate less often and find conflicts later.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Test first, design incrementally",
+      "summary": "Writing tests before code and improving the design a little every day keeps the cost of change low over time.",
+      "caveat": "Test-first takes practice, and incremental design still needs someone thinking about the larger architecture.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Pairing and sitting together",
+      "summary": "Pair programming and a team that works side by side spread knowledge, catch mistakes early and keep communication high.",
+      "caveat": "Pairing all day is tiring and does not suit every person or task; remote teams need other ways to stay close.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Energized work",
+      "summary": "Sustainable hours produce better software than exhaustion, so a team should work only as many hours as it can stay productive.",
+      "caveat": "Teams under real external pressure can find this hard to defend without leadership support.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.informit.com/store/extreme-programming-explained-embrace-change-9780321278654",
+      "provider": "Addison-Wesley (InformIT)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

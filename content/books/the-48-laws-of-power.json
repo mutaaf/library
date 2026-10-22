@@ -1,0 +1,187 @@
+{
+  "slug": "the-48-laws-of-power",
+  "title": "The 48 Laws of Power",
+  "authors": [
+    "Robert Greene"
+  ],
+  "firstPublishedYear": 1998,
+  "publisher": "Viking",
+  "isbn13": "9780670881468",
+  "pages": 452,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9780670881468.json",
+      "https://openlibrary.org/isbn/9780140280197.json",
+      "https://openlibrary.org/works/OL1968368W",
+      "https://openlibrary.org/books/OL379262M.json"
+    ]
+  },
+  "category": "strategy-influence",
+  "themes": [
+    "power-and-influence"
+  ],
+  "featuredRank": 9,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2025-11",
+    "finishedAt": "2025-12",
+    "rating": 3,
+    "recommended": false,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#1F3A8C",
+    "ink": "#F2D27A",
+    "foil": "#D2232A",
+    "type": "serif"
+  },
+  "coverImage": {
+    "file": "covers/the-48-laws-of-power.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/id/402210-L.jpg"
+  },
+  "oneLine": {
+    "text": "A historical map of how power is gained, kept and lost, read critically rather than as a manual.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "I read it to recognize the games, not to play them. Public, checkable work is the best defense against politics.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "A few representative laws, described, not prescribed",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Law 1: Never outshine the master",
+        "gist": "Greene claims superiors punish people who make them feel insecure."
+      },
+      {
+        "name": "Law 3: Conceal your intentions",
+        "gist": "He argues that revealing goals gives others the means to block them."
+      },
+      {
+        "name": "Law 4: Always say less than necessary",
+        "gist": "Saying less, he says, makes you seem more powerful and gives less away."
+      },
+      {
+        "name": "Law 5: Guard your reputation",
+        "gist": "Reputation is presented as the foundation of power."
+      },
+      {
+        "name": "Law 48: Assume formlessness",
+        "gist": "Adaptability, rather than a fixed position, keeps power durable."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "I don’t keep this book because I agree with it. I keep it because I lead inside large organizations, and the leaders who get blindsided by politics are the ones who refuse to understand it. It is a map of the moves people make, so I can recognize them without making them."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Greene distills episodes from history into 48 maxims about how power is gained, held and lost. He argues that power games are unavoidable in any group, and that understanding them is a form of self-protection."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- I use it defensively: when a project stalls for reasons nobody will say, I ask which of these games might be in play.\n- I take the reputation law seriously in its ethical form: keep promises, write decisions down, and let the work be checkable. Public, measurable work is the best defense against politics.\n- I do the opposite of “conceal your intentions”: my operating model is public on purpose. Transparency is a strategy, not naivety.\n- I talk about these patterns with emerging leaders so they can name them, not so they can use them."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Is there a decision on this team that everyone knows about but nobody says out loud?\n- Who benefits from a project staying unclear?\n- Is credit given where the work was done?\n- What would a newcomer misread about how decisions really get made here?\n- Are we rewarding visibility or results?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "It is right that power dynamics exist in every group and that pretending otherwise is dangerous. Some laws, read ethically, are just good sense: guard your reputation, adapt rather than ossify."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Most of it is manipulation presented as wisdom. Its evidence is cherry-picked history (courtiers, con artists, generals), it ignores the long-run cost of being untrustworthy, and its world is zero-sum, which healthy teams are not. Followed literally, it produces exactly the low-trust, high-politics culture the other books on this shelf are trying to cure."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Understand politics so you aren’t naive, not so you can play dirty.\n- Transparency and checkable work are the best defense.\n- Reputation is built by keeping promises, not managing perception.\n- The tactics win short games and lose long ones."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it right after **Radical Candor**. Scott describes the leadership you want; Greene describes the manipulation you’ll meet. Then reread **The Five Dysfunctions** to see what these tactics do to a team."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you’re new to leadership and still forming your instincts; read the books that build trust first. It misleads anyone who reads it as a manual."
+    },
+    {
+      "kind": "note",
+      "claim": "context",
+      "visibility": "published",
+      "body": "This book is on the shelf as a map of how power is played, not as a guide to follow. Many of its tactics are manipulative, and none of them are endorsed here. The ideas below describe the book’s claims, each with an ethical caveat."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Never outshine the master",
+      "summary": "Greene argues that making superiors feel insecure about their position invites resentment, so ambitious people should let those above them appear to shine.",
+      "caveat": "As advice it rewards insecurity; healthy organizations should want people who outshine their leaders, and good leaders should notice when someone is hiding their abilities.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Conceal your intentions",
+      "summary": "The book claims that people who reveal their goals give others the means to block them.",
+      "caveat": "Hidden agendas destroy trust once discovered; transparent leadership trades short-term advantage for long-term credibility.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Guard your reputation",
+      "summary": "Reputation is presented as the foundation of power, worth defending carefully and, in Greene’s telling, attacking in rivals.",
+      "caveat": "Protecting your own credibility is reasonable; undermining others’ reputations is not.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Assume formlessness",
+      "summary": "The final law argues that adaptability, rather than a fixed position, keeps power durable.",
+      "caveat": "Adaptability is a genuine strength; as Greene frames it, it can also become a lack of principles.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.penguinrandomhouse.com/books/330912/the-48-laws-of-power-by-robert-greene/",
+      "provider": "Penguin Random House (Viking)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

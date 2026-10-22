@@ -1,0 +1,34 @@
+{
+  "name": "library",
+  "version": "0.1.0",
+  "private": true,
+  "description": "The Leadership Library: books that shape how I think. Lessons that shape how I lead. Live at mutaafaziz.com/library.",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "node src/build.mjs",
+    "preview": "node scripts/serve.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "e2e": "playwright test",
+    "check": "npm run build && npm test && npm run e2e",
+    "stack": "npm run build && node scripts/stack.mjs"
+  },
+  "homepage": "https://mutaafaziz.com/library/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mutaaf/library.git"
+  },
+  "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-next": "^5.3.0",
+    "@fontsource/fragment-mono": "^5.3.0",
+    "@fontsource/instrument-serif": "^5.3.0",
+    "aurora-field": "^3.3.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.64.1"
+  }
+}

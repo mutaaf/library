@@ -1,0 +1,201 @@
+{
+  "slug": "the-managers-path",
+  "title": "The Manager’s Path",
+  "subtitle": "A Guide for Tech Leaders Navigating Growth and Change",
+  "authors": [
+    "Camille Fournier"
+  ],
+  "firstPublishedYear": 2017,
+  "publisher": "O’Reilly Media",
+  "isbn13": "9781491973899",
+  "pages": 244,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781491973899.json",
+      "https://openlibrary.org/works/OL19860807W"
+    ]
+  },
+  "category": "engineering-leadership",
+  "themes": [
+    "leadership-progression",
+    "management-craft",
+    "scaling-organizations"
+  ],
+  "featuredRank": 3,
+  "reading": {
+    "status": "finished",
+    "startedAt": "2023-01",
+    "finishedAt": "2023-03",
+    "rating": 5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#0F6FA8",
+    "ink": "#FFFFFF",
+    "foil": "#9FD3F0",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/the-managers-path.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781491973899-L.jpg"
+  },
+  "oneLine": {
+    "text": "Each step up the technical leadership ladder is a different job that asks for new skills.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Every rung is a new job. Prepare for the next one before you stand on it, and let go of what got you here.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The ladder, rung by rung",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Being managed",
+        "gist": "Own your career and bring the agenda; getting the most from your manager is the first leadership skill."
+      },
+      {
+        "name": "Mentoring",
+        "gist": "Helping one person grow is the first time your success depends on someone else’s."
+      },
+      {
+        "name": "Tech lead",
+        "gist": "Balance hands-on work with coordinating the project and representing the team."
+      },
+      {
+        "name": "Managing people",
+        "gist": "One-to-ones, feedback and careers become the job."
+      },
+      {
+        "name": "Managing a team",
+        "gist": "Process, delivery and team health, while staying technical enough to judge the work."
+      },
+      {
+        "name": "Managing multiple teams",
+        "gist": "You lose direct visibility and have to manage through priorities and leads."
+      },
+      {
+        "name": "Managing managers",
+        "gist": "You diagnose teams through their leaders and skip-levels, not through the code."
+      },
+      {
+        "name": "The big leagues",
+        "gist": "Senior leadership: technical strategy, alignment with the business, shaping the organization."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Every step of my career, from enterprise engineer to manager of managers to founder, has been a different job that looked like a promotion of the last one. Fournier is the only author who maps that ladder honestly, rung by rung, for technical people."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Technical leadership is a ladder of distinct jobs: being managed, mentoring, tech lead, managing people, managing teams, managing managers and senior leadership. Each level asks a leader to let go of some of what made them successful at the last one and build new skills, so knowing what the next level demands is the best preparation for it."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- When someone joins my team, I ask them which rung they are aiming for, then give them work from the rung above, with cover.\n- As a manager of managers, I run skip-levels on a schedule, not when something is on fire, so I hear about problems before they become escalations.\n- As a founder and fractional CTO, I use the “big leagues” chapters as a checklist: am I setting technical strategy, or just being the most senior engineer in the room?\n- I write culture down early. My agent fleet has a public operating manual for the same reason a growing team needs written values: what isn’t written gets reinvented badly."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- What is each person on the team trying to become next, and do they know what that rung actually asks of them?\n- Which of my old skills am I still using because it feels good, not because the job needs it?\n- How do I find out about problems on teams I don’t manage directly?\n- Is our culture written down anywhere a new hire could read it on day one?\n- Who on the team is ready to be a tech lead, and who is being pushed there because they code fastest?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "The core insight, that each level asks you to let go of what made you good at the last, is true and under-taught. The tech lead chapter is the best description I know of the most misunderstood role in engineering."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "It is written from inside fast-growing startups in one city and one era, and the later chapters on executives are thinner than the early ones. It assumes a single ladder, when many great engineers should never take it, and it says little about leading in very large companies or through the arrival of AI agents as teammates, which is changing what a tech lead and a team even are."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Each rung is a new job; prepare for the next one before you’re on it.\n- Letting go of your old strengths is part of the climb.\n- The tech lead role is its own discipline, not a halfway house.\n- Manage managers through skip-levels and written expectations."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Become an Effective Software Engineering Manager** for the daily craft, and **An Elegant Puzzle** for the organization around you as you climb."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Senior executives will find the last chapters light. And it misleads anyone who reads the ladder as the only way up: a staff engineer’s path is a different book."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Learn to be managed",
+      "summary": "Getting the most from your own manager, by owning your career and bringing the agenda to one-to-ones, is the first leadership skill.",
+      "caveat": "It assumes a manager who is willing to engage; with an absent manager, people have to look for mentorship elsewhere.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Tech lead is its own role",
+      "summary": "A tech lead balances hands-on work with coordinating the project and representing the team, and has to accept writing less code.",
+      "caveat": "How much coding a tech lead keeps varies widely between companies.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Managing managers changes how you see",
+      "summary": "Once you manage managers you lose direct visibility, so you rely on skip-level conversations and on diagnosing teams through their leaders.",
+      "caveat": "Skip-levels can undermine a manager if they turn into a back channel.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Senior leadership sets direction",
+      "summary": "At the executive level the job becomes setting technical strategy, aligning with the business and shaping the organization.",
+      "caveat": "Titles such as CTO and VP of Engineering mean different things at different companies.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Culture is built on purpose",
+      "summary": "As a team grows, its culture should be shaped deliberately, by writing down values and building processes that reflect them.",
+      "caveat": "Written values that do not match how decisions are actually made can do more harm than none.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Buy on Amazon",
+      "url": "https://www.amazon.com/dp/1491973897",
+      "provider": "Amazon",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

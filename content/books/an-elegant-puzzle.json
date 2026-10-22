@@ -1,0 +1,186 @@
+{
+  "slug": "an-elegant-puzzle",
+  "title": "An Elegant Puzzle",
+  "subtitle": "Systems of Engineering Management",
+  "authors": [
+    "Will Larson"
+  ],
+  "firstPublishedYear": 2019,
+  "publisher": "Stripe Press",
+  "isbn13": "9781732265189",
+  "pages": 288,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://openlibrary.org/isbn/9781732265189.json",
+      "https://openlibrary.org/works/OL20641522W"
+    ]
+  },
+  "category": "engineering-leadership",
+  "themes": [
+    "organizational-design",
+    "scaling-organizations",
+    "engineering-excellence"
+  ],
+  "featuredRank": 2,
+  "reading": {
+    "status": "revisiting",
+    "startedAt": "2025-01",
+    "finishedAt": "2025-03",
+    "rating": 5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
+  "cover": {
+    "bg": "#EFEDE6",
+    "ink": "#1A1A1A",
+    "foil": "#6E6A60",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/an-elegant-puzzle.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781732265189-L.jpg"
+  },
+  "oneLine": {
+    "text": "Treat engineering management as a system of constraints you can diagnose and redesign.",
+    "claim": "book",
+    "visibility": "published"
+  },
+  "pullQuote": {
+    "text": "Name the team’s state before you pick the fix. The wrong fix for the right problem still makes it worse.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The four states of a team",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Falling behind",
+        "gist": "Each week the backlog grows. The fix is more capacity, usually by hiring."
+      },
+      {
+        "name": "Treading water",
+        "gist": "Critical work gets done but debt and new ideas don’t. The fix is less work in progress."
+      },
+      {
+        "name": "Repaying debt",
+        "gist": "The team is paying down debt and gaining speed. The fix is time: let it compound."
+      },
+      {
+        "name": "Innovating",
+        "gist": "Debt is low and morale high. The fix is slack, so the team can keep exploring."
+      }
+    ]
+  },
+  "sections": [
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Larson writes about engineering organizations the way I want to think about them: as systems with inputs, constraints and states you can diagnose. It is the closest thing the field has to an engineering manual for management, and I come back to it whenever a team’s problem looks like a people problem but isn’t."
+    },
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "Engineering organizations behave like systems: team size, staffing, technical debt and process interact in predictable ways. Leaders get durable results by diagnosing the state a team is in and changing the structure around it, through sizing, migrations, metrics and process, rather than relying on individual heroics."
+    },
+    {
+      "kind": "applications",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Before I change anything on a team, I name its state first: falling behind, treading water, repaying debt or innovating. The wrong fix for the state makes things worse.\n- I treat migrations as a product: de-risk with the hardest consumer first, make the default path the new one, then finish. Half-done migrations are the most expensive kind of debt.\n- I set baselines before goals. The fleet scoreboard on my site exists because I wouldn’t set targets for agents before I could measure what they were actually doing.\n- I think about the agent fleet in the same sizing terms as people: a reviewer that can’t keep up with the builders turns throughput into risk."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Which of the four states is this team in, honestly, and what evidence says so?\n- Is the fix we are planning the one that state needs, or the one we are used to?\n- What baseline do we have for the metric we are about to set a goal on?\n- Which migration is half-finished, and what would it take to finish it this quarter?\n- Is any team so small that one vacation or one on-call week stops it?"
+    },
+    {
+      "kind": "agree",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "The four team states are the most useful diagnostic I know. Naming the state turns an emotional conversation (“we’re drowning”) into an operational one (“we’re treading water, so we cut work in progress”). His insistence on finishing migrations matches everything I have seen in large platforms."
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "It is dense and uneven: some chapters are frameworks, others are lightly edited blog posts, and it can read as a reference more than an argument. It also comes from fast-growing, well-funded companies, so advice like adding slack or hiring your way out of falling behind assumes budget most teams don’t have. The systems-thinking chapter models simple stocks and flows; real organizations are messier."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Diagnose the team’s state before choosing a fix.\n- Structure beats heroics; change the system, not the people.\n- Finish migrations. A half-done one is debt with interest.\n- Measure the baseline before you promise the goal."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **The Manager’s Path**: Larson covers how the organization scales, Fournier how the leader has to change as it does. Then read **Peopleware** to remember that the system is made of people."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "If you lead a team of four in a small company, much of it (sizing orgs, planning headcount, running migrations across dozens of teams) won’t apply yet. It misleads when its numbers, like team sizes, are treated as rules instead of starting points."
+    }
+  ],
+  "ideas": [
+    {
+      "title": "Size teams deliberately",
+      "summary": "Larson recommends managers support roughly six to eight engineers and warns against very small teams, which struggle with on-call load and absences.",
+      "caveat": "The numbers come from fast-growing technology companies and may not fit smaller or very different organizations.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Four states of a team",
+      "summary": "A team is falling behind, treading water, repaying debt or innovating, and each state has a different fix: hire, reduce work in progress, add time, or add slack.",
+      "caveat": "Real teams can sit between states, and diagnosing the state is a judgment call.",
+      "example": "A team falling behind is unlikely to be rescued by process changes alone if it simply lacks people.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Think in systems",
+      "summary": "Modelling problems as stocks and flows, such as a hiring pipeline, helps leaders predict the effect of a change before making it.",
+      "caveat": "Models simplify; they guide judgment rather than replace it.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Migrations are how debt gets paid",
+      "summary": "Large technical migrations are the main scalable way to retire technical debt, and they succeed when they are de-risked early, made easy with tooling, and driven to completion.",
+      "caveat": "A migration left half-finished leaves two systems to maintain instead of one.",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "Set baselines before goals",
+      "summary": "Measure where things stand before committing to targets, so goals are grounded and progress is visible.",
+      "caveat": "Metrics invite gaming when they become the goal themselves.",
+      "claim": "book",
+      "visibility": "published"
+    }
+  ],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://press.stripe.com/an-elegant-puzzle",
+      "provider": "Stripe Press",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
+  "assistantDrafted": true,
+  "updatedAt": "2026-10-22"
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "from": "peopleware",
+    "to": "five-dysfunctions-of-a-team",
+    "theme": "trust-and-accountability",
+    "explanation": "Peopleware tells me what lets a team jell; Lencioni tells me what’s missing when it doesn’t. Read together, they say the same thing from two sides: results come from the human conditions, not the process.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "drive",
+    "to": "radical-candor",
+    "theme": "feedback-and-coaching",
+    "explanation": "Autonomy without candor drifts. I give people control over the how, and Scott’s care-and-challenge feedback is how they find out whether it’s working.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "an-elegant-puzzle",
+    "to": "the-managers-path",
+    "theme": "scaling-organizations",
+    "explanation": "Larson scales the organization; Fournier scales the leader. Growing a team well needs both: the structure has to change, and so does the person running it.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "extreme-programming-explained",
+    "to": "peopleware",
+    "theme": "team-culture",
+    "explanation": "XP’s discipline only holds on Peopleware’s foundation. Sustainable pace and protected focus aren’t perks; they’re what keeps tests written and builds green.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "the-48-laws-of-power",
+    "to": "radical-candor",
+    "theme": "power-and-influence",
+    "explanation": "These two argue with each other. Greene maps manipulative insincerity in detail; Scott names it the worst quadrant. I read Greene to recognize the moves and Scott to know what to do instead.",
+    "claim": "critique",
+    "visibility": "published"
+  },
+  {
+    "from": "become-an-effective-software-engineering-manager",
+    "to": "the-managers-path",
+    "theme": "management-craft",
+    "explanation": "Stanier is the daily craft of running one team; Fournier is how that craft has to change on every rung above it. Start with Stanier, then keep Fournier for each promotion.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "drive",
+    "to": "extreme-programming-explained",
+    "theme": "engineering-excellence",
+    "explanation": "Autonomy works on a leash, and XP is the leash: tests and CI define the boundary, and inside it engineers (and agents) get real freedom to change the code.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "five-dysfunctions-of-a-team",
+    "to": "an-elegant-puzzle",
+    "theme": "trust-and-accountability",
+    "explanation": "A tension worth holding: Lencioni treats team failure as behavior, Larson as structure. When accountability is missing I check both, starting with the system, because a structural problem looks like a people problem from the inside.",
+    "claim": "critique",
+    "visibility": "published"
+  },
+  {
+    "from": "the-48-laws-of-power",
+    "to": "five-dysfunctions-of-a-team",
+    "theme": "power-and-influence",
+    "explanation": "Greene’s tactics are a recipe for Lencioni’s base dysfunction. Concealing intentions and guarding position destroy the trust everything else is built on.",
+    "claim": "critique",
+    "visibility": "published"
+  }
+]
