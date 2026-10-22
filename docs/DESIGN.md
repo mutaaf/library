@@ -2,6 +2,9 @@
 
 ## Why it looks like this
 
+**v3 (2026-10-22):** the owner's mockup, literally. A generated photograph of a lamp-lit library (`web/room.jpg`) is the hero, with the nine books as 2.5D hardcovers on its table (true CSS 3D faces didn't paint reliably). The nav, nine-across covers and the Journey/Themes/Insights row follow the mockup; the page is light, only the photo and the Journey card are dark.
+
+
 - **Owner's direction:** everywhere except the iPhone Duo, the library follows the same
   app pattern as Hearth and COLD GAS.
 - **The Duo moment:** closing the phone closes the book.
