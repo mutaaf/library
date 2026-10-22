@@ -55,7 +55,8 @@ tests/e2e/          Playwright, WebKit + Chromium
 
 ## 3 · Deploy
 
-Merging to `main` deploys: Workers Builds runs `npm run build`, then `npx wrangler deploy`.
+Merging to `main` deploys: Workers Builds (connected 2026-10-22) runs `npm run build`, then
+`npx wrangler deploy`.
 Pull requests get preview URLs. No tokens are kept in this repo or its CI. To roll back,
 revert the PR (or `npx wrangler rollback`). Removing the route hands `/library` back to
 the personal site.
