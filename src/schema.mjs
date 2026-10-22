@@ -4,8 +4,9 @@
 
 export const VISIBILITY = ['draft', 'published'];
 export const CLAIMS = { book: "Book's argument", interpretation: 'My interpretation', application: 'My application', critique: 'My critique', context: 'Context' };
-export const KINDS = { why: "Why it's on my shelf", thesis: 'Core thesis', applications: 'Engineering leadership applications', agree: 'Where I agree', challenge: 'Where I challenge it', note: 'Context' };
-export const STATUS = { wishlist: 'On the wishlist', queued: 'Up next', reading: 'Reading now', finished: 'Finished', revisiting: 'Revisiting' };
+export const KINDS = { why: "Why it's on my shelf", thesis: 'What this book is about', applications: 'How I apply it', diagnostic: 'Questions for your team', agree: 'Where I agree', challenge: 'Where I push back', takeaways: 'Takeaways', pairs: 'Read it with', skip: 'Who should skip it', note: 'Context' };
+export const CATEGORIES = { 'engineering-leadership': 'Engineering Leadership', 'teams-people': 'Teams & People', 'strategy-influence': 'Strategy & Influence', 'personal-growth': 'Personal Growth' };
+export const STATUS = { wishlist: 'Planned', queued: 'Planned', reading: 'In progress', finished: 'Completed', revisiting: 'Revisiting' };
 export const COVER_TYPES = ['serif', 'grotesk', 'slab', 'mono'];
 export const ACCESS = ['sample', 'borrow', 'buy', 'free-authorized'];
 export const FORMATS = ['print', 'ebook', 'audio', 'web'];
@@ -13,6 +14,7 @@ export const EXPERIMENT_STATUS = ['planned', 'running', 'done', 'dropped'];
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
+const MONTH = /^\d{4}-(0[1-9]|1[0-2])$/;
 const HEX = /^#[0-9a-fA-F]{6}$/;
 
 export class ContentError extends Error {}
@@ -46,9 +48,28 @@ export function validateBook(book, file, themeSlugs) {
   t(book.verified && DATE.test(book.verified.on) && Array.isArray(book.verified.sources) && book.verified.sources.length > 0 && book.verified.sources.every(isHttps), 'verified', 'needs a date and at least one https source');
   t(Array.isArray(book.themes) && book.themes.length > 0 && book.themes.every((s) => themeSlugs.has(s)), 'themes', 'must list themes from content/themes.json');
   t(Number.isInteger(book.featuredRank) && book.featuredRank > 0, 'featuredRank', 'must be a positive integer');
-  t(book.readingStatus === null || Object.hasOwn(STATUS, book.readingStatus), 'readingStatus', 'must be null or one of ' + Object.keys(STATUS).join(', '));
-  t(VISIBILITY.includes(book.statusVisibility), 'statusVisibility', 'must be draft or published');
-  t(!(book.statusVisibility === 'published' && book.readingStatus === null), 'statusVisibility', 'cannot publish an empty reading status');
+  t(Object.hasOwn(CATEGORIES, book.category), 'category', 'must be one of ' + Object.keys(CATEGORIES).join(', '));
+  if (book.pages !== undefined) t(Number.isInteger(book.pages) && book.pages > 20 && book.pages < 2000, 'pages', 'must be a plausible page count');
+  if (book.coverImage !== undefined) t(book.coverImage && /^covers\/[a-z0-9-]+\.(jpg|png|webp)$/.test(book.coverImage.file) && isStr(book.coverImage.source) && isHttps(book.coverImage.url), 'coverImage', 'needs file (covers/<slug>.jpg), source and an https url');
+  const rd = book.reading;
+  if (rd !== undefined && t(rd && typeof rd === 'object', 'reading', 'must be an object')) {
+    t(Object.hasOwn(STATUS, rd.status), 'reading.status', 'must be one of ' + Object.keys(STATUS).join(', '));
+    t(VISIBILITY.includes(rd.visibility), 'reading.visibility', 'must be draft or published');
+    t(typeof rd.confirmed === 'boolean', 'reading.confirmed', 'must say whether the owner confirmed it');
+    ['startedAt', 'finishedAt'].forEach((k) => { if (rd[k] !== undefined) t(MONTH.test(rd[k]), 'reading.' + k, 'must be YYYY-MM'); });
+    if (rd.startedAt && rd.finishedAt) t(rd.startedAt <= rd.finishedAt, 'reading', 'finishes before it starts');
+    if (rd.rating !== undefined) t(typeof rd.rating === 'number' && rd.rating >= 1 && rd.rating <= 5 && rd.rating * 2 === Math.round(rd.rating * 2), 'reading.rating', 'must be 1–5 in half steps');
+    if (rd.recommended !== undefined) t(typeof rd.recommended === 'boolean', 'reading.recommended', 'must be true or false');
+    if (rd.status === 'finished') t(!!rd.finishedAt, 'reading.finishedAt', 'is needed for a finished book (it places it on the journey)');
+  }
+  if (book.framework !== undefined) {
+    block(t, book.framework, 'framework', Object.keys(CLAIMS));
+    t(isStr(book.framework.title) && Array.isArray(book.framework.items) && book.framework.items.length >= 2 && book.framework.items.every((x) => isStr(x.name) && isStr(x.gist)), 'framework', 'needs a title and 2+ items with name and gist');
+  }
+  if (book.pullQuote !== undefined) {
+    block(t, book.pullQuote, 'pullQuote', Object.keys(CLAIMS));
+    t(isStr(book.pullQuote.text) && book.pullQuote.text.length <= 160, 'pullQuote.text', 'must be 1–160 characters');
+  }
   const c = book.cover || {};
   t(HEX.test(c.bg) && HEX.test(c.ink) && HEX.test(c.foil), 'cover', 'needs bg, ink and foil as #rrggbb');
   t(COVER_TYPES.includes(c.type), 'cover.type', 'must be one of ' + COVER_TYPES.join(', '));

@@ -8,6 +8,7 @@
   "firstPublishedYear": 2017,
   "publisher": "St. Martin’s Press",
   "isbn13": "9781250103505",
+  "pages": 272,
   "verified": {
     "on": "2026-10-22",
     "sources": [
@@ -15,31 +16,72 @@
       "https://openlibrary.org/works/OL17803541W"
     ]
   },
+  "category": "teams-people",
   "themes": [
     "feedback-and-coaching",
     "trust-and-accountability",
     "power-and-influence"
   ],
   "featuredRank": 8,
-  "readingStatus": null,
-  "statusVisibility": "draft",
+  "reading": {
+    "status": "finished",
+    "startedAt": "2023-08",
+    "finishedAt": "2023-09",
+    "rating": 4.5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
   "cover": {
-    "bg": "#D9C9A8",
-    "ink": "#4A1F1F",
-    "foil": "#8C3B2E",
-    "type": "slab"
+    "bg": "#E8532F",
+    "ink": "#1B1B1B",
+    "foil": "#FFFFFF",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/radical-candor.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781250103505-L.jpg"
   },
   "oneLine": {
     "text": "Good bosses care personally and challenge directly, at the same time.",
     "claim": "book",
     "visibility": "published"
   },
+  "pullQuote": {
+    "text": "Most managers fail by being too nice, not too harsh. The kind thing is usually the honest thing, said soon.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The four quadrants",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Radical Candor",
+        "gist": "Care personally and challenge directly, at the same time."
+      },
+      {
+        "name": "Obnoxious Aggression",
+        "gist": "Challenge without care: honest, but it damages the relationship."
+      },
+      {
+        "name": "Ruinous Empathy",
+        "gist": "Care without challenge: kind in the moment, harmful over time."
+      },
+      {
+        "name": "Manipulative Insincerity",
+        "gist": "Neither care nor challenge: political, and the worst of the four."
+      }
+    ]
+  },
   "sections": [
     {
       "kind": "why",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "I coach engineers and I coach kids, and the hardest part of both is the same: telling someone the truth in a way they can use. Scott gave me a simple map for checking which mistake I’m making."
     },
     {
       "kind": "thesis",
@@ -50,20 +92,44 @@
     {
       "kind": "applications",
       "claim": "application",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "- I ask for criticism before I give it, and I try to reward it visibly when I get it.\n- When I notice I’m avoiding a hard conversation “to be kind”, I name it: ruinous empathy, and the kind thing is to have it now.\n- I praise in public with specifics, and criticize in private and soon.\n- On the court, care personally is the brotherhood and challenge directly is the discipline. Kids can tell immediately when you have only one of them."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- When did you last ask your team for criticism of you, and what did you do with it?\n- Which piece of feedback have you been sitting on for more than a week?\n- Is your praise specific enough that the person could repeat what they did?\n- Who on the team never gets challenged, and why?\n- Does feedback flow up and sideways, or only down?"
     },
     {
       "kind": "agree",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "The two-axis model is simple enough to use in the moment, which is rare. Naming ruinous empathy as the most common failure is the book’s biggest gift: most managers fail by being too nice, not too harsh."
     },
     {
       "kind": "challenge",
       "claim": "critique",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "It is mostly anecdote from Silicon Valley giants, and “radical candor” is easy to misuse as cover for being a jerk, which the book itself warns about but can’t prevent. Candor also lands differently across cultures, power gaps and identities; the same words from a manager and from a peer are not the same message."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Care personally and challenge directly, together.\n- Ruinous empathy is the most common failure.\n- Ask for criticism first; earn the right to give it.\n- Praise specifically and publicly; criticize privately and soon."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Drive** for why people need autonomy, and with **The 48 Laws of Power** as its opposite: Greene maps manipulative insincerity in detail."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you already give clear, kind feedback every week. It misleads anyone who reads “challenge directly” without the “care personally” half."
     }
   ],
   "ideas": [
@@ -104,7 +170,17 @@
       "visibility": "published"
     }
   ],
-  "resources": [],
+  "resources": [
+    {
+      "label": "The author’s book page",
+      "url": "https://www.radicalcandor.com/the-book",
+      "provider": "Kim Scott (Radical Candor)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
   "assistantDrafted": true,
   "updatedAt": "2026-10-22"
 }

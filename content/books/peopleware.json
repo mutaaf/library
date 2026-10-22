@@ -10,6 +10,7 @@
   "edition": "3rd edition, 2013",
   "publisher": "Addison-Wesley",
   "isbn13": "9780321934116",
+  "pages": 249,
   "verified": {
     "on": "2026-10-22",
     "sources": [
@@ -18,30 +19,71 @@
       "https://openlibrary.org/works/OL38240W"
     ]
   },
+  "category": "teams-people",
   "themes": [
     "team-culture",
     "trust-and-accountability"
   ],
   "featuredRank": 4,
-  "readingStatus": null,
-  "statusVisibility": "draft",
+  "reading": {
+    "status": "finished",
+    "startedAt": "2023-05",
+    "finishedAt": "2023-06",
+    "rating": 4.5,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
   "cover": {
-    "bg": "#C08A2E",
-    "ink": "#151B20",
-    "foil": "#473426",
+    "bg": "#EEF0EC",
+    "ink": "#3A2A20",
+    "foil": "#8C3B2E",
     "type": "serif"
+  },
+  "coverImage": {
+    "file": "covers/peopleware.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9780321934116-L.jpg"
   },
   "oneLine": {
     "text": "Most project problems are about people, not technology.",
     "claim": "book",
     "visibility": "published"
   },
+  "pullQuote": {
+    "text": "Most technical problems are people problems wearing a technical costume. Fix the room before the code.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The book’s four big parts",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Managing the human resource",
+        "gist": "Treat people as people, not interchangeable parts, and stop pressuring for speed you can’t get."
+      },
+      {
+        "name": "The office environment",
+        "gist": "Noise and interruption quietly destroy the flow that knowledge work needs."
+      },
+      {
+        "name": "The right people",
+        "gist": "Hiring and keeping good people matters more than any method."
+      },
+      {
+        "name": "Growing productive teams",
+        "gist": "Teams jell when managers create the conditions and stop the habits that kill them."
+      }
+    ]
+  },
   "sections": [
     {
       "kind": "why",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Peopleware is the book that taught me most problems on software projects are people problems wearing a technical costume. It is old, and it is still right more often than the books that replaced it."
     },
     {
       "kind": "thesis",
@@ -52,20 +94,44 @@
     {
       "kind": "applications",
       "claim": "application",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "- I protect focus like a production dependency: meeting-free blocks, fewer status meetings, written updates instead.\n- I watch for “teamicide”: splitting people across too many projects, phony deadlines, and defensive management that signals distrust.\n- When a team jells, I keep it together and move work to it, rather than breaking it up to staff a new initiative.\n- Re-establishing weekly releases was as much about people as process: a predictable rhythm lowers pressure and lets teams plan their focus."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- How many uninterrupted hours did each engineer get last week?\n- Is anyone split across three or more projects?\n- Which deadline on our roadmap is real, and which one is there to “create urgency”?\n- When did we last break up a team that was working well, and why?\n- Do people stay? If not, what do the ones who leave say?"
     },
     {
       "kind": "agree",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Its central claim, that productivity is mostly environmental and social, has held up for decades. Its warnings about overtime and phony deadlines describe failures I still see in very different companies."
     },
     {
       "kind": "challenge",
       "claim": "critique",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Much of its evidence is old (coding war games, offices with doors) and some studies are small. It was written for co-located teams, so its office chapters need translating for remote and hybrid work, where interruptions arrive as notifications instead of footsteps. It is also more diagnosis than prescription: it tells you what kills teams more than how to build one."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- The hard problems are sociological.\n- Protect flow; interruptions are expensive.\n- Pressure buys little and costs a lot later.\n- You can’t build a jelled team, only grow the conditions for one."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **The Five Dysfunctions of a Team**: Peopleware describes the conditions for a team to jell, Lencioni what is missing when it doesn’t."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you want a step-by-step playbook; it is an argument, not a manual. It misleads if you copy its office advice literally into a remote team."
     },
     {
       "kind": "note",
@@ -112,7 +178,17 @@
       "visibility": "published"
     }
   ],
-  "resources": [],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.informit.com/store/peopleware-productive-projects-and-teams-9780321934116",
+      "provider": "Addison-Wesley (InformIT)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
   "assistantDrafted": true,
   "updatedAt": "2026-10-22"
 }

@@ -20,7 +20,10 @@ test.describe('app form', () => {
   test('search, filters and sort combine and reset', async ({ page }) => {
     await page.goto('/library/');
     await page.fill('#q', 'lencioni');
-    await expect(page.locator('.bk:not([hidden])')).toHaveCount(1);
+    // Title and author matches come first; the analysis mentions him elsewhere too.
+    await expect(page.locator('.bk:not([hidden])').first()).toHaveAttribute('data-slug', 'five-dysfunctions-of-a-team');
+    await page.fill('#q', 'vulnerability trust');
+    await expect(page.locator('.bk:not([hidden])').first()).toBeVisible();
     await page.fill('#q', 'zzzz-nothing');
     await expect(page.locator('#empty')).toBeVisible();
     await page.click('#clearAll');
@@ -31,18 +34,26 @@ test.describe('app form', () => {
     await expect(page.locator('#filterCount')).toHaveText('1');
     await page.selectOption('#sort', 'year');
     await page.click('#resetFilters');
+    await page.locator('.cat[data-cat="teams-people"]').click();
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(3);
+    await page.click('#resetFilters');
     await expect(page.locator('.bk:not([hidden])')).toHaveCount(9);
     await expect(page.locator('.bk').first()).toHaveAttribute('data-slug', 'become-an-effective-software-engineering-manager');
   });
 
   test('a book opens at a stable URL with its labelled sections, and back returns', async ({ page }) => {
     await page.goto('/library/');
-    await page.locator('[data-set-view="grid"]').click();
     await page.locator('.bk[data-slug="drive"] .bk-link').click();
     await expect(page).toHaveURL(/\/library\/drive\/$/);
     await expect(page.locator('h1')).toHaveText('Drive');
     await expect(page.locator('#thesis .claim')).toHaveText("Book's argument");
-    await expect(page.locator('#why')).toHaveCount(0); // a draft section is left out, not empty
+    await expect(page.locator('#why .claim')).toHaveText('My interpretation');
+    await expect(page.locator('.side-card')).toBeVisible();
+    // Tabs: one panel at a time, deep-linkable.
+    await page.locator('#tab-takeaways').click();
+    await expect(page.locator('#panel-takeaways')).toBeVisible();
+    await expect(page.locator('#panel-overview')).toBeHidden();
+    await expect(page).toHaveURL(/#panel-takeaways$/);
     await page.goBack();
     await expect(page).toHaveURL(/\/library\/$/);
   });
@@ -92,15 +103,17 @@ test.describe('book form (iPhone Duo)', () => {
     await page.goto('/library/peopleware/?duo=auto');
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'closed');
     await expect(page.locator('#shelf')).toBeHidden();
-    await page.locator('#ideas').scrollIntoViewIfNeeded();
-    await page.evaluate(() => document.getElementById('ideas').scrollIntoView());
+    // Read down to the book's framework, the way a reader scrolls (the heading just below the tabs).
+    await page.evaluate(() => { const f = document.getElementById('framework'); window.scrollTo({ top: f.getBoundingClientRect().top + scrollY - 110, behavior: 'instant' }); });
+    await page.waitForTimeout(150);
     await page.setViewportSize({ width: 951, height: 669 }); // unfolded
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'open');
     await expect(page.locator('#shelf')).toBeVisible();
     await expect(page.locator('html')).not.toHaveAttribute('data-fold-anim', /./);
-    const rel = await page.evaluate(() => document.getElementById('ideas').getBoundingClientRect().top - document.querySelector('.leaf-book').getBoundingClientRect().top);
+    // It lands just below the book's sticky tabs on the right-hand page.
+    const rel = await page.evaluate(() => document.getElementById('framework').getBoundingClientRect().top - document.querySelector('.leaf-book .tabs').getBoundingClientRect().bottom);
     expect(rel).toBeGreaterThan(-4);
-    expect(rel).toBeLessThan(140);
+    expect(rel).toBeLessThan(160);
     // The hinge sits in the middle.
     const g = await page.locator('.gutter').boundingBox();
     expect(Math.abs(g.x + g.width / 2 - 951 / 2)).toBeLessThan(3);

@@ -34,6 +34,7 @@ export function load(root) {
     const file = path.join(C, 'books', f);
     const b = json(file);
     errors.push(...validateBook(b, rel(file), themeSlugs));
+    if (b.coverImage && b.coverImage.file && !existsSync(path.join(C, b.coverImage.file))) errors.push(rel(file) + ': coverImage.file ' + b.coverImage.file + ' is missing from content/');
     return b;
   });
   const bookSlugs = new Set(books.map((b) => b.slug));
@@ -92,7 +93,13 @@ export function publicView(all) {
       isbn13: b.isbn13,
       themes: b.themes.map((s) => themeBySlug.get(s)),
       featuredRank: b.featuredRank,
-      readingStatus: b.statusVisibility === 'published' ? b.readingStatus : null,
+      reading: isPub(b.reading) ? { status: b.reading.status, startedAt: b.reading.startedAt, finishedAt: b.reading.finishedAt, rating: b.reading.rating, recommended: b.reading.recommended, confirmed: b.reading.confirmed } : null,
+      readingStatus: isPub(b.reading) ? b.reading.status : null,
+      pages: b.pages,
+      category: b.category,
+      coverImage: b.coverImage,
+      framework: isPub(b.framework) ? b.framework : null,
+      pullQuote: isPub(b.pullQuote) ? b.pullQuote : null,
       cover: b.cover,
       oneLine: isPub(b.oneLine) ? b.oneLine : null,
       sections: b.sections.filter(isPub),

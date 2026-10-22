@@ -3,48 +3,72 @@
     "from": "peopleware",
     "to": "five-dysfunctions-of-a-team",
     "theme": "trust-and-accountability",
-    "explanation": "Both treat team cohesion as the real engine of results: Peopleware describes the conditions that let a team jell, and Lencioni names the trust that has to exist before a team can argue, commit and hold each other to account.",
+    "explanation": "Peopleware tells me what lets a team jell; Lencioni tells me what’s missing when it doesn’t. Read together, they say the same thing from two sides: results come from the human conditions, not the process.",
     "claim": "interpretation",
-    "visibility": "draft"
+    "visibility": "published"
   },
   {
     "from": "drive",
     "to": "radical-candor",
     "theme": "feedback-and-coaching",
-    "explanation": "Autonomy works best alongside honest coaching: Drive argues for giving people control over their work, and Radical Candor describes the direct, caring feedback that helps them master it.",
+    "explanation": "Autonomy without candor drifts. I give people control over the how, and Scott’s care-and-challenge feedback is how they find out whether it’s working.",
     "claim": "interpretation",
-    "visibility": "draft"
+    "visibility": "published"
   },
   {
     "from": "an-elegant-puzzle",
     "to": "the-managers-path",
     "theme": "scaling-organizations",
-    "explanation": "One looks at scaling from the structure's point of view (team sizes, migrations, systems), the other from the leader's (how each step up changes the job); together they cover both sides of growth.",
+    "explanation": "Larson scales the organization; Fournier scales the leader. Growing a team well needs both: the structure has to change, and so does the person running it.",
     "claim": "interpretation",
-    "visibility": "draft"
+    "visibility": "published"
   },
   {
     "from": "extreme-programming-explained",
     "to": "peopleware",
     "theme": "team-culture",
-    "explanation": "XP's technical practices rest on human conditions Peopleware describes: sustainable pace, sitting together, respect and room to focus.",
+    "explanation": "XP’s discipline only holds on Peopleware’s foundation. Sustainable pace and protected focus aren’t perks; they’re what keeps tests written and builds green.",
     "claim": "interpretation",
-    "visibility": "draft"
+    "visibility": "published"
   },
   {
     "from": "the-48-laws-of-power",
     "to": "radical-candor",
     "theme": "power-and-influence",
-    "explanation": "A study in contrasts: Greene maps the political games people play, while Scott argues for leading through transparency and care; reading both helps a leader recognize manipulation without adopting it.",
-    "claim": "interpretation",
-    "visibility": "draft"
+    "explanation": "These two argue with each other. Greene maps manipulative insincerity in detail; Scott names it the worst quadrant. I read Greene to recognize the moves and Scott to know what to do instead.",
+    "claim": "critique",
+    "visibility": "published"
   },
   {
     "from": "become-an-effective-software-engineering-manager",
     "to": "the-managers-path",
     "theme": "management-craft",
-    "explanation": "Stanier focuses on the daily craft of managing one team well; Fournier zooms out to how that craft has to change at each level of leadership.",
+    "explanation": "Stanier is the daily craft of running one team; Fournier is how that craft has to change on every rung above it. Start with Stanier, then keep Fournier for each promotion.",
     "claim": "interpretation",
-    "visibility": "draft"
+    "visibility": "published"
+  },
+  {
+    "from": "drive",
+    "to": "extreme-programming-explained",
+    "theme": "engineering-excellence",
+    "explanation": "Autonomy works on a leash, and XP is the leash: tests and CI define the boundary, and inside it engineers (and agents) get real freedom to change the code.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  {
+    "from": "five-dysfunctions-of-a-team",
+    "to": "an-elegant-puzzle",
+    "theme": "trust-and-accountability",
+    "explanation": "A tension worth holding: Lencioni treats team failure as behavior, Larson as structure. When accountability is missing I check both, starting with the system, because a structural problem looks like a people problem from the inside.",
+    "claim": "critique",
+    "visibility": "published"
+  },
+  {
+    "from": "the-48-laws-of-power",
+    "to": "five-dysfunctions-of-a-team",
+    "theme": "power-and-influence",
+    "explanation": "Greene’s tactics are a recipe for Lencioni’s base dysfunction. Concealing intentions and guarding position destroy the trust everything else is built on.",
+    "claim": "critique",
+    "visibility": "published"
   }
 ]

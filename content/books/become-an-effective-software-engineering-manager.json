@@ -8,6 +8,7 @@
   "firstPublishedYear": 2020,
   "publisher": "The Pragmatic Bookshelf",
   "isbn13": "9781680507249",
+  "pages": 398,
   "verified": {
     "on": "2026-10-22",
     "sources": [
@@ -15,30 +16,73 @@
       "https://openlibrary.org/isbn/9781680507249.json"
     ]
   },
+  "category": "engineering-leadership",
   "themes": [
     "management-craft",
     "feedback-and-coaching"
   ],
   "featuredRank": 1,
-  "readingStatus": null,
-  "statusVisibility": "draft",
+  "reading": {
+    "status": "reading",
+    "startedAt": "2026-09",
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
   "cover": {
-    "bg": "#1F3A5F",
-    "ink": "#F2EBDD",
-    "foil": "#C9A45C",
-    "type": "grotesk"
+    "bg": "#2F5A8C",
+    "ink": "#FFFFFF",
+    "foil": "#D9E6F2",
+    "type": "serif"
+  },
+  "coverImage": {
+    "file": "covers/become-an-effective-software-engineering-manager.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781680507249-L.jpg"
   },
   "oneLine": {
     "text": "Management is a separate craft from engineering, built from deliberate everyday habits.",
     "claim": "book",
     "visibility": "published"
   },
+  "pullQuote": {
+    "text": "Your output is the team’s output. Design your week so the work only you can do gets done.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "The manager’s core toolkit",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Your own time",
+        "gist": "A manager’s calendar fills by default, so attention and a task system have to be designed on purpose."
+      },
+      {
+        "name": "One-to-ones",
+        "gist": "Regular private conversations are where trust, feedback and career growth actually happen."
+      },
+      {
+        "name": "Delegation",
+        "gist": "Handing over stretching work, with clear expectations, is how people grow and how the manager scales."
+      },
+      {
+        "name": "Feedback",
+        "gist": "Timely, specific feedback in both directions keeps small problems small."
+      },
+      {
+        "name": "Hiring",
+        "gist": "A structured, consistent process, because who joins shapes the team for years."
+      }
+    ]
+  },
   "sections": [
     {
       "kind": "why",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "This is the book I would hand a strong engineer on their first day as a manager. It treats management as a separate craft with its own habits, which is the thing most new managers get wrong, and it is practical enough to use on Monday."
     },
     {
       "kind": "thesis",
@@ -49,20 +93,44 @@
     {
       "kind": "applications",
       "claim": "application",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "- I run one-to-ones as the report’s meeting, not mine: their agenda first, status last, because status belongs in a written update.\n- I protect a weekly block for the work only a manager can do: hiring, unblocking, writing down decisions. Everything else can be interrupted.\n- With the agent fleet I apply the same idea of delegation: a clear contract in AGENTS.md, a definition of done, and a check that verifies the work instead of me watching it happen.\n- When I hand someone a stretch project, I say out loud what “done” looks like and when we will check in. Silence is not delegation."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- If I disappeared for two weeks, which decisions would stall, and why are they still mine?\n- Does every person on the team know what is expected of them this quarter, in writing?\n- When did each person last get specific feedback, positive or negative?\n- Are one-to-ones being cancelled more often than they are held?\n- Is our hiring loop the same for every candidate, or does it depend on who is free?"
     },
     {
       "kind": "agree",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Its core claim, that your output is now the team’s output, is the most important mindset shift in the job. I also agree with its emphasis on systems over heroics: a calendar, a task list and a hiring rubric beat good intentions every time."
     },
     {
       "kind": "challenge",
       "claim": "critique",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "It is written for managers of one team in a fairly healthy company. It says less about politics, reorgs, layoffs or leading through a crisis, and a manager in a struggling organization will find its advice assumes more support than they have. Parts of it are also familiar if you have already read The Manager’s Path."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Management is a different job, not a promotion.\n- Design your week, or other people will design it for you.\n- One-to-ones are the core habit; protect them.\n- Delegation is a development tool, not just a way to offload work."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **The Manager’s Path**. Stanier teaches the daily craft of running one team; Fournier shows how that craft changes at every level above it."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you have managed managers for years; it will mostly confirm what you know. It also misleads if you treat it as complete: it is a starter kit, not a guide to organizational politics."
     }
   ],
   "ideas": [
@@ -103,7 +171,17 @@
       "visibility": "published"
     }
   ],
-  "resources": [],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://pragprog.com/titles/jsengman/become-an-effective-software-engineering-manager/",
+      "provider": "The Pragmatic Bookshelf",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
   "assistantDrafted": true,
   "updatedAt": "2026-10-22"
 }

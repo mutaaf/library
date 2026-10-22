@@ -20,9 +20,10 @@ test('drafts never reach a rendered page; published blocks do', () => {
   const html = home(pub, {}) + book(pub, b);
   for (const s of ['PUBLISHED-THESIS-TEXT', 'PUBLISHED-IDEA', 'PUBLISHED-REFLECTION-TITLE', 'PUBLISHED-REFLECTION-BODY']) assert.ok(html.includes(s), s);
   for (const s of ['DRAFT-WHY-SECRET', 'DRAFT-CHALLENGE-SECRET', 'DRAFT-IDEA-TITLE', 'DRAFT-IDEA-SECRET', 'DRAFT-REFLECTION-TITLE', 'DRAFT-REFLECTION-SECRET']) assert.ok(!html.includes(s), s);
-  // A drafted reading status is never inferred or shown.
-  assert.equal(b.readingStatus, null);
-  assert.ok(!html.includes('Reading now</dd>'));
+  // A drafted reading entry (status, rating) is never shown.
+  assert.equal(b.reading, null);
+  assert.ok(!html.includes('(my rating)') && !html.includes('side-card'));
+  assert.ok(html.includes('PUBLISHED-FRAMEWORK-ITEM') && !html.includes('DRAFT-PULLQUOTE-SECRET'));
 });
 
 test('the real catalog: nine books, each once, nothing personal published, no unverified links', () => {
@@ -30,9 +31,12 @@ test('the real catalog: nine books, each once, nothing personal published, no un
   assert.equal(pub.books.length, 9);
   assert.equal(new Set(pub.books.map((b) => b.title)).size, 9);
   for (const b of all.books) {
-    assert.equal(b.statusVisibility, 'draft', b.slug + ' publishes a reading status nobody set');
-    for (const s of b.sections) if (['why', 'applications', 'agree', 'challenge'].includes(s.kind)) assert.equal(s.visibility, 'draft', b.slug + ' publishes a personal section');
+    // Owner decision 2026-10-22: personal sections and reading data are published in the
+    // owner's voice, but every reading entry must say whether the owner has confirmed it.
+    if (b.reading) assert.equal(typeof b.reading.confirmed, 'boolean', b.slug + ' reading.confirmed');
+    for (const s of b.sections) if (s.claim === 'book') assert.ok(['thesis', 'note'].includes(s.kind) || s.kind === 'thesis', b.slug + ': a personal section kind is labelled as the book');
     for (const r of b.resources) assert.ok(r.verifiedAt, b.slug + ' has an unverified link');
+    if (b.coverImage) assert.ok(b.coverImage.url.startsWith('https://covers.openlibrary.org/'), b.slug + ' cover source');
   }
   assert.equal(pub.bySlug.get('radical-candor').authors.join(), 'Kim Scott');
 });
@@ -73,7 +77,14 @@ test('schema rejects the mistakes that matter', () => {
   const bad = (patch) => validateBook(Object.assign(structuredClone(good), patch), file, themes);
   assert.match(bad({ isbn13: '9780000000001' }).join(), /ISBN/);
   assert.match(bad({ cover: { bg: '#777777', ink: '#888888', foil: '#B48A48', type: 'serif' } }).join(), /contrast/);
-  assert.match(bad({ readingStatus: null, statusVisibility: 'published' }).join(), /empty reading status/);
+  const rd = (r) => bad({ reading: Object.assign({ status: 'finished', finishedAt: '2024-10', confirmed: false, visibility: 'published' }, r) }).join();
+  assert.equal(rd({}), '');
+  assert.match(rd({ rating: 6 }), /half steps/);
+  assert.match(rd({ rating: 4.3 }), /half steps/);
+  assert.match(rd({ finishedAt: undefined }), /finished book/);
+  assert.match(rd({ confirmed: undefined }), /confirmed/);
+  assert.match(rd({ startedAt: '2025-01', finishedAt: '2024-10' }), /finishes before it starts/);
+  assert.match(bad({ category: 'misc' }).join(), /category/);
   assert.match(bad({ sections: [{ kind: 'why', claim: 'interpretation', visibility: 'published', body: '' }] }).join(), /cannot be empty/);
   assert.match(bad({ resources: [{ label: 'PDF', url: 'https://x.example/b.pdf', provider: 'x', format: 'ebook', accessType: 'buy', isFullText: true, verifiedAt: '2026-10-22' }] }).join(), /full text/);
   assert.match(bad({ resources: [{ label: 'x', url: 'http://x.example', provider: 'x', format: 'web', accessType: 'buy', isFullText: false, verifiedAt: '2026-10-22' }] }).join(), /https/);

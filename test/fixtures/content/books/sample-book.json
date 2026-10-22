@@ -1,17 +1,95 @@
 {
-  "slug": "sample-book", "title": "Sample Book", "authors": ["Ada Example"], "firstPublishedYear": 2001,
-  "verified": { "on": "2026-10-22", "sources": ["https://example.org/sample"] },
-  "themes": ["craft"], "featuredRank": 1, "readingStatus": "reading", "statusVisibility": "draft",
-  "cover": { "bg": "#1E2A44", "ink": "#F2EBDD", "foil": "#B48A48", "type": "serif" },
-  "oneLine": { "text": "A published one-liner.", "claim": "book", "visibility": "published" },
+  "slug": "sample-book",
+  "title": "Sample Book",
+  "authors": [
+    "Ada Example"
+  ],
+  "firstPublishedYear": 2001,
+  "verified": {
+    "on": "2026-10-22",
+    "sources": [
+      "https://example.org/sample"
+    ]
+  },
+  "themes": [
+    "craft"
+  ],
+  "featuredRank": 1,
+  "cover": {
+    "bg": "#1E2A44",
+    "ink": "#F2EBDD",
+    "foil": "#B48A48",
+    "type": "serif"
+  },
+  "oneLine": {
+    "text": "A published one-liner.",
+    "claim": "book",
+    "visibility": "published"
+  },
   "sections": [
-    { "kind": "thesis", "claim": "book", "visibility": "published", "body": "PUBLISHED-THESIS-TEXT" },
-    { "kind": "why", "claim": "interpretation", "visibility": "draft", "body": "DRAFT-WHY-SECRET" },
-    { "kind": "challenge", "claim": "critique", "visibility": "draft", "body": "DRAFT-CHALLENGE-SECRET" }
+    {
+      "kind": "thesis",
+      "claim": "book",
+      "visibility": "published",
+      "body": "PUBLISHED-THESIS-TEXT"
+    },
+    {
+      "kind": "why",
+      "claim": "interpretation",
+      "visibility": "draft",
+      "body": "DRAFT-WHY-SECRET"
+    },
+    {
+      "kind": "challenge",
+      "claim": "critique",
+      "visibility": "draft",
+      "body": "DRAFT-CHALLENGE-SECRET"
+    }
   ],
   "ideas": [
-    { "title": "Published idea", "summary": "PUBLISHED-IDEA", "claim": "book", "visibility": "published" },
-    { "title": "DRAFT-IDEA-TITLE", "summary": "DRAFT-IDEA-SECRET", "claim": "book", "visibility": "draft" }
+    {
+      "title": "Published idea",
+      "summary": "PUBLISHED-IDEA",
+      "claim": "book",
+      "visibility": "published"
+    },
+    {
+      "title": "DRAFT-IDEA-TITLE",
+      "summary": "DRAFT-IDEA-SECRET",
+      "claim": "book",
+      "visibility": "draft"
+    }
   ],
-  "resources": [], "assistantDrafted": false, "updatedAt": "2026-10-22"
+  "resources": [],
+  "assistantDrafted": false,
+  "updatedAt": "2026-10-22",
+  "category": "engineering-leadership",
+  "pages": 200,
+  "reading": {
+    "status": "reading",
+    "startedAt": "2026-09",
+    "rating": 4,
+    "confirmed": false,
+    "visibility": "draft"
+  },
+  "framework": {
+    "title": "Two parts",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "PUBLISHED-FRAMEWORK-ITEM",
+        "gist": "One."
+      },
+      {
+        "name": "Two",
+        "gist": "Two."
+      }
+    ]
+  },
+  "pullQuote": {
+    "text": "DRAFT-PULLQUOTE-SECRET",
+    "claim": "interpretation",
+    "visibility": "draft"
+  }
 }

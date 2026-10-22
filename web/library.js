@@ -23,24 +23,28 @@
     if (fold() !== 'open') return null;
     return document.querySelector('.page-home') ? shelf : document.querySelector('.leaf-book');
   }
+  // The sticky bar at the top of the reading pane (the book's tabs in the book form).
+  function stickyFloor() {
+    var bar = document.querySelector('.duo .tabs');
+    return bar && bar.getClientRects().length ? bar.offsetHeight + 12 : 0;
+  }
+  // The reader's place: the first block that starts below the sticky bar, i.e. the next
+  // thing they're about to read, and how far down the pane it sits.
   function captureAnchor() {
     var box = scroller();
-    var top = box ? box.getBoundingClientRect().top : 0;
-    var nodes = document.querySelectorAll('.book-hero, .sec, .idea, .refl, .bk:not([hidden]), .colophon');
+    var top = (box ? box.getBoundingClientRect().top : 0) + stickyFloor() - 8;
+    var nodes = document.querySelectorAll('.book-hero, .sec, .fw li, .idea, .refl, .bk:not([hidden]), .colophon');
     for (var i = 0; i < nodes.length; i++) {
       var r = nodes[i].getBoundingClientRect();
-      if (r.height && r.bottom > top + 72) return { el: nodes[i], off: r.top - top };
+      if (r.height && r.top >= top) return { el: nodes[i], off: r.top - top + 8 };
     }
     return null;
   }
   function restoreAnchor(a) {
     if (!a || !a.el.getClientRects().length) return;
     var box = scroller();
-    var top = box ? box.getBoundingClientRect().top : 0;
-    // Land just below the sticky contents bar, or where the reader had it, whichever is lower.
-    var toc = document.querySelector('.toc');
-    var floor = toc && toc.getClientRects().length ? toc.offsetHeight + 12 : 0;
-    var delta = a.el.getBoundingClientRect().top - top - Math.max(floor, Math.min(a.off, 120));
+    var top = (box ? box.getBoundingClientRect().top : 0) + stickyFloor();
+    var delta = a.el.getBoundingClientRect().top - top - Math.max(0, Math.min(a.off, 120));
     if (box) box.scrollTop += delta;
     else window.scrollTo(0, window.pageYOffset + delta);
   }
@@ -48,15 +52,21 @@
     if (f) { root.classList.add('duo'); root.setAttribute('data-fold', f); }
     else { root.classList.remove('duo'); root.removeAttribute('data-fold'); }
   }
+  // The reader's place, kept current while they scroll. A fold reflows the page before the
+  // resize event arrives (WebKit), so measuring then would pick the wrong heading.
+  var lastAnchor = null, tracking = 0;
+  document.addEventListener('scroll', function () {
+    if (!tracking) tracking = requestAnimationFrame(function () { tracking = 0; lastAnchor = captureAnchor(); });
+  }, { capture: true, passive: true });
   var pending = 0;
   function checkForm() {
     pending = 0;
     if (!window.libForm) return;
     var next = window.libForm(), prev = fold();
     if (next === prev) return;
-    var anchor = captureAnchor();
+    var anchor = lastAnchor || captureAnchor();
     var dir = prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); defaultView(); restoreAnchor(anchor); sky(); };
+    var update = function () { setForm(next); defaultView(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -82,7 +92,7 @@
   }
   function visibleArt(scope) {
     if (!scope) return null;
-    var c = scope.querySelectorAll('.spine, .cover');
+    var c = scope.querySelectorAll('.spine, .cover, .stk-face');
     for (var i = 0; i < c.length; i++) {
       var r = c[i].getBoundingClientRect();
       if (r.width && r.bottom > 0 && r.top < window.innerHeight) return c[i];
@@ -125,7 +135,7 @@
 
   // ================= THE SHELF: views, search, filters, sort =================
   if (shelf) {
-    var list = $('books');
+    var list = $('books-list');
     var items = [].slice.call(list.children);
     var q = $('q');
     var caption = $('caption');
@@ -136,7 +146,7 @@
     // Grid on phones. A choice the visitor makes sticks (this browser only).
     defaultView = function () {
       var saved = store.get('lib-view');
-      setView(saved || (!isDuo() && narrow() ? 'grid' : 'shelf'));
+      setView(saved || (isDuo() ? 'shelf' : 'grid'));
     };
     var setView = function (v) {
       shelf.setAttribute('data-view', v);
@@ -177,7 +187,7 @@
     list.addEventListener('mouseleave', function () { describe(null); });
 
     // Search and filters combine; Reset clears them all.
-    var state = { q: '', theme: [], status: [], author: '', sort: 'rank' };
+    var state = { q: '', cat: '', theme: [], status: [], author: '', sort: 'rank' };
     var boxes = function (n) { return [].slice.call(shelf.querySelectorAll('input[name="' + n + '"]')); };
     var read = function () {
       state.q = q.value.trim().toLowerCase();
@@ -188,6 +198,7 @@
     };
     var cmp = {
       rank: function (a, b) { return a.getAttribute('data-rank') - b.getAttribute('data-rank'); },
+      rating: function (a, b) { return (b.getAttribute('data-rating') - a.getAttribute('data-rating')) || cmp.rank(a, b); },
       title: function (a, b) { return a.getAttribute('data-title').localeCompare(b.getAttribute('data-title')); },
       year: function (a, b) { return a.getAttribute('data-year') - b.getAttribute('data-year'); },
       updated: function (a, b) { return a.getAttribute('data-updated') < b.getAttribute('data-updated') ? 1 : a.getAttribute('data-updated') > b.getAttribute('data-updated') ? -1 : cmp.rank(a, b); },
@@ -200,17 +211,24 @@
         var ok = words.every(function (w) { return text.indexOf(w) !== -1; }) &&
           (!state.theme.length || state.theme.some(function (t) { return themes.indexOf(t) !== -1; })) &&
           (!state.status.length || state.status.indexOf(li.getAttribute('data-status')) !== -1) &&
-          (!state.author || li.getAttribute('data-author') === state.author);
+          (!state.author || li.getAttribute('data-author') === state.author) &&
+          (!state.cat || li.getAttribute('data-category') === state.cat);
         li.hidden = !ok;
         if (ok) shown++;
       });
-      items.slice().sort(cmp[state.sort] || cmp.rank).forEach(function (li) { list.appendChild(li); });
+      var score = function (li) {
+        if (!words.length) return 0;
+        var head = (li.getAttribute('data-title') + ' ' + li.getAttribute('data-author')).toLowerCase();
+        return words.every(function (w) { return head.indexOf(w) !== -1; }) ? 1 : 0;
+      };
+      items.slice().sort(function (a, b) { return (score(b) - score(a)) || (cmp[state.sort] || cmp.rank)(a, b); }).forEach(function (li) { list.appendChild(li); });
       var n = state.theme.length + state.status.length + (state.author ? 1 : 0);
       var badge = $('filterCount');
       badge.hidden = !n;
       badge.textContent = n;
       $('empty').hidden = shown > 0;
       $('resultLine').textContent = shown === items.length && !words.length ? '' : 'Showing ' + shown + ' of ' + items.length + ' books';
+      [].forEach.call(shelf.querySelectorAll('.cat'), function (c) { c.setAttribute('aria-pressed', String(c.getAttribute('data-cat') === state.cat)); });
     };
     var typing = 0;
     q.addEventListener('input', function () { clearTimeout(typing); typing = setTimeout(function () { read(); apply(); }, 90); });
@@ -221,10 +239,14 @@
       boxes('theme').concat(boxes('status')).forEach(function (i) { i.checked = false; });
       $('author').value = '';
       $('sort').value = 'rank';
+      state.cat = '';
       read();
       glide(apply);
     };
     $('resetFilters').addEventListener('click', reset);
+    [].forEach.call(shelf.querySelectorAll('.cat'), function (c) {
+      c.addEventListener('click', function () { state.cat = c.getAttribute('data-cat'); read(); glide(apply); });
+    });
     $('clearAll').addEventListener('click', function () { reset(); q.focus(); });
 
     // Filters: an inline panel on wide screens, a bottom sheet you can drag away on phones.
@@ -295,6 +317,62 @@
     panel.addEventListener('pointercancel', endDrag);
   }
 
+  // ================= BOOK TABS =================
+  // Without JS every panel reads top to bottom. With it: one panel at a time, deep-linkable
+  // (#panel-notes, or the id of anything inside a panel), arrow keys between tabs.
+  var tabs = [].slice.call(document.querySelectorAll('.tabs [role="tab"]'));
+  if (tabs.length) {
+    var show = function (id, focus, anim) {
+      var found = false;
+      tabs.forEach(function (t) {
+        var on = t.getAttribute('data-tab') === id;
+        if (on) found = true;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        var p = $('panel-' + t.getAttribute('data-tab'));
+        if (p) { p.classList.toggle('on', on); p.classList.toggle('anim', on && !!anim); }
+        if (on && focus) t.focus();
+      });
+      return found;
+    };
+    var fromHash = function () {
+      var h = location.hash.slice(1);
+      if (!h) return false;
+      var el = $(h);
+      var panel = el && (el.classList.contains('panel') ? el : el.closest && el.closest('.panel'));
+      if (!panel) return false;
+      show(panel.id.replace('panel-', ''));
+      if (el !== panel) el.scrollIntoView();
+      return true;
+    };
+    if (!fromHash()) show(tabs[0].getAttribute('data-tab'));
+    window.addEventListener('hashchange', fromHash);
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('[data-tab]');
+      if (!a) return;
+      e.preventDefault();
+      show(a.getAttribute('data-tab'), false, true);
+      if (history.replaceState) history.replaceState(null, '', '#panel-' + a.getAttribute('data-tab'));
+      if (!a.closest('.tabs')) { var bar = document.querySelector('.tabs'); if (bar) bar.scrollIntoView({ block: 'start' }); }
+    });
+    document.querySelector('.tabs').addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(document.activeElement);
+      if (i < 0 || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+      e.preventDefault();
+      var n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      show(n.getAttribute('data-tab'), true, true);
+    });
+  }
+
+  // ================= READING JOURNEY FILTER =================
+  [].forEach.call(document.querySelectorAll('[data-jf]'), function (b, _, all) {
+    b.addEventListener('click', function () {
+      var k = b.getAttribute('data-jf');
+      [].forEach.call(all, function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+      [].forEach.call(document.querySelectorAll('.stop'), function (s) { s.classList.toggle('dim', !!k && s.getAttribute('data-k') !== k); });
+    });
+  });
+
   // ================= THE SKY (app form, home page only) =================
   // Hearth's pattern: a sticky aurora-field behind the hero and the story; the step in the
   // middle of the screen picks the shape. Started lazily, never in the book form.
@@ -311,9 +389,9 @@
     try {
       field = window.AuroraField.create(canvas, {
         shapes: window.LibraryShapes.names.concat(['mind', 'teams']),
-        rotation: ['lib-shelf', 'lib-book', 'lib-scales'],
-        initial: 'lib-shelf',
-        palette: { preset: 'ember', point: [242, 235, 221], accent: [215, 176, 108] },
+        rotation: ['lib-book', 'lib-shelf', 'lib-scales'],
+        initial: 'lib-book',
+        palette: { preset: 'ember', point: [245, 214, 160], accent: [215, 176, 108] },
         cycle: 5600,
         depth: 2.6,
         stage: $('stage'),

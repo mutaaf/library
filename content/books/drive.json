@@ -8,6 +8,7 @@
   "firstPublishedYear": 2009,
   "publisher": "Riverhead Books",
   "isbn13": "9781594488849",
+  "pages": 242,
   "verified": {
     "on": "2026-10-22",
     "sources": [
@@ -15,30 +16,75 @@
       "https://openlibrary.org/works/OL15016965W"
     ]
   },
+  "category": "personal-growth",
   "themes": [
     "motivation",
     "feedback-and-coaching"
   ],
   "featuredRank": 7,
-  "readingStatus": null,
-  "statusVisibility": "draft",
+  "reading": {
+    "status": "finished",
+    "startedAt": "2024-09",
+    "finishedAt": "2024-10",
+    "rating": 4,
+    "recommended": true,
+    "confirmed": false,
+    "visibility": "published"
+  },
   "cover": {
-    "bg": "#1E4D5C",
-    "ink": "#F2EBDD",
-    "foil": "#B48A48",
-    "type": "serif"
+    "bg": "#F7F5F0",
+    "ink": "#B3122A",
+    "foil": "#1A1A1A",
+    "type": "grotesk"
+  },
+  "coverImage": {
+    "file": "covers/drive.jpg",
+    "source": "Open Library",
+    "url": "https://covers.openlibrary.org/b/isbn/9781594488849-L.jpg"
   },
   "oneLine": {
     "text": "For creative work, autonomy, mastery and purpose motivate better than carrots and sticks.",
     "claim": "book",
     "visibility": "published"
   },
+  "pullQuote": {
+    "text": "Autonomy works on a leash: clear boundaries, real freedom inside them. True for engineers, true for agents.",
+    "claim": "interpretation",
+    "visibility": "published"
+  },
+  "framework": {
+    "title": "From carrots and sticks to intrinsic motivation",
+    "claim": "book",
+    "visibility": "published",
+    "items": [
+      {
+        "name": "Motivation 2.0",
+        "gist": "Rewards and punishments: fine for routine work, often harmful for creative work."
+      },
+      {
+        "name": "Motivation 3.0",
+        "gist": "An operating system built on the drive to direct our own lives and get better at things."
+      },
+      {
+        "name": "Autonomy",
+        "gist": "Control over task, time, technique and team."
+      },
+      {
+        "name": "Mastery",
+        "gist": "The urge to get better at something that matters, which is hard and never finished."
+      },
+      {
+        "name": "Purpose",
+        "gist": "Doing it in service of something larger than ourselves."
+      }
+    ]
+  },
   "sections": [
     {
       "kind": "why",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Drive gave me the vocabulary for something I saw in every team I led: the best engineers want control, growth and a reason, not a bonus scheme. It also turned out to describe how I design autonomy for agents."
     },
     {
       "kind": "thesis",
@@ -49,20 +95,44 @@
     {
       "kind": "applications",
       "claim": "application",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "- I give engineers autonomy over the how, and keep the what and why explicit and shared.\n- “Autonomy on a leash” is rule four of my agent operating model: the reviewer can block but never approve, self-healing stops after two attempts, and every project has a kill date. Autonomy works when the boundaries are clear.\n- I build mastery into the work itself: stretch assignments, internal talks, time to pay down the debt that annoys the team most.\n- With kids I coach, purpose and mastery beat trophies: they work hardest for the team and for getting better."
+    },
+    {
+      "kind": "diagnostic",
+      "claim": "application",
+      "visibility": "published",
+      "body": "- Where do people on this team have real control over how they work, and where don’t they?\n- What did each person get measurably better at this quarter?\n- Can everyone explain why their current project matters to a user?\n- Which of our incentives rewards the wrong behavior on creative work?\n- Is pay fair enough that it stays off the table?"
     },
     {
       "kind": "agree",
       "claim": "interpretation",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "The core distinction between routine and creative work is right, and most engineering incentive schemes still ignore it. Autonomy, mastery and purpose is a durable lens for designing roles."
     },
     {
       "kind": "challenge",
       "claim": "critique",
-      "visibility": "draft",
-      "body": ""
+      "visibility": "published",
+      "body": "Pink is a synthesizer and storyteller, and he leans on a selective reading of the research; parts of the underlying motivation science are more contested than the book admits. It can also become an excuse to underpay (“they’re intrinsically motivated”), when his own first condition is fair pay. Autonomy without clarity just produces chaos."
+    },
+    {
+      "kind": "takeaways",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "- Pay fairly first, then get out of the way.\n- Give autonomy over the how; be explicit about the what and why.\n- Mastery needs time and slack built in.\n- Autonomy works best on a leash: clear boundaries, real freedom inside them."
+    },
+    {
+      "kind": "pairs",
+      "claim": "interpretation",
+      "visibility": "published",
+      "body": "Read it with **Radical Candor**: autonomy works only with honest coaching on how it’s going."
+    },
+    {
+      "kind": "skip",
+      "claim": "critique",
+      "visibility": "published",
+      "body": "Skip it if you already know the research; it’s a popular synthesis. It misleads leaders who use it to justify low pay or vague goals."
     }
   ],
   "ideas": [
@@ -103,7 +173,17 @@
       "visibility": "published"
     }
   ],
-  "resources": [],
+  "resources": [
+    {
+      "label": "Publisher page",
+      "url": "https://www.penguinrandomhouse.com/books/301674/drive-by-daniel-h-pink/",
+      "provider": "Penguin Random House (Riverhead)",
+      "format": "print",
+      "accessType": "buy",
+      "isFullText": false,
+      "verifiedAt": "2026-10-22"
+    }
+  ],
   "assistantDrafted": true,
   "updatedAt": "2026-10-22"
 }
