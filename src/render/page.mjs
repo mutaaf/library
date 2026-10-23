@@ -47,11 +47,11 @@ function head({ title, description, canonical, jsonld, type }) {
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${ORIGIN + canonical}">
-  <meta name="theme-color" content="#F2EBDD">
+  <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="${BASE}icon.svg" type="image/svg+xml">
   <link rel="preload" href="${BASE}fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="${BASE}fonts/atkinson-next.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="${BASE}fonts/geist.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="${BASE}library.css?v=__V__">
   <script>__FORM_SCRIPT__</script>
 ${jsonld ? '  <script type="application/ld+json">' + JSON.stringify(jsonld).replace(/</g, '\\u003c') + '</script>\n' : ''}</head>`;
@@ -61,7 +61,7 @@ function nav(page) {
   const h = page === 'home' ? '' : BASE;
   return `<a class="skip" href="#main">Skip to content</a>
   <header class="nav nav-${page}" id="nav">
-    <a class="mono" href="${BASE}" aria-label="MA, The Leadership Library home"><span aria-hidden="true">M<i>A</i></span></a>
+    <a class="mono" href="${BASE}" aria-label="MA, The Leadership Library home"><span aria-hidden="true">MA</span></a>
     <nav aria-label="Library">
       <a class="nav-link" href="${BASE}"${page === 'home' ? ' aria-current="page"' : ''}>Home</a>
       <a class="nav-link" href="${h}#philosophy">Philosophy</a>
@@ -137,6 +137,7 @@ function shelf(pub, current) {
       </header>
       <label class="ios-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="vh">Search</span><input type="search" id="q2" placeholder="Search" autocomplete="off" enterkeyhint="search"></label>
       ${current ? '' : `<nav class="ios-explore" aria-label="Explore">
+        <a href="#portrait"><span class="ie-ic" style="--c:#2F5A8C">❙</span><span>Who My Shelf Says I Am</span></a>
         <a href="#philosophy"><span class="ie-ic" style="--c:#8B6326">◎</span><span>My Leadership Philosophy</span></a>
         <a href="#how"><span class="ie-ic" style="--c:#4F7CAC">❝</span><span>How I Read</span></a>
         <a href="#journey"><span class="ie-ic" style="--c:#3F8F8B">↝</span><span>My Reading Journey</span></a>
@@ -325,6 +326,51 @@ function philosophy(pub, ph) {
     </section>`;
 }
 
+// The portrait: "you can tell who someone is by the books on their shelf", taken literally.
+// The books stand side by side, each as thick as its page count, and the shelf is cut into
+// the shape of a head. Each spine is a trait. Content: content/portrait.json.
+const HEAD = 'M132 452 C134 420 132 392 122 372 C86 350 52 302 46 236 C38 140 96 56 196 46 C282 38 344 96 350 168 C352 188 350 202 354 214 C362 232 380 258 384 272 C386 282 378 286 366 288 C370 296 372 304 366 310 C372 316 370 324 362 328 C368 340 366 358 352 366 C336 374 310 372 290 370 C276 372 268 392 266 452 Z';
+function portrait(pub, pt) {
+  if (!pt) return '';
+  const books = pub.books.filter((b) => pt.traits[b.slug]);
+  if (!books.length) return '';
+  const x0 = 40, x1 = 392, gap = 2.5;
+  const total = books.reduce((n, b) => n + (b.pages || 260), 0);
+  const room = x1 - x0 - gap * (books.length - 1);
+  let x = x0;
+  const spines = books.map((b, i) => {
+    const w = (room * (b.pages || 260)) / total;
+    const cx = x + w / 2, fs = Math.max(8, Math.min(13, w * 0.42));
+    const g = `<g class="pt-sp" data-pt="${i}" style="--i:${i}"><rect x="${x.toFixed(1)}" y="30" width="${w.toFixed(1)}" height="430" fill="${b.cover.bg}"/>`
+      + `<rect x="${x.toFixed(1)}" y="96" width="${w.toFixed(1)}" height="3" fill="${b.cover.foil}"/><rect x="${x.toFixed(1)}" y="103" width="${w.toFixed(1)}" height="1.5" fill="${b.cover.foil}"/>`
+      + `<rect x="${x.toFixed(1)}" y="404" width="${w.toFixed(1)}" height="2" fill="${b.cover.foil}"/>`
+      + `<text x="${cx.toFixed(1)}" y="250" transform="rotate(90 ${cx.toFixed(1)} 250)" fill="${b.cover.ink}" font-size="${fs.toFixed(1)}">${esc(b.title.toUpperCase())}</text>`
+      + `<rect class="pt-shade" x="${x.toFixed(1)}" y="30" width="${w.toFixed(1)}" height="430"/></g>`;
+    x += w + gap;
+    return g;
+  });
+  return `<section class="portrait" id="portrait" aria-labelledby="pt-title">
+      <div class="pt-copy">
+        <p class="kicker">${esc(pt.kicker)}</p>
+        <h2 id="pt-title">${esc(pt.headline)}</h2>
+        <p class="pt-lede">${esc(pt.lede)}</p>
+      </div>
+      <figure class="pt-bust">
+        <svg viewBox="0 0 430 470" role="img" aria-label="A head in profile, made of the spines of the ${books.length} books on my shelf">
+          <defs><clipPath id="pt-head"><path d="${HEAD}"/></clipPath><linearGradient id="pt-light" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".16"/></linearGradient></defs>
+          <g clip-path="url(#pt-head)">${spines.join('')}<rect x="0" y="0" width="430" height="470" fill="url(#pt-light)" pointer-events="none"/></g>
+          <path class="pt-outline" d="${HEAD}"/>
+        </svg>
+        <div class="pt-plank" aria-hidden="true"></div>
+        <figcaption class="pt-say" id="pt-say" aria-live="polite"><span class="pt-say-k">Tap a spine</span><b>Each book gives something away.</b></figcaption>
+      </figure>
+      <ol class="pt-list">
+        ${books.map((b, i) => `<li><button type="button" data-pt="${i}" data-href="${BASE}${b.slug}/" data-title="${esc(b.title)}" data-line="${esc(pt.traits[b.slug].line)}" style="--c:${b.cover.bg};--f:${b.cover.foil}" aria-pressed="false"><i aria-hidden="true"></i><b>${esc(pt.traits[b.slug].short)}</b><span>${esc(b.title)}</span></button></li>`).join('\n        ')}
+      </ol>
+      <p class="pt-close">${esc(pt.closing)}</p>
+    </section>`;
+}
+
 export function home(pub, opts = {}) {
   const site = opts.site || {};
   const featured = pub.books[0];
@@ -336,20 +382,18 @@ export function home(pub, opts = {}) {
   <div class="ios-bar"><span class="ios-back"></span><b class="ios-title" aria-hidden="true">Library</b></div>
   <main id="main" class="spread">
     <div class="night">
-      <picture class="room" aria-hidden="true"><source media="(max-width: 800px)" srcset="${BASE}room-800.jpg"><img src="${BASE}room.jpg" alt="" fetchpriority="high" decoding="async"></picture>
-      <div class="room-shade" aria-hidden="true"></div>
       <div class="sky" aria-hidden="true">
         <canvas id="field"></canvas>
         <div class="stage" id="stage"></div>
       </div>
       <section class="hero" data-shape="lib-book" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <h1 id="hero-title">The Leadership Library</h1>
-          <p class="hero-tag">Books that shape how I think. Lessons that shape how I lead.</p>
+          <p class="hero-eyebrow">The Leadership Library <span aria-hidden="true">·</span> Mutaaf Aziz</p>
+          <h1 id="hero-title"><span class="vh">The Leadership Library: </span>Books that shape how I think. <span class="h1-dim">Lessons that shape how I lead.</span></h1>
           <p class="lede">A collection of books on engineering, leadership, teams, strategy and personal growth, with summaries, key ideas, my reflections, and how I’m applying them in real life.</p>
           <div class="ctas">
-            <a class="cta" href="#books">Explore the Library <span aria-hidden="true">→</span></a>
-            <a class="cta-ghost" href="#how"><span class="play" aria-hidden="true"></span>How I read <span class="cta-note">1 min</span></a>
+            <a class="cta" href="#books">Explore the Library</a>
+            <a class="cta-link" href="#philosophy">My leadership philosophy <span aria-hidden="true">›</span></a>
           </div>
         </div>
         <div class="desk">
@@ -359,6 +403,7 @@ export function home(pub, opts = {}) {
         <div class="stats-wrap">${counts(pub)}</div>
       </section>
     </div>
+    ${portrait(pub, site.portrait)}
     ${philosophy(pub, site.philosophy)}
     <section class="how" id="how" aria-labelledby="how-title">
       <h2 id="how-title">How I read</h2>
@@ -390,7 +435,7 @@ export function home(pub, opts = {}) {
     <section class="closer" aria-labelledby="closer-title">
       <h2 id="closer-title">Reading is the slow part.</h2>
       <p>The shelf grows as I read. Nothing here pretends to be finished.</p>
-      <div class="ctas"><a class="cta" href="#books">Back to the books</a><a class="cta-ghost cta-ghost-dark" href="/">mutaafaziz.com</a></div>
+      <div class="ctas"><a class="cta" href="/#control">About me</a><a class="cta-link" href="#books">Back to the books <span aria-hidden="true">›</span></a></div>
     </section>
   </main>
   ${foot()}${scripts('home')}

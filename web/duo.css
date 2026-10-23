@@ -12,8 +12,8 @@
 .duo {
   --ui: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro', system-ui, sans-serif;
   --title: ui-serif, 'New York', 'Iowan Old Style', Georgia, serif;
-  --tint: #8B6326;
-  --tint-fill: rgba(139, 99, 38, .14);
+  --tint: #0071E3;
+  --tint-fill: rgba(0, 113, 227, .12);
   --label: #000;
   --label2: rgba(60, 60, 67, .62);
   --label3: rgba(60, 60, 67, .3);
@@ -27,7 +27,7 @@
   --hair: .5px;
 }
 .duo body { font: -apple-system-body; font-family: var(--ui); background: var(--grouped); color: var(--label); letter-spacing: -.01em; }
-.duo h1, .duo h2, .duo h3, .duo h4 { font-family: var(--title); font-weight: 700; letter-spacing: 0; }
+.duo h1, .duo h2, .duo h3, .duo h4 { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', var(--ui); font-weight: 700; letter-spacing: -.02em; }
 .duo .kicker, .duo .claim, .duo .ph-n, .duo .facts dt, .duo .panel-h, .duo .exp-status { font-family: var(--ui); font-size: 12px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--label2); }
 .duo .claim-book { color: var(--tint); }
 .duo a { -webkit-tap-highlight-color: transparent; }
@@ -156,6 +156,7 @@
 .duo .sc-l { margin: 0; font: 400 17px var(--ui); color: var(--label); }
 .duo .sc-st { font: 400 17px var(--ui); }
 .duo .sc-sub { display: none; }
+.duo .stars { background: linear-gradient(90deg, var(--label) calc(var(--r) / 5 * 100%), var(--label3) calc(var(--r) / 5 * 100%)); -webkit-background-clip: text; background-clip: text; }
 .duo .side-card .stars { font-size: 18px; }
 .duo .sc-rec { font: 400 17px var(--ui); }
 .duo .provenance { margin: 0 16px 14px; border: 0; padding: 0 4px; font-size: 13px; color: var(--label2); }
@@ -234,7 +235,7 @@
 /* Closed: the sections follow the list, in this order. */
 .duo[data-fold="closed"] .page-home main { display: flex; flex-direction: column; }
 .duo[data-fold="closed"] .page-home .shelf { order: 1; }
-.duo[data-fold="closed"] .page-home .philo { order: 2; }
+.duo[data-fold="closed"] .page-home .philo { order: 3; }
 .duo[data-fold="closed"] .page-home .how { order: 3; }
 .duo[data-fold="closed"] .page-home .journey { order: 4; }
 .duo[data-fold="closed"] .page-home .duo-row { order: 5; }
@@ -257,7 +258,7 @@
 .duo .philo-cards { grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 0; }
 .duo .ph-core { grid-column: auto; }
 .duo .ph-card { border: 0; border-radius: var(--r); background: var(--cell); padding: 14px 16px; }
-.duo .ph-core { background: linear-gradient(160deg, #3b2b1f, #241912); }
+.duo .ph-core { background: linear-gradient(155deg, #0a63d6, #062a63); }
 .duo .ph-card h3 { font-size: 20px; }
 .duo .ph-card > p:not(.ph-n):not(.ph-books) { font: 400 15px/1.4 var(--ui); }
 .duo .ph-card.on { box-shadow: 0 0 0 2px var(--tint); transform: none; }
@@ -292,9 +293,29 @@
 .duo[data-fold="open"] .page-home .colo-inner { margin: 0 auto; padding: calc(28px + env(safe-area-inset-top)) 24px 8px; }
 .duo[data-fold="open"] .journey, .duo[data-fold="open"] .duo-row { display: block; }
 .duo[data-fold="open"] .duo-row > * + * { margin-top: 14px; }
-.duo .ph-core .ph-n { color: #D7B06C; }
-.duo .ph-core .ph-books > span { color: #c9b796; }
+.duo .ph-core .ph-n { color: #D6E6FF; }
+.duo .ph-core .ph-books > span { color: #D6E6FF; }
 .duo .reveal { opacity: 1 !important; transform: none !important; }
 .duo[data-fold="open"] .journey { margin: 18px 16px 0; border-radius: var(--r); overflow: hidden; }
 .duo[data-fold="open"] .duo-row { padding: 14px 16px 30px; }
 .duo[data-fold="open"] .philo, .duo[data-fold="open"] .how { padding-left: 16px; padding-right: 16px; }
+
+/* The portrait, iOS: a grouped card for the words, the bust, then an inset grouped list. */
+.duo .portrait { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "bust" "list" "close"; gap: 0; margin: 0; padding: 24px 16px 8px; scroll-margin-top: calc(52px + env(safe-area-inset-top)); }
+.duo .portrait::before { display: none; }
+.duo .pt-copy { padding: 16px; border-radius: var(--r); background: var(--cell); }
+.duo .portrait h2 { font-size: 28px; line-height: 34px; margin-bottom: 12px; }
+.duo .pt-lede { margin: 0; font: 400 17px/1.47 var(--ui); color: var(--label); }
+.duo .pt-bust { position: static; margin: 20px 0 6px; }
+.duo .pt-bust svg { max-width: 300px; }
+.duo .pt-say b { font: italic 400 20px/1.3 var(--title); }
+.duo .pt-say a { font: 600 15px var(--ui); color: var(--tint); text-decoration: none; }
+.duo .pt-list { grid-template-columns: minmax(0, 1fr); gap: 0; border-radius: var(--r); background: var(--cell); overflow: hidden; }
+.duo .pt-list li + li button { box-shadow: inset 52px var(--hair) 0 -1px var(--cell), inset 0 var(--hair) 0 var(--sep); }
+.duo .pt-list button { min-height: 60px; border: 0; border-radius: 0; background: none; transform: none; font-family: var(--ui); }
+.duo .pt-list button:active { background: #E5E5EA; }
+.duo .pt-list b { font: 400 17px/1.25 var(--ui); }
+.duo .pt-list span { font: 400 13px var(--ui); color: var(--label2); }
+.duo .pt-list button[aria-pressed="true"] { box-shadow: none; background: var(--tint-fill); }
+.duo .pt-close { margin: 16px 4px 0; border-left-color: var(--tint); font: italic 400 19px/1.35 var(--title); }
+.duo[data-fold="closed"] .page-home .portrait { order: 2; }

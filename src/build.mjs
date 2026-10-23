@@ -20,6 +20,8 @@ export function build({ quiet } = {}) {
   const site = existsSync(siteFile) ? JSON.parse(readFileSync(siteFile, 'utf8')) : {};
   const phFile = path.join(ROOT, 'content', 'philosophy.json');
   if (existsSync(phFile)) site.philosophy = JSON.parse(readFileSync(phFile, 'utf8'));
+  const ptFile = path.join(ROOT, 'content', 'portrait.json');
+  if (existsSync(ptFile)) site.portrait = JSON.parse(readFileSync(ptFile, 'utf8'));
   rmSync(path.join(ROOT, 'dist'), { recursive: true, force: true });
   mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
   mkdirSync(path.join(OUT, 'vendor'), { recursive: true });
@@ -27,8 +29,9 @@ export function build({ quiet } = {}) {
   // Springs for the page motion, as CSS custom properties (see web/library.css).
   const page = spring(0.55, 1), soft = spring(0.42, 0.82), snap = spring(0.3, 0.9);
   const springs = `:root{--spring:${page.easing};--spring-ms:${page.ms}ms;--spring-soft:${soft.easing};--spring-soft-ms:${soft.ms}ms;--spring-snap:${snap.easing};--spring-snap-ms:${snap.ms}ms}\n`;
-  // duo.css is the book form's Apple (HIG) layer; it comes last so it wins.
-  const css = springs + readFileSync(path.join(ROOT, 'web', 'library.css'), 'utf8') + '\n' + readFileSync(path.join(ROOT, 'web', 'duo.css'), 'utf8');
+  // studio.css restyles the app form (scoped to :root:not(.duo)); duo.css is the book
+  // form's Apple (HIG) layer. They come after library.css, in that order, so they win.
+  const css = springs + ['library.css', 'studio.css', 'duo.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
   const js = readFileSync(path.join(ROOT, 'web', 'library.js'), 'utf8');
   const shapes = readFileSync(path.join(ROOT, 'web', 'shapes.js'), 'utf8');
   const version = createHash('sha256').update(css + js + shapes).digest('hex').slice(0, 10);
@@ -37,7 +40,6 @@ export function build({ quiet } = {}) {
   writeFileSync(path.join(OUT, 'library.js'), js);
   writeFileSync(path.join(OUT, 'shapes.js'), shapes);
   cpSync(path.join(ROOT, 'web', 'icon.svg'), path.join(OUT, 'icon.svg'));
-  for (const f of ['room.jpg', 'room-800.jpg']) cpSync(path.join(ROOT, 'web', f), path.join(OUT, f));
   if (existsSync(path.join(ROOT, 'content', 'covers'))) cpSync(path.join(ROOT, 'content', 'covers'), path.join(OUT, 'covers'), { recursive: true });
   cpSync(path.join(NM, 'aurora-field', 'dist', 'aurora-field.min.js'), path.join(OUT, 'vendor', 'aurora-field.min.js'));
   const fonts = {
@@ -45,6 +47,7 @@ export function build({ quiet } = {}) {
     'instrument-serif-400-italic.woff2': '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2',
     'atkinson-next.woff2': '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-normal.woff2',
     'atkinson-next-italic.woff2': '@fontsource-variable/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin-wght-italic.woff2',
+    'geist.woff2': '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2',
     'fragment-mono-400.woff2': '@fontsource/fragment-mono/files/fragment-mono-latin-400-normal.woff2',
   };
   for (const [to, from] of Object.entries(fonts)) cpSync(path.join(NM, from), path.join(OUT, 'fonts', to));
