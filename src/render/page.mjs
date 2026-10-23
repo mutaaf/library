@@ -137,12 +137,12 @@ function shelf(pub, current) {
       </header>
       <label class="ios-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="vh">Search</span><input type="search" id="q2" placeholder="Search" autocomplete="off" enterkeyhint="search"></label>
       ${current ? '' : `<nav class="ios-explore" aria-label="Explore">
-        <a href="#portrait"><span class="ie-ic" style="--c:#2F5A8C">❙</span><span>Who My Shelf Says I Am</span></a>
-        <a href="#philosophy"><span class="ie-ic" style="--c:#8B6326">◎</span><span>My Leadership Philosophy</span></a>
-        <a href="#how"><span class="ie-ic" style="--c:#4F7CAC">❝</span><span>How I Read</span></a>
-        <a href="#journey"><span class="ie-ic" style="--c:#3F8F8B">↝</span><span>My Reading Journey</span></a>
-        <a href="#themes"><span class="ie-ic" style="--c:#C8553D">✦</span><span>Key Themes</span></a>
-        <a href="#insights"><span class="ie-ic" style="--c:#8E6BB0">✎</span><span>Latest Insights</span></a>
+        <a href="#portrait"><span class="ie-ic" style="--c:#5856D6">❙</span><span>Who My Shelf Says I Am</span></a>
+        <a href="#philosophy"><span class="ie-ic" style="--c:#0071E3">◎</span><span>My Leadership Philosophy</span></a>
+        <a href="#how"><span class="ie-ic" style="--c:#FF9500">❝</span><span>How I Read</span></a>
+        <a href="#journey"><span class="ie-ic" style="--c:#30B0C7">↝</span><span>My Reading Journey</span></a>
+        <a href="#themes"><span class="ie-ic" style="--c:#FF3B30">✦</span><span>Key Themes</span></a>
+        <a href="#insights"><span class="ie-ic" style="--c:#AF52DE">✎</span><span>Latest Insights</span></a>
       </nav>`}
       <div class="shelf-bar">
         <div class="cats" role="group" aria-label="Category">
