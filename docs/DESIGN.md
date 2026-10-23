@@ -2,6 +2,14 @@
 
 ## Why it looks like this
 
+**Studio (2026-10-23):** the owner asked for "extremely modern, Apple and Tesla inspired".
+`web/studio.css` restyles the app form (scoped to `:root:not(.duo)`, built between
+`library.css` and `duo.css`). Black full-bleed bands for the hero, philosophy, journey and
+closer (Tesla); `#F5F5F7` and white bands, white cards and one blue `#0071E3` for the rest
+(Apple). Geist (OFL, self-hosted) for everything; Instrument Serif only in quotes. The room
+photo is gone from the hero; the stack of books is lit like a product shot instead. The Duo
+keeps its HIG layer, retinted to system blue with SF Pro headings.
+
 **v3 (2026-10-22):** the owner's mockup, literally. A generated photograph of a lamp-lit library (`web/room.jpg`) is the hero, with the nine books as 2.5D hardcovers on its table (true CSS 3D faces didn't paint reliably). The nav, nine-across covers and the Journey/Themes/Insights row follow the mockup; the page is light, only the photo and the Journey card are dark.
 
 

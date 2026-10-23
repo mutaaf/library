@@ -1070,3 +1070,43 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1 !important; transform: none !important; } .peek, .toast { transition: none; } }
 @media (pointer: coarse) { .copy { opacity: 1; } }
 .loop-core { background: radial-gradient(circle at 35% 30%, #5b4330, #2a1d14 70%); }
+
+/* ── The portrait: the shelf, cut into the shape of the person it made ── */
+.portrait { position: relative; max-width: 1320px; margin: 0 auto; padding: 96px var(--gutter-x) 40px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-areas: "bust copy" "bust list" "bust close"; gap: 0 72px; align-items: start; }
+.portrait::before { content: ''; position: absolute; z-index: -1; left: 0; top: 40px; width: 62%; height: 88%; background: radial-gradient(closest-side, #f6e3bd 0%, #f6e3bd00 100%); opacity: .75; pointer-events: none; }
+.pt-copy { grid-area: copy; }
+.portrait h2 { margin: 0 0 20px; font-size: clamp(38px, 4.4vw, 62px); line-height: 1.02; text-wrap: balance; }
+.pt-lede { margin: 0 0 28px; max-width: 34em; font-size: clamp(17px, 1.45vw, 19px); line-height: 1.65; color: #3c3833; }
+.pt-bust { grid-area: bust; position: sticky; top: 90px; margin: 0; }
+.pt-bust svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; overflow: visible; filter: drop-shadow(0 30px 34px #2a1e1544); }
+.pt-sp { cursor: pointer; transform-box: fill-box; transition: opacity .35s ease; }
+.pt-sp text { font: 600 10px var(--body); letter-spacing: .14em; dominant-baseline: middle; text-anchor: middle; pointer-events: none; }
+.pt-shade { fill: #fff; opacity: 0; transition: opacity .25s ease; }
+.pt-sp:hover .pt-shade { opacity: .12; }
+.portrait.has-pick .pt-sp { opacity: .32; }
+.portrait.has-pick .pt-sp.on { opacity: 1; }
+.pt-outline { fill: none; stroke: #2a1e15; stroke-opacity: .55; stroke-width: 1.4; pointer-events: none; }
+.pt-plank { width: 78%; height: 16px; margin: -4px auto 0; border-radius: 3px; background: linear-gradient(#5a4331, var(--walnut-deep)); box-shadow: 0 14px 22px -12px #000a; }
+.pt-say { min-height: 5.6em; max-width: 30em; margin: 22px auto 0; text-align: center; }
+.pt-say-k { display: block; margin-bottom: 6px; font: 400 11px/1.3 var(--mono); text-transform: uppercase; letter-spacing: .16em; color: var(--brass-ink); }
+.pt-say b { display: block; font: italic 400 clamp(21px, 2vw, 26px)/1.3 var(--display); color: var(--text); }
+.pt-say a { display: inline-block; margin-top: 8px; font-size: 14px; font-weight: 700; color: var(--brass-ink); }
+.pt-list { grid-area: list; list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; counter-reset: pt; }
+.pt-list button { width: 100%; min-height: 58px; display: grid; grid-template-columns: 10px minmax(0, 1fr); grid-template-rows: auto auto; gap: 2px 14px; align-items: center; padding: 10px 14px 10px 12px; border: 1px solid var(--edge); border-radius: 14px; background: var(--paper); text-align: left; color: var(--text); cursor: pointer; transition: transform var(--spring-snap-ms) var(--spring-snap), border-color .2s, box-shadow .2s; }
+.pt-list i { grid-row: 1 / 3; width: 10px; height: 36px; border-radius: 2px; background: var(--c); box-shadow: inset 0 3px 0 var(--f), inset 0 -2px 0 var(--f); }
+.pt-list b { font: 600 16px/1.2 var(--body); }
+.pt-list span { font-size: 13px; color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pt-list button:hover { transform: translateY(-2px); border-color: var(--brass); }
+.pt-list button[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 10px 24px -14px #000c; }
+.pt-close { grid-area: close; margin: 26px 0 0; padding-left: 18px; border-left: 3px solid var(--brass); font: italic 400 clamp(21px, 2vw, 26px)/1.3 var(--display); }
+/* The spines are shelved into the head, one at a time, when it scrolls into view. */
+.js .pt-sp { transform: translateY(110%); }
+.js .portrait.shelved .pt-sp { transform: none; transition: transform var(--spring-ms) var(--spring) calc(var(--i) * 70ms), opacity .35s ease; }
+@media (prefers-reduced-motion: reduce) { .js .pt-sp { transform: none; } }
+@media (max-width: 900px) {
+  .portrait { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "bust" "list" "close"; padding-top: 64px; }
+  .portrait::before { width: 100%; }
+  .pt-bust { position: static; margin-bottom: 26px; }
+  .pt-bust svg { max-width: 380px; }
+}
+@media (max-width: 560px) { .pt-list { grid-template-columns: minmax(0, 1fr); } }

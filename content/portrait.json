@@ -1,0 +1,19 @@
+{
+  "kicker": "A portrait in spines",
+  "headline": "You can tell who someone is by the books on their shelf.",
+  "lede": "So I put mine together into the shape of the person they made. Every stripe is a book, as thick as the book. Tap one to see what it gives away about me.",
+  "closing": "Eleven books, one person. Still being written.",
+  "traits": {
+    "five-dysfunctions-of-a-team": { "short": "Trust comes first", "line": "I build trust before I build anything else, because everything else stands on it." },
+    "peopleware": { "short": "People, then technology", "line": "Most technical problems are people problems in disguise, so I protect my team’s focus like it’s the product." },
+    "radical-candor": { "short": "Kind and direct", "line": "I’ll tell you the truth, and I’ll care how it lands. Both, every time." },
+    "drive": { "short": "Autonomy by design", "line": "I give people room to own the work, a way to get better at it, and a reason it matters." },
+    "accelerate": { "short": "Measure, don’t guess", "line": "Speed and quality go together. I measure the system instead of arguing about it." },
+    "extreme-programming-explained": { "short": "Short loops", "line": "I ship small, test early and keep the pace sustainable, for engineers and for agents." },
+    "clean-code": { "short": "Write for the next reader", "line": "Readable work is a kindness to whoever comes next, a person or an agent." },
+    "an-elegant-puzzle": { "short": "Systems before blame", "line": "When a team struggles, I look for the constraint in the system before I look at a person." },
+    "the-managers-path": { "short": "Every rung is a new job", "line": "Engineer, manager of managers, founder: each step was a different craft, and I learned it as one." },
+    "become-an-effective-software-engineering-manager": { "short": "Leading is a craft", "line": "I practise leadership as everyday habits, not as a title." },
+    "the-48-laws-of-power": { "short": "Clear-eyed about power", "line": "I study how politics works so I can see it coming, not so I can play it." }
+  }
+}
