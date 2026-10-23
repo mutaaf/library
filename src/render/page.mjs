@@ -47,8 +47,8 @@ function head({ title, description, canonical, jsonld, type }) {
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${ORIGIN + canonical}">
-  <meta name="theme-color" content="#F2EBDD" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#14100D" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#F2EBDD">
+  <meta name="color-scheme" content="light">
   <link rel="icon" href="${BASE}icon.svg" type="image/svg+xml">
   <link rel="preload" href="${BASE}fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="${BASE}fonts/atkinson-next.woff2" as="font" type="font/woff2" crossorigin>
@@ -64,6 +64,7 @@ function nav(page) {
     <a class="mono" href="${BASE}" aria-label="MA, The Leadership Library home"><span aria-hidden="true">M<i>A</i></span></a>
     <nav aria-label="Library">
       <a class="nav-link" href="${BASE}"${page === 'home' ? ' aria-current="page"' : ''}>Home</a>
+      <a class="nav-link" href="${h}#philosophy">Philosophy</a>
       <a class="nav-link" href="${h}#books">Library</a>
       <a class="nav-link" href="${h}#journey">Journey</a>
       <a class="nav-link" href="${h}#themes">Themes</a>
@@ -282,8 +283,36 @@ function insights(pub) {
           <li><a href="${BASE}${b.slug}/#r-${r.id}">${cover(b, 'xs')}<span class="in-body"><b>${esc(r.title || b.title)}</b><span class="in-text">${esc(excerpt(r.body))}</span><span class="in-from">From: ${esc(b.title)}</span></span><span class="in-side"><time datetime="${r.date}">${esc(fmtDate(r.date))}</time>${r.tags[0] ? `<span class="in-tag">${esc(r.tags[0])}</span>` : ''}</span></a></li>`;
   return `<section class="insights" id="insights" aria-labelledby="insights-title">
       <header><h2 id="insights-title">Latest Insights</h2><a class="in-count" href="#insights-all">View all <span aria-hidden="true">→</span></a></header>
-      <ol class="in-list">${all.slice(0, 3).map(item).join('')}</ol>
-      ${all.length > 3 ? `<details class="in-more" id="insights-all"><summary>All ${all.length} insights</summary><ol class="in-list">${all.slice(3).map(item).join('')}</ol></details>` : ''}
+      <ol class="in-list">${all.slice(0, 4).map(item).join('')}</ol>
+      ${all.length > 4 ? `<details class="in-more" id="insights-all"><summary>All ${all.length} insights</summary><ol class="in-list">${all.slice(4).map(item).join('')}</ol></details>` : ''}
+    </section>`;
+}
+
+// My leadership philosophy: a loop (alignment → systems → autonomy → learning) running on
+// trust, each idea tied to the books on the shelf that shaped it. Content: content/philosophy.json.
+function philosophy(pub, ph) {
+  if (!ph) return '';
+  const shaped = (slugs) => {
+    const bs = (slugs || []).map((s) => pub.bySlug.get(s)).filter(Boolean);
+    return bs.length ? `<p class="ph-books"><span>Shaped by</span>${bs.map((b) => `<a href="${BASE}${b.slug}/" title="${esc(b.title)}">${cover(b, 'xs')}<span class="vh">${esc(b.title)}</span></a>`).join('')}</p>` : '';
+  };
+  const pos = ['top', 'right', 'bottom', 'left'];
+  return `<section class="philo" id="philosophy" aria-labelledby="philo-title">
+      <div class="philo-copy">
+        <p class="kicker">${esc(ph.kicker)}</p>
+        <h2 id="philo-title">${esc(ph.headline)}</h2>
+        <p class="philo-lede">${esc(ph.lede)}</p>
+        <p class="philo-close">${esc(ph.closing)}</p>
+      </div>
+      <div class="loop" aria-hidden="true">
+        <svg viewBox="0 0 400 400"><circle class="loop-ring" cx="200" cy="200" r="150"/><circle class="loop-flow" cx="200" cy="200" r="150" pathLength="100"/>${[45, 135, 225, 315].map((a) => `<path class="loop-arrow" d="M0 -7 L9 0 L0 7 Z" transform="rotate(${a} 200 200) translate(200 50) rotate(0)"/>`).join('')}</svg>
+        <div class="loop-core"><b>${esc(ph.core.name)}</b></div>
+        ${ph.loop.map((n, i) => `<div class="loop-node loop-${pos[i]}"><span>${i + 1}</span><b>${esc(n.name)}</b></div>`).join('')}
+      </div>
+      <ol class="philo-cards">
+        <li class="ph-card ph-core"><p class="ph-n">The foundation</p><h3>${esc(ph.core.name)}</h3><p>${esc(ph.core.text)}</p>${shaped(ph.core.books)}</li>
+        ${ph.loop.map((n, i) => `<li class="ph-card"><p class="ph-n">${String(i + 1).padStart(2, '0')}</p><h3>${esc(n.name)}</h3><p>${esc(n.text)}</p>${shaped(n.books)}</li>`).join('\n        ')}
+      </ol>
     </section>`;
 }
 
@@ -320,6 +349,7 @@ export function home(pub, opts = {}) {
         <div class="stats-wrap">${counts(pub)}</div>
       </section>
     </div>
+    ${philosophy(pub, site.philosophy)}
     <section class="how" id="how" aria-labelledby="how-title">
       <h2 id="how-title">How I read</h2>
       <p>Every block on a book’s page says whose claim it is.</p>
@@ -342,8 +372,8 @@ export function home(pub, opts = {}) {
         <a class="colo-feature" href="${BASE}${featured.slug}/">${cover(featured, 'sm')}<span><span class="kicker">Start here</span><b>${esc(featured.title)}</b><span>${esc(authorsText(featured.authors))}</span></span></a>
       </div>
     </aside>
+    ${journey(pub)}
     <div class="duo-row">
-      ${journey(pub)}
       ${themesHub(pub)}
       ${insights(pub)}
     </div>

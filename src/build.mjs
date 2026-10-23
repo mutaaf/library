@@ -18,6 +18,8 @@ export function build({ quiet } = {}) {
   const { all, pub } = load(ROOT);
   const siteFile = path.join(ROOT, 'content', 'site.json');
   const site = existsSync(siteFile) ? JSON.parse(readFileSync(siteFile, 'utf8')) : {};
+  const phFile = path.join(ROOT, 'content', 'philosophy.json');
+  if (existsSync(phFile)) site.philosophy = JSON.parse(readFileSync(phFile, 'utf8'));
   rmSync(path.join(ROOT, 'dist'), { recursive: true, force: true });
   mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
   mkdirSync(path.join(OUT, 'vendor'), { recursive: true });
