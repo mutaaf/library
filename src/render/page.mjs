@@ -135,6 +135,7 @@ function shelf(pub, current) {
       <header class="shelf-head">
         <div><h2 id="shelf-title">${current ? 'The shelf' : 'All Books'}</h2><p class="shelf-sub">Explore the full collection, organized by themes and categories.</p></div>
       </header>
+      <label class="ios-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="vh">Search</span><input type="search" id="q2" placeholder="Search" autocomplete="off" enterkeyhint="search"></label>
       <div class="shelf-bar">
         <div class="cats" role="group" aria-label="Category">
           <button type="button" class="cat" data-cat="" aria-pressed="true">All <span>(${pub.books.length})</span></button>
@@ -183,7 +184,7 @@ function stack(pub) {
     const turn = (((i * 37) % 5) - 2) * 0.9;
     const img = b.coverImage ? `<img src="${BASE}${esc(b.coverImage.file)}" alt="" loading="lazy" decoding="async">` : '';
     return `
-          <li class="stk" style="${coverVars(b.cover)};--t:${t}px;--len:${len}px;--shift:${shift}px;--turn:${turn}deg;--i:${i}"><a class="stk-link" href="${BASE}${b.slug}/"><span class="stk-face" data-type="${b.cover.type}"><span class="stk-title">${esc(b.title)}</span><span class="stk-author">${esc(b.authors.length > 1 ? shortAuthors(b.authors) : b.authors[0])}</span></span><span class="stk-top" aria-hidden="true">${img}</span><span class="stk-pages" aria-hidden="true"></span><span class="vh"> by ${esc(authorsText(b.authors))}</span></a></li>`;
+          <li class="stk" style="${coverVars(b.cover)};--t:${t}px;--len:${len}px;--shift:${shift}px;--turn:${turn}deg;--i:${i}" data-peek-title="${esc(b.title)}" data-peek-by="${esc(authorsText(b.authors))}" data-peek-line="${esc((b.pullQuote || b.oneLine || { text: '' }).text)}" data-peek-status="${esc(statusText(b))}" data-peek-rating="${b.reading && isNum(b.reading.rating) ? b.reading.rating : ''}" data-peek-cover="${b.coverImage ? BASE + esc(b.coverImage.file) : ''}"><a class="stk-link" href="${BASE}${b.slug}/"><span class="stk-face" data-type="${b.cover.type}"><span class="stk-title">${esc(b.title)}</span><span class="stk-author">${esc(b.authors.length > 1 ? shortAuthors(b.authors) : b.authors[0])}</span></span><span class="stk-top" aria-hidden="true">${img}</span><span class="stk-pages" aria-hidden="true"></span><span class="vh"> by ${esc(authorsText(b.authors))}</span></a></li>`;
   }).join('')}
         </ol>`;
 }
@@ -199,8 +200,8 @@ function counts(pub) {
     idea: '<path d="M6 3h12v18l-6-4-6 4z"/>',
     note: '<path d="M5 3h10l4 4v14H5z"/><path d="M8 11h8M8 15h6" stroke="var(--night)" stroke-width="1.6"/>',
   };
-  const item = (k, v, l) => `<li><svg viewBox="0 0 24 24" aria-hidden="true">${icon[k]}</svg><b>${v}</b><span>${l}</span></li>`;
-  return `<ul class="stats" aria-label="The library in numbers">${item('books', pub.books.length, 'Books')}${item('done', n('finished'), 'Completed')}${item('prog', n('reading') + n('revisiting'), 'In progress')}${item('idea', insights, 'Key insights')}${item('note', notes, 'Personal notes')}</ul>`;
+  const item = (k, v, l, href, f) => `<li><a href="${href}"${f ? ` data-filter="${f}"` : ''}><svg viewBox="0 0 24 24" aria-hidden="true">${icon[k]}</svg><b data-count="${v}">${v}</b><span>${l}</span></a></li>`;
+  return `<ul class="stats" aria-label="The library in numbers">${item('books', pub.books.length, 'Books', '#books', 'all')}${item('done', n('finished'), 'Completed', '#books', 'status:finished')}${item('prog', n('reading') + n('revisiting'), 'In progress', '#books', 'status:reading,revisiting')}${item('idea', insights, 'Key insights', '#themes')}${item('note', notes, 'Personal notes', '#insights')}</ul>`;
 }
 
 function journey(pub) {
@@ -227,7 +228,8 @@ function journey(pub) {
             <button type="button" data-jf="" aria-pressed="true">All</button><button type="button" data-jf="finished" aria-pressed="false">Completed</button><button type="button" data-jf="reading" aria-pressed="false">In Progress</button><button type="button" data-jf="queued" aria-pressed="false">Planned</button>
           </div>
         </header>
-        <div class="track-wrap"><div class="track" style="--n:${N}">
+        <div class="track-nav"><button type="button" class="tn-btn" data-scroll="-1" aria-label="Earlier books">‹</button><button type="button" class="tn-btn" data-scroll="1" aria-label="Later books">›</button></div>
+        <div class="track-wrap" tabindex="0" aria-label="Reading timeline, scrolls sideways"><div class="track" style="--n:${N}">
           <svg class="path" viewBox="0 0 1000 220" preserveAspectRatio="none" aria-hidden="true"><path d="${d}"/><path class="path-done" d="${d}" pathLength="1" style="--done:${Math.max(0, (nDone - 0.5) / N).toFixed(3)}"/></svg>
           <ol>${stops.map((s, i) => `
             <li class="stop stop-${s.k}" data-k="${s.k}" style="--x:${(pts[i].x / 10).toFixed(2)}%;--y:${pts[i].y}px"><a href="${BASE}${s.b.slug}/">${cover(s.b, 'xs')}<span class="dot" aria-hidden="true"></span><span class="stop-label"><b>${esc(s.b.title)}</b><span>${esc(s.when)}</span></span></a></li>`).join('')}
@@ -262,9 +264,9 @@ function themesHub(pub) {
       <header><h2 id="themes-title">Key Themes Across Books</h2><p>How ideas from different books connect, complement, or challenge each other.</p></header>
       <div class="hub-map">
         <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${pos.map((p) => `<line x1="50" y1="50" x2="${p.x.toFixed(2)}" y2="${p.y.toFixed(2)}"/>`).join('')}</svg>
-        <div class="hub-core"><b>High-performing teams</b></div>
+        <a class="hub-core" href="#philosophy"><b>High-performing teams</b></a>
         <ul>${nodes.map((n, i) => `
-          <li style="--x:${pos[i].x.toFixed(2)}%;--y:${pos[i].y.toFixed(2)}%;--c:${n.c}"><a href="${BASE}${n.books[0].slug}/"><span class="hub-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n.t.slug] || '<circle cx="12" cy="12" r="5"/>'}</svg></span><span class="hub-t"><b>${esc(n.t.name)}</b><span>(${esc(n.books[0].title.replace(/^The /, '').replace(/^Become an Effective Software Engineering Manager$/, 'Effective SE Manager').replace(/ Explained$/, ''))})</span></span></a></li>`).join('')}
+          <li style="--x:${pos[i].x.toFixed(2)}%;--y:${pos[i].y.toFixed(2)}%;--c:${n.c}"><a href="${BASE}${n.books[0].slug}/" data-filter="theme:${n.t.slug}" data-theme-name="${esc(n.t.name)}"><span class="hub-ic"><svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[n.t.slug] || '<circle cx="12" cy="12" r="5"/>'}</svg></span><span class="hub-t"><b>${esc(n.t.name)}</b><span>(${esc(n.books[0].title.replace(/^The /, '').replace(/^Become an Effective Software Engineering Manager$/, 'Effective SE Manager').replace(/ Explained$/, ''))})</span></span></a></li>`).join('')}
         </ul>
       </div>
     </section>`;
@@ -280,9 +282,9 @@ function insights(pub) {
   all.sort((x, y) => (x.r.id < y.r.id ? 1 : x.r.id > y.r.id ? -1 : x.b.featuredRank - y.b.featuredRank));
   if (!all.length) return '';
   const item = ({ b, r }) => `
-          <li><a href="${BASE}${b.slug}/#r-${r.id}">${cover(b, 'xs')}<span class="in-body"><b>${esc(r.title || b.title)}</b><span class="in-text">${esc(excerpt(r.body))}</span><span class="in-from">From: ${esc(b.title)}</span></span><span class="in-side"><time datetime="${r.date}">${esc(fmtDate(r.date))}</time>${r.tags[0] ? `<span class="in-tag">${esc(r.tags[0])}</span>` : ''}</span></a></li>`;
+          <li data-tags="${esc(r.tags.join('|'))}"><a href="${BASE}${b.slug}/#r-${r.id}">${cover(b, 'xs')}<span class="in-body"><b>${esc(r.title || b.title)}</b><span class="in-text">${esc(excerpt(r.body))}</span><span class="in-from">From: ${esc(b.title)}</span></span><span class="in-side"><time datetime="${r.date}">${esc(fmtDate(r.date))}</time></span></a>${r.tags[0] ? `<button type="button" class="in-tag" data-tag="${esc(r.tags[0])}" aria-pressed="false">${esc(r.tags[0])}</button>` : ''}</li>`;
   return `<section class="insights" id="insights" aria-labelledby="insights-title">
-      <header><h2 id="insights-title">Latest Insights</h2><a class="in-count" href="#insights-all">View all <span aria-hidden="true">→</span></a></header>
+      <header><h2 id="insights-title">Latest Insights</h2><p class="in-filter" id="inFilter" hidden><span></span> <button type="button" class="in-clear">Show all</button></p><a class="in-count" href="#insights-all">View all <span aria-hidden="true">→</span></a></header>
       <ol class="in-list">${all.slice(0, 4).map(item).join('')}</ol>
       ${all.length > 4 ? `<details class="in-more" id="insights-all"><summary>All ${all.length} insights</summary><ol class="in-list">${all.slice(4).map(item).join('')}</ol></details>` : ''}
     </section>`;
@@ -304,14 +306,14 @@ function philosophy(pub, ph) {
         <p class="philo-lede">${esc(ph.lede)}</p>
         <p class="philo-close">${esc(ph.closing)}</p>
       </div>
-      <div class="loop" aria-hidden="true">
-        <svg viewBox="0 0 400 400"><circle class="loop-ring" cx="200" cy="200" r="150"/><circle class="loop-flow" cx="200" cy="200" r="150" pathLength="100"/>${[45, 135, 225, 315].map((a) => `<path class="loop-arrow" d="M0 -7 L9 0 L0 7 Z" transform="rotate(${a} 200 200) translate(200 50) rotate(0)"/>`).join('')}</svg>
-        <div class="loop-core"><b>${esc(ph.core.name)}</b></div>
-        ${ph.loop.map((n, i) => `<div class="loop-node loop-${pos[i]}"><span>${i + 1}</span><b>${esc(n.name)}</b></div>`).join('')}
+      <div class="loop" role="group" aria-label="The loop: tap a stage">
+        <svg viewBox="0 0 400 400" aria-hidden="true"><circle class="loop-ring" cx="200" cy="200" r="150"/><circle class="loop-flow" cx="200" cy="200" r="150" pathLength="100"/>${[45, 135, 225, 315].map((a) => `<path class="loop-arrow" d="M0 -7 L9 0 L0 7 Z" transform="rotate(${a} 200 200) translate(200 50) rotate(0)"/>`).join('')}</svg>
+        <button type="button" class="loop-core" data-ph="0" aria-controls="ph-0"><b>${esc(ph.core.name)}</b></button>
+        ${ph.loop.map((n, i) => `<button type="button" class="loop-node loop-${pos[i]}" data-ph="${i + 1}" aria-controls="ph-${i + 1}"><span>${i + 1}</span><b>${esc(n.name)}</b></button>`).join('')}
       </div>
       <ol class="philo-cards">
-        <li class="ph-card ph-core"><p class="ph-n">The foundation</p><h3>${esc(ph.core.name)}</h3><p>${esc(ph.core.text)}</p>${shaped(ph.core.books)}</li>
-        ${ph.loop.map((n, i) => `<li class="ph-card"><p class="ph-n">${String(i + 1).padStart(2, '0')}</p><h3>${esc(n.name)}</h3><p>${esc(n.text)}</p>${shaped(n.books)}</li>`).join('\n        ')}
+        <li class="ph-card ph-core" id="ph-0" data-ph="0"><p class="ph-n">The foundation</p><h3>${esc(ph.core.name)}</h3><p>${esc(ph.core.text)}</p>${shaped(ph.core.books)}</li>
+        ${ph.loop.map((n, i) => `<li class="ph-card" id="ph-${i + 1}" data-ph="${i + 1}"><p class="ph-n">${String(i + 1).padStart(2, '0')}</p><h3>${esc(n.name)}</h3><p>${esc(n.text)}</p>${shaped(n.books)}</li>`).join('\n        ')}
       </ol>
     </section>`;
 }
@@ -324,6 +326,7 @@ export function home(pub, opts = {}) {
   const body = `
 <body class="page-home">
   ${nav('home')}
+  <div class="ios-bar"><span class="ios-back"></span><b class="ios-title" aria-hidden="true">Library</b></div>
   <main id="main" class="spread">
     <div class="night">
       <picture class="room" aria-hidden="true"><source media="(max-width: 800px)" srcset="${BASE}room-800.jpg"><img src="${BASE}room.jpg" alt="" fetchpriority="high" decoding="async"></picture>
@@ -354,10 +357,10 @@ export function home(pub, opts = {}) {
       <h2 id="how-title">How I read</h2>
       <p>Every block on a book’s page says whose claim it is.</p>
       <ol>
-        <li>${claim('book')}<span>A summary of what the book argues, and its own model. Never a long quotation.</span></li>
-        <li>${claim('interpretation')}<span>What I take from it, for engineering teams and for the AI agents I run.</span></li>
-        <li>${claim('application')}<span>What I do with it, and the questions I ask my own teams.</span></li>
-        <li>${claim('critique')}<span>Where it’s dated, overreaches, or is only true in some rooms.</span></li>
+        <li><a href="${BASE}five-dysfunctions-of-a-team/#thesis">${claim('book')}<span>A summary of what the book argues, and its own model. Never a long quotation.</span><span class="how-go">See an example →</span></a></li>
+        <li><a href="${BASE}drive/#why">${claim('interpretation')}<span>What I take from it, for engineering teams and for the AI agents I run.</span><span class="how-go">See an example →</span></a></li>
+        <li><a href="${BASE}accelerate/#diagnostic">${claim('application')}<span>What I do with it, and the questions I ask my own teams.</span><span class="how-go">See an example →</span></a></li>
+        <li><a href="${BASE}the-48-laws-of-power/#challenge">${claim('critique')}<span>Where it’s dated, overreaches, or is only true in some rooms.</span><span class="how-go">See an example →</span></a></li>
       </ol>
     </section>
     ${shelf(pub, null)}
@@ -444,7 +447,9 @@ export function book(pub, b) {
   const meta = [b.firstPublishedYear, b.pages ? b.pages + ' pages' : '', b.edition || '', CATEGORIES[b.category]].filter(Boolean).map((x) => `<span>${esc(String(x))}</span>`).join('');
   const body = `
 <body class="page-book" style="${coverVars(b.cover)}">
+  <div class="progress" aria-hidden="true"><i></i></div>
   ${nav('book')}
+  <div class="ios-bar"><a class="ios-back" href="${BASE}#books"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Library</a><b class="ios-title" aria-hidden="true">${esc(b.title)}</b><button type="button" class="ios-share" data-share hidden aria-label="Share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11v9h12v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button></div>
   <main id="main" class="spread">
     ${shelf(pub, b)}
     <div class="gutter" aria-hidden="true"></div>
@@ -459,7 +464,7 @@ export function book(pub, b) {
           <p class="book-by">${esc(authorsText(b.authors))}</p>
           <p class="book-meta">${meta}</p>
           ${rd && isNum(rd.rating) ? `<p class="book-rating">${stars(rd.rating, 'My rating')}<span>${rd.rating.toFixed(1)} (my rating)</span></p>` : ''}
-          <p class="book-ctas">${hasNotes ? `<a class="btn btn-dark" href="#panel-notes" data-tab="notes"><span class="play" aria-hidden="true"></span>Read my notes</a>` : ''}${buy ? `<a class="btn-ghost btn-out" href="${esc(buy.url)}" rel="noopener" target="_blank">Buy book <span aria-hidden="true">↗</span></a>` : ''}${borrow ? `<a class="btn-ghost btn-out" href="${esc(borrow.url)}" rel="noopener" target="_blank">Borrow <span aria-hidden="true">↗</span></a>` : ''}</p>
+          <p class="book-ctas">${hasNotes ? `<a class="btn btn-dark" href="#panel-notes" data-tab="notes"><span class="play" aria-hidden="true"></span>Read my notes</a>` : ''}${buy ? `<a class="btn-ghost btn-out" href="${esc(buy.url)}" rel="noopener" target="_blank">Buy book <span aria-hidden="true">↗</span></a>` : ''}${borrow ? `<a class="btn-ghost btn-out" href="${esc(borrow.url)}" rel="noopener" target="_blank">Borrow <span aria-hidden="true">↗</span></a>` : ''}<button type="button" class="btn-ghost btn-out share" data-share hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11v9h12v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Share</button></p>
           ${b.pullQuote ? `<blockquote class="pull"><p>${esc(b.pullQuote.text)}</p></blockquote>` : ''}
         </div>
       </header>

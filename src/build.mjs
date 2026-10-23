@@ -27,7 +27,8 @@ export function build({ quiet } = {}) {
   // Springs for the page motion, as CSS custom properties (see web/library.css).
   const page = spring(0.55, 1), soft = spring(0.42, 0.82), snap = spring(0.3, 0.9);
   const springs = `:root{--spring:${page.easing};--spring-ms:${page.ms}ms;--spring-soft:${soft.easing};--spring-soft-ms:${soft.ms}ms;--spring-snap:${snap.easing};--spring-snap-ms:${snap.ms}ms}\n`;
-  const css = springs + readFileSync(path.join(ROOT, 'web', 'library.css'), 'utf8');
+  // duo.css is the book form's Apple (HIG) layer; it comes last so it wins.
+  const css = springs + readFileSync(path.join(ROOT, 'web', 'library.css'), 'utf8') + '\n' + readFileSync(path.join(ROOT, 'web', 'duo.css'), 'utf8');
   const js = readFileSync(path.join(ROOT, 'web', 'library.js'), 'utf8');
   const shapes = readFileSync(path.join(ROOT, 'web', 'shapes.js'), 'utf8');
   const version = createHash('sha256').update(css + js + shapes).digest('hex').slice(0, 10);
