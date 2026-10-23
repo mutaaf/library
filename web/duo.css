@@ -319,3 +319,138 @@
 .duo .pt-list button[aria-pressed="true"] { box-shadow: none; background: var(--tint-fill); }
 .duo .pt-close { margin: 16px 4px 0; border-left-color: var(--tint); font: italic 400 19px/1.35 var(--title); }
 .duo[data-fold="closed"] .page-home .portrait { order: 2; }
+
+/* ================================================================
+   STUDIO ON THE DUO (2026-10-23, owner: "very basic and robotic"). The app form's
+   Apple-and-Tesla look, said in iOS: App Store "Today" cards instead of bare grouped
+   lists. Black cards for the hero, the philosophy and each book; blue for every accent.
+   ================================================================ */
+.duo {
+  --brass: #0071E3; --brass-hi: #2997FF; --brass-ink: #0066CC;
+  --walnut: #1D1D1F; --walnut-deep: #000; --sage-ink: #1E7A35;
+  --paper: #F2F2F7; --parchment: #F2F2F7; --card: #FFFFFF; --edge: #E5E5EA; --text: #000; --soft: #6E6E73;
+  --card-r: 26px;
+  --dark-soft: #A1A1A6;
+  --dark-cell: #1C1C1E;
+  --glow: radial-gradient(90% 52% at 50% 64%, #16305a 0%, #0a1426 42%, transparent 74%), #000;
+}
+
+/* The hero, closed: a Today card above the shelf. */
+.duo .page-home .sky { display: none; }
+.duo[data-fold="closed"] .page-home .night { display: block; order: 0; min-height: 0; margin: calc(52px + env(safe-area-inset-top)) 12px 0; border-radius: var(--card-r); overflow: hidden; background: var(--glow); color: #F5F5F7; box-shadow: 0 30px 50px -30px #0009; }
+.duo .hero { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: none; justify-items: center; gap: 0; min-height: 0; max-width: none; margin: 0; padding: 30px 20px 20px; text-align: center; }
+.duo .hero > * { grid-column: 1; grid-row: auto; }
+.duo .hero .hero-copy { max-width: 30em; }
+.duo .hero-eyebrow { margin: 0 0 10px; font: 600 13px/1.2 var(--ui); color: #2997FF; }
+.duo .hero-eyebrow span { margin: 0 3px; color: var(--dark-soft); }
+.duo .hero h1 { margin: 0 0 12px; font: 700 31px/1.08 -apple-system, BlinkMacSystemFont, 'SF Pro Display', var(--ui); letter-spacing: -.028em; color: #F5F5F7; }
+.duo .h1-dim { display: block; color: #8E8E93; }
+.duo .hero .lede { max-width: none; margin: 0 0 18px; font: 400 15px/1.45 var(--ui); color: var(--dark-soft); }
+.duo .hero .ctas { display: grid; justify-items: center; gap: 2px; }
+.duo .hero .cta { min-height: 50px; padding: 0 30px; border-radius: 980px; background: #0071E3; color: #fff; font: 600 17px/1 var(--ui); }
+.duo .cta-link { display: inline-flex; align-items: center; gap: 4px; min-height: 44px; color: #2997FF; font: 400 17px var(--ui); text-decoration: none; }
+.duo .desk { width: auto; margin: 0; padding: 26px 0 6px; zoom: .62; }
+.duo .stack { transform: none; margin: 0; }
+.duo .epigraph { margin: 18px 0 0; padding: 0; border: 0; text-align: center; }
+.duo .epigraph::before { display: none; }
+.duo .epigraph p { margin: 0 0 4px; font: italic 400 17px/1.35 var(--title); color: #E5E5EA; }
+.duo .epigraph footer { font: 400 12px var(--ui); color: var(--dark-soft); }
+.duo .stats-wrap { width: 100%; max-width: none; margin: 20px 0 0; padding: 0; }
+.duo .stats { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0; padding: 14px 0 0; border: 0; border-top: var(--hair) solid #ffffff33; border-radius: 0; background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.duo .stats li, .duo .stats li + li { padding: 0; border: 0; }
+.duo .stats a { display: grid; grid-template-columns: 1fr; justify-items: center; gap: 2px; padding: 6px 0; border-radius: 12px; }
+.duo .stats svg { display: none; }
+.duo .stats b { font: 700 22px/1.1 var(--ui); letter-spacing: -.02em; color: #fff; font-variant-numeric: tabular-nums; }
+.duo .stats span { font: 400 11px/1.2 var(--ui); color: var(--dark-soft); text-align: center; }
+.duo[data-fold="closed"] .page-home .shelf { padding-top: 30px; }
+
+/* The open home's right-hand page leads with the same card. */
+.duo[data-fold="open"] .page-home .colo-inner { max-width: none; margin: calc(12px + env(safe-area-inset-top)) 16px 0; padding: 34px 24px 24px; border-radius: var(--card-r); background: radial-gradient(80% 60% at 50% 34%, #16305a 0%, #0a1426 45%, transparent 75%), #000; color: #F5F5F7; }
+.duo[data-fold="open"] .colophon .kicker { color: #2997FF; }
+.duo[data-fold="open"] .colophon h1 { font-size: 32px; line-height: 1.08; letter-spacing: -.028em; color: #fff; }
+.duo[data-fold="open"] .colo-lede { color: var(--dark-soft); font: 600 19px/1.3 var(--ui); font-style: normal; }
+.duo[data-fold="open"] .colophon .colo-inner > p:not(.kicker):not(.colo-lede) { color: var(--dark-soft); }
+.duo .colo-orn { width: 150px; height: 84px; gap: 4px; border-bottom: 3px solid #3A3A3C; filter: drop-shadow(0 0 18px #2997ff55); }
+.duo .colo-orn i { width: 20px; }
+.duo .colo-orn i:nth-child(1) { height: 58px; } .duo .colo-orn i:nth-child(2) { height: 72px; } .duo .colo-orn i:nth-child(3) { height: 80px; background: #0071E3; } .duo .colo-orn i:nth-child(4) { height: 64px; } .duo .colo-orn i:nth-child(5) { height: 70px; }
+.duo[data-fold="open"] .colo-feature { background: #ffffff14; color: #F5F5F7; }
+.duo[data-fold="open"] .colo-feature .kicker { color: #2997FF; }
+.duo[data-fold="open"] .colo-feature b { font: 600 20px/1.15 var(--ui); }
+.duo[data-fold="open"] .colo-feature > span > span:last-child { color: var(--dark-soft); }
+.duo[data-fold="open"] .page-home .portrait { padding-top: 28px; }
+
+/* The portrait: the bust on an aluminium shelf. */
+.duo .pt-plank { width: 70%; height: 10px; border-radius: 5px; background: linear-gradient(#f2f2f5, #c7c7cc); box-shadow: 0 16px 22px -14px #0006; }
+.duo .pt-outline { stroke: #1D1D1F; stroke-opacity: .25; }
+.duo .pt-bust svg { filter: drop-shadow(0 30px 30px #00000030); }
+.duo .pt-say-k { font: 600 12px/1.3 var(--ui); letter-spacing: .04em; color: var(--tint); }
+
+/* Philosophy: a black card, the loop glowing. */
+.duo .philo { margin: 24px 12px 0; padding: 26px 16px 18px; border-radius: var(--card-r); background: #000; color: #F5F5F7; }
+.duo .philo-copy { padding: 0 4px; background: none; }
+.duo .philo .kicker { color: #2997FF; }
+.duo .philo h2 { color: #fff; }
+.duo .philo-lede { color: var(--dark-soft); }
+.duo .philo-close { color: #F5F5F7; border-left-color: #2997FF; }
+.duo .loop-ring { stroke: #2C2C2E; stroke-width: 1.5; }
+.duo .loop-flow { stroke: #2997FF; filter: drop-shadow(0 0 5px #2997ffaa); }
+.duo .loop-arrow { fill: #2997FF; }
+.duo .loop-core { color: #fff; background: radial-gradient(circle at 34% 28%, #5aa9ff 0%, #0a63d6 42%, #062a63 100%); box-shadow: 0 0 0 1px #2997ff55, 0 0 60px -6px #2997ff88; }
+.duo .loop-core b { font: 700 16px/1.15 var(--ui); letter-spacing: -.02em; }
+.duo .loop-node span { background: var(--dark-cell); border: 1.5px solid #2997FF; color: #fff; box-shadow: none; }
+.duo .loop-node b { background: var(--dark-cell); color: #F5F5F7; border-radius: 980px; }
+.duo .loop-node.on span { background: #2997FF; color: #000; box-shadow: 0 0 20px #2997ffaa; }
+.duo .loop-node.on b { background: #fff; color: #000; }
+.duo .ph-card { background: var(--dark-cell); color: #F5F5F7; }
+.duo .ph-card > p:not(.ph-n):not(.ph-books) { color: var(--dark-soft); }
+.duo .ph-n { color: #2997FF; }
+.duo .ph-books { border-top-color: #2C2C2E; }
+.duo .ph-books > span { color: var(--dark-soft); }
+.duo .ph-card.on { box-shadow: 0 0 0 2px #2997FF; }
+
+/* Journey: black, the path in blue. */
+.duo .journey { background: radial-gradient(70% 80% at 50% 0%, #0d2142 0%, transparent 70%), #000; border-radius: var(--card-r); }
+.duo .mtn path:nth-child(1) { fill: #15171c; } .duo .mtn path:nth-child(2) { fill: #0d0f13; } .duo .mtn path:nth-child(3) { fill: #050608; }
+.duo .track .path path { stroke: #2997ff4d; }
+.duo .track .path .path-done { stroke: #2997FF; filter: drop-shadow(0 0 5px #2997ffaa); }
+.duo .stop .dot { background: #2997FF; box-shadow: 0 0 0 4px #2997ff33, 0 0 12px #2997FF; }
+.duo .stop-reading .dot { background: #fff; }
+.duo .stop-queued .dot { background: #636366; box-shadow: 0 0 0 4px #63636633; }
+.duo .stop b { font: 600 13px/1.2 var(--ui); }
+.duo .stop-reading b + span { color: #2997FF; }
+.duo .seg-dark button[aria-pressed="true"] { background: #F5F5F7; color: #000; }
+.duo .hub, .duo .insights, .duo .pt-copy, .duo .ios-explore, .duo .shelf[data-view="list"] .books, .duo .pt-list, .duo .how ol { border-radius: 20px; }
+.duo .hub-ic { border: 0; border-radius: 9px; background: var(--c); }
+.duo .hub-ic svg { fill: #fff; }
+
+/* A book: a black card lit in its own colour, as the app form's hero. */
+.duo .book-hero, .duo[data-fold="closed"] .book-hero { isolation: isolate; margin: calc(52px + env(safe-area-inset-top)) 12px 0; padding: 26px 18px 20px; border-radius: var(--card-r); overflow: hidden; color: #F5F5F7;
+  background: radial-gradient(90% 40% at 50% 20%, color-mix(in srgb, var(--cv-bg) 75%, transparent), transparent 72%), #000; box-shadow: 0 30px 50px -30px #0009; }
+.duo[data-fold="open"] .book-hero { margin: calc(12px + env(safe-area-inset-top)) 16px 0; padding: 22px 20px 20px;
+  background: radial-gradient(60% 70% at 16% 30%, color-mix(in srgb, var(--cv-bg) 75%, transparent), transparent 72%), #000; }
+.duo .book-hero h1 { color: #fff; letter-spacing: -.028em; }
+.duo .book-sub { color: var(--dark-soft); }
+.duo .book-by { color: #F5F5F7; }
+.duo .book-meta, .duo .book-rating { color: var(--dark-soft); }
+.duo .book-meta span + span::before { color: #636366; }
+.duo .book-hero .chips-row span { background: #ffffff1f; color: #E5E5EA; }
+.duo .book-hero .stars { background: linear-gradient(90deg, #fff calc(var(--r) / 5 * 100%), #48484A calc(var(--r) / 5 * 100%)); -webkit-background-clip: text; background-clip: text; }
+.duo .book-hero .btn-out, .duo .book-hero .btn-ghost { background: #ffffff1f; color: #fff; }
+.duo .book-hero .back { color: var(--dark-soft); }
+.duo .book-hero .pull { background: #ffffff12; }
+.duo .book-hero .pull p { color: #F5F5F7; }
+.duo .hero-cover .cover { box-shadow: 0 20px 36px -16px #000, 0 0 70px -10px color-mix(in srgb, var(--cv-bg) 85%, transparent); }
+.duo .page-book .tabs { margin-top: 16px; }
+
+/* Touch: cards and buttons give under the finger, on the snap spring. */
+.duo:not(.still) :is(.cta, .stats a, .colo-feature, .ph-card, .hub-map a, .btn, .btn-ghost, .loop-node, .pg) { transition: transform var(--spring-snap-ms) var(--spring-snap); }
+.duo:not(.still) :is(.cta, .stats a, .colo-feature, .ph-card, .hub-map a, .btn, .btn-ghost, .pg):active { transform: scale(.97); }
+.duo .book-hero .hero-copy, .duo .book-ctas > * { min-width: 0; }
+.duo[data-fold="open"] .book-hero { grid-template-columns: 112px minmax(0, 1fr); }
+.duo .book-hero, .duo[data-fold="closed"] .book-hero { background: radial-gradient(90% 40% at 50% 20%, color-mix(in srgb, var(--cv-bg) 50%, transparent), transparent 72%), #000; }
+.duo[data-fold="open"] .book-hero { background: radial-gradient(60% 70% at 16% 30%, color-mix(in srgb, var(--cv-bg) 50%, transparent), transparent 72%), #000; }
+.duo .stats { align-items: start; }
+.duo .stats a { align-content: start; }
+.duo[data-fold="open"] .book-ctas { display: flex; flex-wrap: wrap; gap: 8px; }
+.duo[data-fold="open"] .book-ctas .btn, .duo[data-fold="open"] .book-ctas .btn-ghost { flex: 1 1 auto; padding: 0 18px; }
+.duo[data-fold="open"] .book-ctas .share { flex: 0 0 50px; }

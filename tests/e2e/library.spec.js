@@ -137,6 +137,20 @@ test.describe('book form (iPhone Duo)', () => {
     const colo = await page.locator('.colophon').boundingBox();
     expect(shelf.x).toBeLessThan(colo.x);
     await expect(page.locator('.night')).toBeHidden();
+    // Every home section moves to the right-hand page; none is left stranded in the spread.
+    await expect(page.locator('.colophon #portrait')).toBeAttached();
+    await expect(page.locator('.bk-link').first()).toBeInViewport();
+    expect(await page.evaluate(() => [...document.querySelector('main').children].filter((e) => !e.matches('.leaf, .gutter') && getComputedStyle(e).display !== 'none').map((e) => e.id || e.className))).toEqual([]);
+  });
+
+  test('closed, the home opens on the hero card', async ({ page }) => {
+    await page.setViewportSize({ width: 382, height: 580 });
+    await page.goto('/library/?duo=closed');
+    await expect(page.locator('.night')).toBeVisible();
+    const hero = await page.locator('.night').boundingBox();
+    const shelf = await page.locator('#shelf').boundingBox();
+    expect(hero.y).toBeLessThan(shelf.y);
+    expect(await noOverflow(page)).toBeLessThanOrEqual(0);
   });
 });
 

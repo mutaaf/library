@@ -81,15 +81,15 @@
     if (segs.addEventListener) segs.addEventListener('change', checkForm);
   }
 
-  // In the open Duo the home's right-hand page carries the philosophy, how I read, the
-  // journey, themes and insights (under the colophon); folded or in the app form they go
-  // back where they came from.
+  // In the open Duo the home's right-hand page carries the portrait, the philosophy, how I
+  // read, the journey, themes and insights (under the colophon); folded or in the app form
+  // they go back where they came from.
   var moved = [];
   function arrange() {
     var right = document.querySelector('.page-home .colophon');
     if (!right) return;
     if (!moved.length) {
-      ['philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row')]).forEach(function (el) {
+      ['portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row')]).forEach(function (el) {
         if (!el) return;
         var mark = document.createComment('home-slot');
         el.parentNode.insertBefore(mark, el);
