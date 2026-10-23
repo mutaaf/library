@@ -78,6 +78,9 @@ test.describe('app form', () => {
   for (const path of ['/library/', '/library/the-48-laws-of-power/']) {
     test(`no serious accessibility violations on ${path}`, async ({ page }) => {
       await page.goto(path);
+      // Measure settled colours, not mid-way through the scroll reveal.
+      await page.evaluate(() => document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in')));
+      await page.addStyleTag({ content: '.reveal{transition:none!important}' });
       const r = await new AxeBuilder({ page }).analyze();
       const bad = r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
       expect(bad.map((v) => v.id + ': ' + v.nodes.length)).toEqual([]);
@@ -147,5 +150,35 @@ test.describe('reduced motion', () => {
     await page.setViewportSize({ width: 951, height: 669 });
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'open');
     expect(await page.evaluate(() => window.__anim)).toEqual([]);
+  });
+});
+
+test.describe('everything is clickable', () => {
+  test('stats filter the shelf; themes filter the shelf; the loop selects; tags filter insights', async ({ page }) => {
+    await page.goto('/library/');
+    await page.locator('.stats a[data-filter="status:finished"]').click();
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(await page.locator('.bk[data-status="finished"]').count());
+    await page.locator('.hub-map a[data-filter^="theme:"]').first().click();
+    const n = await page.locator('.bk:not([hidden])').count();
+    expect(n).toBeGreaterThan(0);
+    expect(n).toBeLessThan(TITLES.length);
+    await page.locator('.loop-node[data-ph="3"]').click();
+    await expect(page.locator('#ph-3')).toHaveClass(/on/);
+    const tag = page.locator('.in-tag').first();
+    await tag.click();
+    await expect(tag).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('#inFilter')).toBeVisible();
+  });
+
+  test('book form uses the iOS navigation bar and inset list', async ({ page }) => {
+    await page.setViewportSize({ width: 382, height: 580 });
+    await page.goto('/library/accelerate/?duo=closed');
+    await expect(page.locator('.ios-back')).toBeVisible();
+    await expect(page.locator('.nav')).toBeHidden();
+    await page.locator('.ios-back').click();
+    await expect(page).toHaveURL(/\/library\/(#books)?$/);
+    await expect(page.locator('#shelf')).toHaveAttribute('data-view', 'list');
+    const box = await page.locator('.bk-link').first().boundingBox();
+    expect(box.height).toBeGreaterThanOrEqual(44); // HIG minimum target
   });
 });
