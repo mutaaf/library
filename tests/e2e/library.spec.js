@@ -182,3 +182,19 @@ test.describe('everything is clickable', () => {
     expect(box.height).toBeGreaterThanOrEqual(44); // HIG minimum target
   });
 });
+
+test('the Duo shows the philosophy and the rest, closed and open', async ({ page }) => {
+  await page.setViewportSize({ width: 382, height: 580 });
+  await page.goto('/library/?duo=auto');
+  await page.locator('.ios-explore a[href="#philosophy"]').click();
+  await expect(page.locator('#philosophy')).toBeInViewport();
+  await expect(page.locator('#journey')).toBeAttached();
+  await page.setViewportSize({ width: 951, height: 669 });
+  await expect(page.locator('.colophon #philosophy')).toBeAttached();
+  await expect(page.locator('.colophon #insights')).toBeAttached();
+  await page.locator('.ios-explore a[href="#insights"]').click();
+  await expect(page.locator('#insights')).toBeInViewport();
+  await page.setViewportSize({ width: 382, height: 580 });
+  await expect(page.locator('.colophon #philosophy')).toHaveCount(0);
+  await expect(page.locator('#philosophy')).toBeVisible();
+});

@@ -34,7 +34,7 @@
 .duo :focus-visible { outline: 3px solid var(--tint); outline-offset: 2px; }
 
 /* The site nav gives way to an iOS navigation bar. */
-.duo .nav, .duo .back, .duo .how, .duo .closer, .duo .foot, .duo .progress { display: none; }
+.duo .nav, .duo .back, .duo .closer, .duo .foot, .duo .progress { display: none; }
 .duo .ios-bar { position: fixed; z-index: 50; left: 0; right: 0; top: 0; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: calc(44px + env(safe-area-inset-top)); padding: env(safe-area-inset-top) max(8px, env(safe-area-inset-right)) 0 max(8px, env(safe-area-inset-left));
   background: transparent; border-bottom: var(--hair) solid transparent; transition: background .2s, border-color .2s; }
 .duo .ios-bar.show { background: var(--bar); border-bottom-color: var(--sep); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
@@ -221,3 +221,80 @@
 .duo[data-fold="closed"] .book-hero h1 { font-size: 30px; line-height: 36px; }
 .duo[data-fold="closed"] .book-ctas { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 50px; }
 .duo[data-fold="closed"] .hero-cover { justify-self: center; }
+
+/* Philosophy, How I read, Journey, Themes, Insights: on the Duo too (owner, 2026-10-22). */
+.ios-explore { display: none; }
+.duo .ios-explore { display: block; margin: 0 16px 14px; border-radius: var(--r); background: var(--cell); overflow: hidden; }
+.duo .ios-explore a { position: relative; display: grid; grid-template-columns: 29px 1fr 9px; gap: 14px; align-items: center; min-height: 44px; padding: 0 16px; color: var(--label); font: 400 17px var(--ui); text-decoration: none; }
+.duo .ios-explore a + a::before { content: ''; position: absolute; left: 59px; right: 0; top: 0; height: var(--hair); background: var(--sep); }
+.duo .ios-explore a::after { content: ''; width: 9px; height: 15px; background: var(--label3); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 15'%3E%3Cpath d='M1.5 1.5l6 6-6 6' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 9 15'%3E%3Cpath d='M1.5 1.5l6 6-6 6' fill='none' stroke='%23000' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat; }
+.duo .ios-explore a:active { background: #E5E5EA; }
+.duo .ie-ic { display: grid; place-items: center; width: 29px; height: 29px; border-radius: 7px; background: var(--c); color: #fff; font-size: 16px; line-height: 1; }
+
+/* Closed: the sections follow the list, in this order. */
+.duo[data-fold="closed"] .page-home main { display: flex; flex-direction: column; }
+.duo[data-fold="closed"] .page-home .shelf { order: 1; }
+.duo[data-fold="closed"] .page-home .philo { order: 2; }
+.duo[data-fold="closed"] .page-home .how { order: 3; }
+.duo[data-fold="closed"] .page-home .journey { order: 4; }
+.duo[data-fold="closed"] .page-home .duo-row { order: 5; }
+.duo .philo, .duo .how { display: grid; }
+.duo .journey, .duo .duo-row { display: grid; }
+.duo .philo, .duo .how, .duo .journey, .duo .duo-row { scroll-margin-top: calc(52px + env(safe-area-inset-top)); }
+
+/* Philosophy, iOS: a large title, a grouped card for the words, the loop, then cards. */
+.duo .philo { grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 0; padding: 24px 16px 8px; }
+.duo .philo-copy { padding: 16px; border-radius: var(--r); background: var(--cell); }
+.duo .philo h2 { font-size: 28px; line-height: 34px; margin-bottom: 12px; }
+.duo .philo-lede { font: 400 17px/1.47 var(--ui); color: var(--label); margin-bottom: 14px; }
+.duo .philo-close { font: italic 400 19px/1.35 var(--title); border-left-color: var(--tint); }
+.duo .loop { max-width: 300px; margin: 18px auto 26px; }
+.duo .loop-node { width: 96px; }
+.duo .loop-node b { font: 600 13px/1.2 var(--ui); background: var(--grouped); }
+.duo .loop-right { transform: translate(44px, -20px); } .duo .loop-left { transform: translate(-44px, -20px); }
+.duo .loop-top { transform: translate(-50%, -22px); } .duo .loop-bottom { transform: translate(-50%, 22px); }
+.duo .loop-core b { font: 700 17px/1.15 var(--title); }
+.duo .philo-cards { grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 0; }
+.duo .ph-core { grid-column: auto; }
+.duo .ph-card { border: 0; border-radius: var(--r); background: var(--cell); padding: 14px 16px; }
+.duo .ph-core { background: linear-gradient(160deg, #3b2b1f, #241912); }
+.duo .ph-card h3 { font-size: 20px; }
+.duo .ph-card > p:not(.ph-n):not(.ph-books) { font: 400 15px/1.4 var(--ui); }
+.duo .ph-card.on { box-shadow: 0 0 0 2px var(--tint); transform: none; }
+
+/* How I read: a grouped list of the four voices. */
+.duo .how { grid-template-columns: minmax(0, 1fr); padding: 18px 16px 4px; gap: 4px; }
+.duo .how h2 { font-size: 22px; } .duo .how > p { font-size: 15px; color: var(--label2); }
+.duo .how ol { grid-template-columns: minmax(0, 1fr); gap: 0; margin-top: 8px; border-radius: var(--r); overflow: hidden; background: var(--cell); }
+.duo .how li { border: 0; border-radius: 0; background: none; }
+.duo .how li + li { box-shadow: inset 0 var(--hair) 0 var(--sep); }
+.duo .how li a { border: 0; border-radius: 0; font: 400 15px/1.4 var(--ui); transform: none !important; box-shadow: none !important; }
+.duo .how-go { color: var(--tint); font: 400 15px var(--ui); }
+
+/* Journey and the themes/insights cards. */
+.duo .journey { display: block; margin: 18px 16px 0; border-radius: var(--r); }
+.duo .journey-inner { padding: 20px 0 16px; }
+.duo .journey-head { padding: 0 16px; flex-direction: column; align-items: flex-start; }
+.duo .journey-head h2 { font-size: 24px; }
+.duo .seg-dark { max-width: 100%; overflow-x: auto; }
+.duo .track-wrap { margin: 0; padding: 0 8px; }
+.duo .track { height: 250px; margin: 0 48px; min-width: calc(var(--n) * 92px); }
+.duo .duo-row { grid-template-columns: minmax(0, 1fr); padding: 14px 16px 30px; }
+.duo .hub header h2, .duo .insights header h2 { font-size: 24px; }
+.duo .hub-map { aspect-ratio: auto !important; min-height: 0 !important; }
+.duo .hub-map > svg, .duo .hub-core { display: none; }
+.duo .hub-map ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+.duo .hub-map a { flex-direction: row !important; text-align: left !important; min-height: 44px; }
+.duo .hub-t { justify-items: start !important; max-width: none !important; }
+
+/* Open: the right page scrolls the colophon, then all of the above. */
+.duo[data-fold="open"] .page-home .colophon { display: block; }
+.duo[data-fold="open"] .page-home .colo-inner { margin: 0 auto; padding: calc(28px + env(safe-area-inset-top)) 24px 8px; }
+.duo[data-fold="open"] .journey, .duo[data-fold="open"] .duo-row { display: block; }
+.duo[data-fold="open"] .duo-row > * + * { margin-top: 14px; }
+.duo .ph-core .ph-n { color: #D7B06C; }
+.duo .ph-core .ph-books > span { color: #c9b796; }
+.duo .reveal { opacity: 1 !important; transform: none !important; }
+.duo[data-fold="open"] .journey { margin: 18px 16px 0; border-radius: var(--r); overflow: hidden; }
+.duo[data-fold="open"] .duo-row { padding: 14px 16px 30px; }
+.duo[data-fold="open"] .philo, .duo[data-fold="open"] .how { padding-left: 16px; padding-right: 16px; }

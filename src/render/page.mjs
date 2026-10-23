@@ -136,6 +136,13 @@ function shelf(pub, current) {
         <div><h2 id="shelf-title">${current ? 'The shelf' : 'All Books'}</h2><p class="shelf-sub">Explore the full collection, organized by themes and categories.</p></div>
       </header>
       <label class="ios-search"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="M13 13l4.5 4.5"/></svg><span class="vh">Search</span><input type="search" id="q2" placeholder="Search" autocomplete="off" enterkeyhint="search"></label>
+      ${current ? '' : `<nav class="ios-explore" aria-label="Explore">
+        <a href="#philosophy"><span class="ie-ic" style="--c:#8B6326">◎</span><span>My Leadership Philosophy</span></a>
+        <a href="#how"><span class="ie-ic" style="--c:#4F7CAC">❝</span><span>How I Read</span></a>
+        <a href="#journey"><span class="ie-ic" style="--c:#3F8F8B">↝</span><span>My Reading Journey</span></a>
+        <a href="#themes"><span class="ie-ic" style="--c:#C8553D">✦</span><span>Key Themes</span></a>
+        <a href="#insights"><span class="ie-ic" style="--c:#8E6BB0">✎</span><span>Latest Insights</span></a>
+      </nav>`}
       <div class="shelf-bar">
         <div class="cats" role="group" aria-label="Category">
           <button type="button" class="cat" data-cat="" aria-pressed="true">All <span>(${pub.books.length})</span></button>

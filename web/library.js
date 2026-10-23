@@ -66,7 +66,7 @@
     if (next === prev) return;
     var anchor = lastAnchor || captureAnchor();
     var dir = prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); defaultView(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
+    var update = function () { setForm(next); defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -80,6 +80,29 @@
     var segs = matchMedia('(horizontal-viewport-segments: 2)');
     if (segs.addEventListener) segs.addEventListener('change', checkForm);
   }
+
+  // In the open Duo the home's right-hand page carries the philosophy, how I read, the
+  // journey, themes and insights (under the colophon); folded or in the app form they go
+  // back where they came from.
+  var moved = [];
+  function arrange() {
+    var right = document.querySelector('.page-home .colophon');
+    if (!right) return;
+    if (!moved.length) {
+      ['philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row')]).forEach(function (el) {
+        if (!el) return;
+        var mark = document.createComment('home-slot');
+        el.parentNode.insertBefore(mark, el);
+        moved.push({ el: el, mark: mark });
+      });
+    }
+    var open = fold() === 'open';
+    moved.forEach(function (m) {
+      if (open && m.el.parentNode !== right) right.appendChild(m.el);
+      else if (!open && m.el.parentNode === right) m.mark.parentNode.insertBefore(m.el, m.mark.nextSibling);
+    });
+  }
+  arrange();
 
   // ================= OPENING A BOOK: cross-document view transitions =================
   // The cover (or the spine, on the shelf) you tapped becomes the book page's hero cover;
