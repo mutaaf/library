@@ -385,7 +385,6 @@ function hire(h) {
     doc: '<path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
   };
   const svg = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ic[k]}</svg>`;
-  const resume = 'mailto:' + c.email + '?subject=' + encodeURIComponent('Résumé request: ' + h.name) + '&body=' + encodeURIComponent('Hi Mutaaf,\n\nI found your Leadership Library and would like a copy of your résumé.\n\n');
   return `<section class="hire" id="hire" aria-labelledby="hire-title">
       <header class="hire-head">
         <p class="kicker">${esc(h.kicker)}</p>
@@ -403,7 +402,7 @@ function hire(h) {
         <a class="cta" href="mailto:${esc(c.email)}">${svg('mail')}Email me</a>
         <a class="hire-btn" href="${esc(c.linkedin)}" rel="noopener" target="_blank">${svg('in')}LinkedIn <span aria-hidden="true">↗</span></a>
         <a class="hire-btn" href="tel:${esc(c.phone)}">${svg('tel')}${esc(c.phoneLabel)}</a>
-        <a class="hire-btn" href="${esc(resume)}">${svg('doc')}Request my résumé</a>
+        <a class="hire-btn" href="${BASE}${esc(h.resume)}" download>${svg('doc')}Download résumé <span>PDF</span></a>
       </div>
       <p class="hire-direct"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><span aria-hidden="true"> · </span><a href="${esc(c.site)}">${esc(c.site.replace(/^https?:\/\//, ''))}</a></p>
     </section>`;
