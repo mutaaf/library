@@ -127,8 +127,15 @@ test.describe('book form (iPhone Duo)', () => {
     await page.goto('/library/peopleware/?duo=auto');
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'closed');
     await expect(page.locator('#shelf')).toBeHidden();
+    // A reader scrolls a page that has finished loading. Until the fonts and the cover are in,
+    // the layout is still moving, and the place we aim for isn't where the page will keep it.
+    await page.waitForLoadState('load');
+    await page.evaluate(() => document.fonts.ready);
     // Read down to the book's framework, the way a reader scrolls (the heading just below the tabs).
     await page.evaluate(() => { const f = document.getElementById('framework'); window.scrollTo({ top: f.getBoundingClientRect().top + scrollY - 110, behavior: 'instant' }); });
+    // The page notes the reader's place on the frame after a scroll; under load that frame can
+    // come later than any fixed wait, so wait for the frames themselves.
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     await page.waitForTimeout(150);
     await page.setViewportSize({ width: 951, height: 669 }); // unfolded
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'open');
