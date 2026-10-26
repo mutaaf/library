@@ -1,0 +1,29 @@
+{
+  "source": "Owner's résumé (Career/mutaaf-aziz-resume-director-vp.docx, March 2026). Every line below is the résumé's own wording; edit there first.",
+  "kicker": "Work with me",
+  "name": "Mutaaf Aziz",
+  "headline": "Engineering Director · 3× CTO · Disney+ · Amazon · AWS Certified",
+  "summary": "Engineering leader with 15+ years of progressive experience scaling software organizations at Fortune 500 companies and early-stage startups. Presently Senior Manager, Software Engineering at Disney directing consumer experience engineering for Disney+ and ESPN+ across web, mobile, and TV platforms.",
+  "seeking": "Seeking Director / VP / CTO roles at organizations where engineering drives competitive advantage.",
+  "where": "Dallas, TX · Open to Remote / DFW Hybrid",
+  "numbers": [
+    { "n": "15+", "label": "Years leading engineering" },
+    { "n": "150+", "label": "Hires" },
+    { "n": "3×", "label": "Startup CTO" },
+    { "n": "100+", "label": "iOS & Android apps published" }
+  ],
+  "roles": [
+    { "org": "Walt Disney Company", "title": "Senior Manager, Software Engineering", "when": "2022 – Present", "what": "The end-to-end Disney+ and ESPN+ streaming experience across web, mobile, and TV devices." },
+    { "org": "Amazon", "title": "Senior Manager, Software Engineering", "when": "2021 – 2022", "what": "Last Mile: IoT, real-time data streams, and AI/ML to deliver global fleet management solutions." },
+    { "org": "Avigilon (Motorola Solutions)", "title": "Senior Manager, Software Engineering", "when": "2018 – 2021", "what": "Computer Vision and IoT security platforms; Digital Transformation using CI/CD, Containerization, and DevSecOps." },
+    { "org": "Overwatch Digital Health · ProVilla · Skrible", "title": "CTO & Co-Founder", "when": "2014 – 2022", "what": "3× startup CTO with direct board-level reporting." }
+  ],
+  "credentials": ["AWS Solutions Architect – Professional", "Project Management Professional (PMP)", "B.S. Computer Science, University of Texas at Arlington"],
+  "contact": {
+    "email": "mutaaf.aziz@gmail.com",
+    "phone": "+19723523293",
+    "phoneLabel": "+1 972.352.3293",
+    "linkedin": "https://www.linkedin.com/in/mutaaf",
+    "site": "https://mutaafaziz.com"
+  }
+}

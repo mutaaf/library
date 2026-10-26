@@ -76,6 +76,7 @@ function nav(page) {
       <label class="vh" for="q">Search books, ideas or topics</label>
       <input type="search" id="q" name="q" placeholder="Search books, ideas, or topics…" autocomplete="off" enterkeyhint="search">
     </form>
+    <a class="nav-cta" href="${h}#hire">Work with me</a>
     <a class="avatar" href="/" aria-label="MA, Mutaaf Aziz at mutaafaziz.com"><span aria-hidden="true">MA</span></a>
   </header>`;
 }
@@ -143,6 +144,7 @@ function shelf(pub, current) {
         <a href="#journey"><span class="ie-ic" style="--c:#30B0C7">↝</span><span>My Reading Journey</span></a>
         <a href="#themes"><span class="ie-ic" style="--c:#FF3B30">✦</span><span>Key Themes</span></a>
         <a href="#insights"><span class="ie-ic" style="--c:#AF52DE">✎</span><span>Latest Insights</span></a>
+        <a href="#hire"><span class="ie-ic" style="--c:#34A853">✉</span><span>Work With Me</span></a>
       </nav>`}
       <div class="shelf-bar">
         <div class="cats" role="group" aria-label="Category">
@@ -371,10 +373,46 @@ function portrait(pub, pt) {
     </section>`;
 }
 
+// Work with me: the résumé, for the people hiring. Every line is the owner's own résumé
+// wording (content/hire.json); this only lays it out.
+function hire(h) {
+  if (!h) return '';
+  const c = h.contact;
+  const ic = {
+    mail: '<path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3.5 6l8.5 7 8.5-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    in: '<path d="M4 9h3.6v11H4zM5.8 3.5a2.1 2.1 0 110 4.2 2.1 2.1 0 010-4.2zM9.9 9h3.4v1.6c.5-.9 1.7-1.9 3.6-1.9 3.6 0 4.3 2.4 4.3 5.4V20h-3.6v-5.2c0-1.3 0-2.9-1.8-2.9s-2.1 1.4-2.1 2.8V20H9.9z" fill="currentColor"/>',
+    tel: '<path d="M6.6 3.5l3 3.4-1.8 2.4a12 12 0 006.9 6.9l2.4-1.8 3.4 3-1.6 3.1C11.4 20.3 3.7 12.6 3.5 5.1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    doc: '<path d="M6 3h8l4 4v14H6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12h6M9 16h6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+  };
+  const svg = (k) => `<svg viewBox="0 0 24 24" aria-hidden="true">${ic[k]}</svg>`;
+  const resume = 'mailto:' + c.email + '?subject=' + encodeURIComponent('Résumé request: ' + h.name) + '&body=' + encodeURIComponent('Hi Mutaaf,\n\nI found your Leadership Library and would like a copy of your résumé.\n\n');
+  return `<section class="hire" id="hire" aria-labelledby="hire-title">
+      <header class="hire-head">
+        <p class="kicker">${esc(h.kicker)}</p>
+        <h2 id="hire-title">${esc(h.name)}</h2>
+        <p class="hire-tag">${esc(h.headline)}</p>
+        <p class="hire-lede">${esc(h.summary)}</p>
+        <p class="hire-seek">${esc(h.seeking)} <span>${esc(h.where)}</span></p>
+      </header>
+      <ul class="hire-nums" aria-label="By the numbers">${h.numbers.map((x) => `<li><b>${esc(x.n)}</b><span>${esc(x.label)}</span></li>`).join('')}</ul>
+      <ol class="hire-roles" aria-label="Experience">${h.roles.map((r) => `
+        <li><p class="hr-when">${esc(r.when)}</p><h3>${esc(r.org)}</h3><p class="hr-title">${esc(r.title)}</p><p class="hr-what">${esc(r.what)}</p></li>`).join('')}
+      </ol>
+      <ul class="hire-creds" aria-label="Credentials">${h.credentials.map((x) => `<li>${esc(x)}</li>`).join('')}</ul>
+      <div class="hire-contact">
+        <a class="cta" href="mailto:${esc(c.email)}">${svg('mail')}Email me</a>
+        <a class="hire-btn" href="${esc(c.linkedin)}" rel="noopener" target="_blank">${svg('in')}LinkedIn <span aria-hidden="true">↗</span></a>
+        <a class="hire-btn" href="tel:${esc(c.phone)}">${svg('tel')}${esc(c.phoneLabel)}</a>
+        <a class="hire-btn" href="${esc(resume)}">${svg('doc')}Request my résumé</a>
+      </div>
+      <p class="hire-direct"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a><span aria-hidden="true"> · </span><a href="${esc(c.site)}">${esc(c.site.replace(/^https?:\/\//, ''))}</a></p>
+    </section>`;
+}
+
 export function home(pub, opts = {}) {
   const site = opts.site || {};
   const featured = pub.books[0];
-  const jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Leadership Library', description: SITE_DESC, url: ORIGIN + BASE, author: { '@type': 'Person', name: 'Mutaaf Aziz', url: ORIGIN + '/' }, hasPart: pub.books.map((b) => ({ '@type': 'Book', name: b.title, url: ORIGIN + BASE + b.slug + '/', author: b.authors.map((n) => ({ '@type': 'Person', name: n })) })) };
+  const jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Leadership Library', description: SITE_DESC, url: ORIGIN + BASE, author: Object.assign({ '@type': 'Person', name: 'Mutaaf Aziz', url: ORIGIN + '/' }, site.hire ? { jobTitle: site.hire.roles[0].title, worksFor: { '@type': 'Organization', name: site.hire.roles[0].org }, email: 'mailto:' + site.hire.contact.email, sameAs: [site.hire.contact.linkedin, site.hire.contact.site] } : {}), hasPart: pub.books.map((b) => ({ '@type': 'Book', name: b.title, url: ORIGIN + BASE + b.slug + '/', author: b.authors.map((n) => ({ '@type': 'Person', name: n })) })) };
   const ep = site.epigraph;
   const body = `
 <body class="page-home">
@@ -393,7 +431,7 @@ export function home(pub, opts = {}) {
           <p class="lede">A collection of books on engineering, leadership, teams, strategy and personal growth, with summaries, key ideas, my reflections, and how I’m applying them in real life.</p>
           <div class="ctas">
             <a class="cta" href="#books">Explore the Library</a>
-            <a class="cta-link" href="#philosophy">My leadership philosophy <span aria-hidden="true">›</span></a>
+            <a class="cta-link" href="#hire">Work with me <span aria-hidden="true">›</span></a>
           </div>
         </div>
         <div class="desk">
@@ -432,6 +470,7 @@ export function home(pub, opts = {}) {
       ${themesHub(pub)}
       ${insights(pub)}
     </div>
+    ${hire(site.hire)}
     <section class="closer" aria-labelledby="closer-title">
       <h2 id="closer-title">Reading is the slow part.</h2>
       <p>The shelf grows as I read. Nothing here pretends to be finished.</p>

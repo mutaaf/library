@@ -255,6 +255,41 @@
   .in-more summary { color: var(--blue-ink); }
   .rl-clear, .in-clear { border: 0; background: var(--bg); }
 
+  /* ── Work with me (black band): the résumé, for the people hiring ── */
+  .nav { grid-template-columns: auto 1fr auto auto auto; }
+  .nav-cta { display: inline-flex; align-items: center; height: 32px; padding: 0 15px; border-radius: 980px; background: var(--blue); color: #fff; font: 500 13px/1 var(--body); letter-spacing: -.005em; text-decoration: none; white-space: nowrap; transition: background .2s, transform var(--spring-snap-ms) var(--spring-snap); }
+  .nav-cta:hover { background: #0077ED; }
+  .nav-cta:active { transform: scale(.96); }
+  .hire { max-width: var(--wide); margin: 120px auto 0; padding: 150px var(--gutter-x) 120px; box-shadow: 0 0 0 100vmax var(--black); clip-path: inset(0 -100vmax); background: var(--black); color: var(--night-ink); }
+  .hire .kicker { color: var(--blue-hi); }
+  .hire h2 { margin: 0 0 14px; font-size: clamp(52px, 8vw, 116px); line-height: .96; letter-spacing: -.055em; color: #F5F5F7; }
+  .hire-tag { margin: 0 0 30px; font: 600 clamp(17px, 1.7vw, 23px)/1.35 var(--body); letter-spacing: -.02em; background: linear-gradient(90deg, #2997FF, #9CC7FF 70%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hire-lede { max-width: 40em; margin: 0 0 18px; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.5; letter-spacing: -.015em; color: var(--night-soft); }
+  .hire-seek { margin: 0; max-width: 40em; font-size: clamp(17px, 1.5vw, 21px); line-height: 1.45; font-weight: 500; letter-spacing: -.015em; color: #F5F5F7; }
+  .hire-seek span { display: block; margin-top: 8px; font-size: 15px; font-weight: 400; color: var(--night-soft); }
+  .hire-nums { list-style: none; margin: 72px 0 0; padding: 32px 0 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; border-top: 1px solid #ffffff1f; }
+  .hire-nums b { display: block; font: 600 clamp(44px, 5.6vw, 84px)/1 var(--display); letter-spacing: -.05em; color: #F5F5F7; }
+  .hire-nums span { display: block; margin-top: 10px; font-size: 15px; color: var(--night-soft); }
+  .hire-roles { list-style: none; margin: 80px 0 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .hire-roles li { padding: 30px 30px 28px; border-radius: 22px; background: var(--graphite); transition: transform var(--spring-soft-ms) var(--spring-soft), background .25s; }
+  .hire-roles li:hover { background: #232325; transform: translateY(-3px); }
+  .hr-when { margin: 0 0 18px; font: 600 13px/1 var(--body); letter-spacing: .01em; color: var(--blue-hi); }
+  .hire-roles h3 { margin: 0 0 6px; font-size: clamp(22px, 2.2vw, 28px); letter-spacing: -.035em; color: #F5F5F7; }
+  .hr-title { margin: 0 0 14px; font-size: 15px; font-weight: 500; color: #E8E8ED; }
+  .hr-what { margin: 0; font-size: 15px; line-height: 1.5; color: var(--night-soft); }
+  .hire-creds { list-style: none; margin: 24px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .hire-creds li { padding: 9px 16px; border-radius: 980px; background: #ffffff14; font-size: 14px; color: #E8E8ED; }
+  .hire-contact { display: flex; flex-wrap: wrap; gap: 12px; margin: 72px 0 0; }
+  .hire-contact a { gap: 10px; }
+  .hire-contact svg { width: 20px; height: 20px; flex: none; }
+  .hire-btn { display: inline-flex; align-items: center; min-height: 48px; padding: 0 22px; border-radius: 980px; color: #F5F5F7; font: 500 16px/1 var(--body); text-decoration: none; box-shadow: inset 0 0 0 1px #ffffff40; transition: background .2s, box-shadow .2s, transform var(--spring-snap-ms) var(--spring-snap); }
+  .hire-btn:hover { background: #ffffff14; box-shadow: inset 0 0 0 1px #ffffff80; }
+  .hire-btn:active { transform: scale(.97); }
+  .hire-btn span { opacity: .7; }
+  .hire-direct { margin: 24px 0 0; font-size: 15px; color: var(--night-soft); }
+  .hire-direct a { color: #F5F5F7; text-decoration-color: #ffffff4d; text-underline-offset: 3px; }
+  .hire + .closer { margin-top: 0; padding-top: 120px; border-top: 1px solid #ffffff1f; }
+
   /* ── Closer (black band): the last word, and a way to reach me ── */
   .closer { max-width: var(--wide); margin-top: 120px; padding: 160px var(--gutter-x); text-align: center; }
   .closer h2 { margin: 0 0 18px; color: #F5F5F7; }
@@ -325,6 +360,7 @@
   /* ── Tablets ── */
   @media (max-width: 1100px) {
     .hero { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: 24px 32px; }
+    .nav { grid-template-columns: auto minmax(0, 1fr) auto auto; }
   }
   /* ── Phones and portrait tablets: one column, centred, Apple-style ── */
   @media (max-width: 960px) {
@@ -365,6 +401,16 @@
     .book-hero h1 { font-size: clamp(38px, 11vw, 52px); }
     .pull { text-align: left; }
     .tabs a { padding: 14px 10px; font-size: 14.5px; }
+    .nav { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .nav-cta { display: none; }
+    .hire { margin-top: 80px; padding-top: 104px; padding-bottom: 88px; }
+    .hire h2 { font-size: clamp(44px, 13vw, 60px); }
+    .hire-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 16px; margin-top: 48px; }
+    .hire-nums b { font-size: 44px; }
+    .hire-roles { grid-template-columns: minmax(0, 1fr); margin-top: 48px; }
+    .hire-roles li { padding: 24px 22px; }
+    .hire-contact { margin-top: 48px; }
+    .hire-contact a { flex: 1 1 100%; justify-content: center; min-height: 52px; }
   }
 
   /* ── Reduced motion: nothing rises; the loop and the glow hold still ── */

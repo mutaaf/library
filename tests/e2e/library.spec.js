@@ -88,6 +88,27 @@ test.describe('app form', () => {
   }
 });
 
+test.describe('work with me', () => {
+  test('the nav and the hero lead to every way to connect', async ({ page }) => {
+    await page.goto('/library/');
+    await page.locator('.nav-cta').click();
+    await expect(page.locator('#hire')).toBeInViewport();
+    const hrefs = await page.locator('.hire-contact a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+    expect(hrefs.some((h) => h.startsWith('mailto:'))).toBe(true);
+    expect(hrefs.some((h) => h.startsWith('tel:'))).toBe(true);
+    expect(hrefs.some((h) => /linkedin\.com\/in\//.test(h))).toBe(true);
+    await expect(page.locator('.hero a[href="#hire"]')).toBeVisible();
+  });
+  test('open Duo: on the right-hand page, and readable', async ({ page }) => {
+    await page.setViewportSize({ width: 951, height: 669 });
+    await page.goto('/library/?duo=open');
+    await expect(page.locator('.colophon #hire')).toBeAttached();
+    // Text on the dark cards stays light (a colophon rule once greyed it out).
+    const dark = await page.locator('.colophon .hire p, .colophon .philo p').evaluateAll((ps) => ps.filter((p) => { const m = getComputedStyle(p).color.match(/\d+/g).map(Number); return m[0] + m[1] + m[2] < 300 && !(m[3] === 0); }).length);
+    expect(dark).toBe(0);
+  });
+});
+
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
   test('every book and every published section still renders', async ({ page }) => {
@@ -106,8 +127,15 @@ test.describe('book form (iPhone Duo)', () => {
     await page.goto('/library/peopleware/?duo=auto');
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'closed');
     await expect(page.locator('#shelf')).toBeHidden();
+    // A reader scrolls a page that has finished loading. Until the fonts and the cover are in,
+    // the layout is still moving, and the place we aim for isn't where the page will keep it.
+    await page.waitForLoadState('load');
+    await page.evaluate(() => document.fonts.ready);
     // Read down to the book's framework, the way a reader scrolls (the heading just below the tabs).
     await page.evaluate(() => { const f = document.getElementById('framework'); window.scrollTo({ top: f.getBoundingClientRect().top + scrollY - 110, behavior: 'instant' }); });
+    // The page notes the reader's place on the frame after a scroll; under load that frame can
+    // come later than any fixed wait, so wait for the frames themselves.
+    await page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
     await page.waitForTimeout(150);
     await page.setViewportSize({ width: 951, height: 669 }); // unfolded
     await expect(page.locator('html')).toHaveAttribute('data-fold', 'open');

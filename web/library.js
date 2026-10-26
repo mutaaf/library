@@ -53,20 +53,22 @@
     else { root.classList.remove('duo'); root.removeAttribute('data-fold'); }
   }
   // The reader's place, kept current while they scroll. A fold reflows the page before the
-  // resize event arrives (WebKit), so measuring then would pick the wrong heading.
-  var lastAnchor = null, tracking = 0;
+  // resize event arrives (WebKit), so measuring then would pick the wrong heading. That
+  // reflow also clamps the scroll position, which fires a scroll event of its own; so a
+  // place only counts if it was measured at the width the current form was laid out for.
+  var lastAnchor = null, tracking = 0, formWidth = window.innerWidth;
   document.addEventListener('scroll', function () {
-    if (!tracking) tracking = requestAnimationFrame(function () { tracking = 0; lastAnchor = captureAnchor(); });
+    if (!tracking) tracking = requestAnimationFrame(function () { tracking = 0; if (window.innerWidth === formWidth) lastAnchor = captureAnchor(); });
   }, { capture: true, passive: true });
   var pending = 0;
   function checkForm() {
     pending = 0;
     if (!window.libForm) return;
     var next = window.libForm(), prev = fold();
-    if (next === prev) return;
+    if (next === prev) { formWidth = window.innerWidth; return; }
     var anchor = lastAnchor || captureAnchor();
     var dir = prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
+    var update = function () { setForm(next); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -82,14 +84,14 @@
   }
 
   // In the open Duo the home's right-hand page carries the portrait, the philosophy, how I
-  // read, the journey, themes and insights (under the colophon); folded or in the app form
+  // read, the journey, themes and insights, and work with me (under the colophon); folded or in the app form
   // they go back where they came from.
   var moved = [];
   function arrange() {
     var right = document.querySelector('.page-home .colophon');
     if (!right) return;
     if (!moved.length) {
-      ['portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row')]).forEach(function (el) {
+      ['portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row'), $('hire')]).forEach(function (el) {
         if (!el) return;
         var mark = document.createComment('home-slot');
         el.parentNode.insertBefore(mark, el);
