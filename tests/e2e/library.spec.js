@@ -98,6 +98,10 @@ test.describe('work with me', () => {
     expect(hrefs.some((h) => h.startsWith('tel:'))).toBe(true);
     expect(hrefs.some((h) => /linkedin\.com\/in\//.test(h))).toBe(true);
     await expect(page.locator('.hero a[href="#hire"]')).toBeVisible();
+    const pdf = await page.locator('.hire-contact a[download]').getAttribute('href');
+    const res = await page.request.get(pdf);
+    expect(res.status()).toBe(200);
+    expect((await res.body()).subarray(0, 5).toString()).toBe('%PDF-');
   });
   test('open Duo: on the right-hand page, and readable', async ({ page }) => {
     await page.setViewportSize({ width: 951, height: 669 });
