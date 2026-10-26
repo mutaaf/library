@@ -22,6 +22,8 @@ export function build({ quiet } = {}) {
   if (existsSync(phFile)) site.philosophy = JSON.parse(readFileSync(phFile, 'utf8'));
   const ptFile = path.join(ROOT, 'content', 'portrait.json');
   if (existsSync(ptFile)) site.portrait = JSON.parse(readFileSync(ptFile, 'utf8'));
+  const hireFile = path.join(ROOT, 'content', 'hire.json');
+  if (existsSync(hireFile)) site.hire = JSON.parse(readFileSync(hireFile, 'utf8'));
   rmSync(path.join(ROOT, 'dist'), { recursive: true, force: true });
   mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
   mkdirSync(path.join(OUT, 'vendor'), { recursive: true });

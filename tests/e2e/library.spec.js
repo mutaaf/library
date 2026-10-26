@@ -88,6 +88,27 @@ test.describe('app form', () => {
   }
 });
 
+test.describe('work with me', () => {
+  test('the nav and the hero lead to every way to connect', async ({ page }) => {
+    await page.goto('/library/');
+    await page.locator('.nav-cta').click();
+    await expect(page.locator('#hire')).toBeInViewport();
+    const hrefs = await page.locator('.hire-contact a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+    expect(hrefs.some((h) => h.startsWith('mailto:'))).toBe(true);
+    expect(hrefs.some((h) => h.startsWith('tel:'))).toBe(true);
+    expect(hrefs.some((h) => /linkedin\.com\/in\//.test(h))).toBe(true);
+    await expect(page.locator('.hero a[href="#hire"]')).toBeVisible();
+  });
+  test('open Duo: on the right-hand page, and readable', async ({ page }) => {
+    await page.setViewportSize({ width: 951, height: 669 });
+    await page.goto('/library/?duo=open');
+    await expect(page.locator('.colophon #hire')).toBeAttached();
+    // Text on the dark cards stays light (a colophon rule once greyed it out).
+    const dark = await page.locator('.colophon .hire p, .colophon .philo p').evaluateAll((ps) => ps.filter((p) => { const m = getComputedStyle(p).color.match(/\d+/g).map(Number); return m[0] + m[1] + m[2] < 300 && !(m[3] === 0); }).length);
+    expect(dark).toBe(0);
+  });
+});
+
 test.describe('without JavaScript', () => {
   test.use({ javaScriptEnabled: false });
   test('every book and every published section still renders', async ({ page }) => {

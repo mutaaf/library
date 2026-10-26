@@ -179,7 +179,7 @@
 .duo .colo-inner { max-width: 340px; }
 .duo .colophon h1 { font-size: 28px; line-height: 34px; }
 .duo .colo-lede { font: italic 400 19px var(--title); color: var(--label2); }
-.duo .colophon p { color: var(--label2); font: 400 15px/1.4 var(--ui); }
+.duo .colo-inner p { color: var(--label2); font: 400 15px/1.4 var(--ui); }
 .duo .colo-feature { border: 0; border-radius: var(--r); background: var(--cell); }
 
 /* The closed home keeps the long-scroll sections, as grouped cards. */
@@ -454,3 +454,35 @@
 .duo[data-fold="open"] .book-ctas { display: flex; flex-wrap: wrap; gap: 8px; }
 .duo[data-fold="open"] .book-ctas .btn, .duo[data-fold="open"] .book-ctas .btn-ghost { flex: 1 1 auto; padding: 0 18px; }
 .duo[data-fold="open"] .book-ctas .share { flex: 0 0 50px; }
+
+/* Work with me: the résumé as one dark card, the contact buttons full width. */
+.duo[data-fold="closed"] .page-home .hire { order: 6; }
+.duo .hire { margin: 24px 12px 30px; padding: 28px 20px 22px; border-radius: var(--card-r); background: radial-gradient(90% 40% at 50% 0%, #0d2142 0%, transparent 72%), #000; color: #F5F5F7; scroll-margin-top: calc(52px + env(safe-area-inset-top)); }
+.duo[data-fold="open"] .hire { margin: 18px 16px 30px; }
+.duo .hire .kicker { color: #2997FF; }
+.duo .hire h2 { margin: 0 0 6px; font-size: 36px; line-height: 1.04; letter-spacing: -.03em; color: #fff; }
+.duo .hire-tag { margin: 0 0 16px; font: 600 15px/1.4 var(--ui); color: #2997FF; }
+.duo .hire-lede { margin: 0 0 12px; font: 400 15px/1.45 var(--ui); color: var(--dark-soft); }
+.duo .hire-seek { margin: 0; font: 600 15px/1.4 var(--ui); color: #F5F5F7; }
+.duo .hire-seek span { display: block; margin-top: 4px; font: 400 13px var(--ui); color: var(--dark-soft); }
+.duo .hire-nums { list-style: none; margin: 22px 0 0; padding: 18px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; border-top: var(--hair) solid #ffffff33; }
+.duo .hire-nums b { display: block; font: 700 32px/1 var(--ui); letter-spacing: -.025em; color: #fff; }
+.duo .hire-nums span { display: block; margin-top: 4px; font: 400 13px/1.3 var(--ui); color: var(--dark-soft); }
+.duo .hire-roles { list-style: none; margin: 22px 0 0; padding: 0; border-radius: 16px; background: var(--dark-cell); overflow: hidden; }
+.duo .hire-roles li { padding: 14px 16px; }
+.duo .hire-roles li + li { box-shadow: inset 0 var(--hair) 0 #ffffff26; }
+.duo .hr-when { margin: 0 0 4px; font: 600 12px var(--ui); color: #2997FF; }
+.duo .hire-roles h3 { margin: 0; font-size: 17px; line-height: 1.25; letter-spacing: -.01em; color: #fff; }
+.duo .hr-title { margin: 2px 0 4px; font: 400 15px/1.3 var(--ui); color: #F5F5F7; }
+.duo .hr-what { margin: 0; font: 400 13px/1.4 var(--ui); color: var(--dark-soft); }
+.duo .hire-creds { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.duo .hire-creds li { padding: 6px 12px; border-radius: 980px; background: #ffffff1a; font: 400 13px var(--ui); color: #E5E5EA; }
+.duo .hire-contact { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; margin: 22px 0 0; }
+.duo .hire-contact a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 50px; padding: 0 14px; border-radius: 14px; background: #ffffff1f; color: #fff; font: 600 17px var(--ui); text-decoration: none; }
+.duo .hire-contact .cta { background: #0071E3; }
+.duo .hire-contact svg { width: 20px; height: 20px; flex: none; }
+.duo .hire-btn span { opacity: .7; }
+.duo .hire-direct { margin: 16px 0 0; text-align: center; font: 400 13px var(--ui); color: var(--dark-soft); }
+.duo .hire-direct a { color: #F5F5F7; }
+.duo:not(.still) .hire-contact a { transition: transform var(--spring-snap-ms) var(--spring-snap); }
+.duo:not(.still) .hire-contact a:active { transform: scale(.97); }
