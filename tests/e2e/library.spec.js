@@ -253,6 +253,37 @@ test.describe('book form (iPhone Duo)', () => {
     expect(await page.evaluate(() => [...document.querySelector('main').children].filter((e) => !e.matches('.leaf, .gutter') && getComputedStyle(e).display !== 'none').map((e) => e.id || e.className))).toEqual([]);
   });
 
+  // The open spread hides the closed form's bar and the app's nav, so the shelf (the split
+  // view's sidebar) carries the way back to the root: "‹ Library", like iPadOS.
+  test('open, a book page has a way back to the library, on one page, wherever you scroll', async ({ page }) => {
+    await page.setViewportSize({ width: 951, height: 669 });
+    await page.goto('/library/radical-candor/?duo=open');
+    await expect(page.locator('html')).toHaveAttribute('data-fold', 'open');
+    const back = page.locator('#shelf .shelf-back');
+    await expect(back).toBeVisible();
+    await expect(back).toHaveText('Library');
+    const b = await back.boundingBox(), g = await page.locator('.gutter').boundingBox();
+    expect(b.x + b.width).toBeLessThanOrEqual(g.x + 0.5); // all of it on the left page
+    expect(b.height).toBeGreaterThanOrEqual(44);
+    await page.locator('#shelf').evaluate((s) => { s.scrollTop = s.scrollHeight; });
+    await expect(back).toBeInViewport();
+    expect((await back.boundingBox()).y).toBeLessThan(2);
+    await back.focus();
+    await page.keyboard.press('Enter');
+    await expect(page).toHaveURL(/\/library\/(\?duo=open)?$/);
+    await expect(page.locator('.colophon')).toBeVisible();
+    await expect(page.locator('.shelf-back')).toHaveCount(0); // the root is the root
+  });
+
+  test('every form of a book page has a way back', async ({ page }) => {
+    for (const [size, q, sel] of [[{ width: 382, height: 580 }, '?duo=closed', '.ios-back'], [{ width: 1280, height: 860 }, '?duo=off', '.book-hero .back'], [{ width: 412, height: 915 }, '?posture=tabletop', '.book-hero .back']]) {
+      await page.setViewportSize(size);
+      await page.goto('/library/radical-candor/' + q);
+      await expect(page.locator(sel)).toBeVisible();
+      await expect(page.locator('.shelf-back')).toBeHidden();
+    }
+  });
+
   test('closed, the home opens on the hero card', async ({ page }) => {
     await page.setViewportSize({ width: 382, height: 580 });
     await page.goto('/library/?duo=closed');

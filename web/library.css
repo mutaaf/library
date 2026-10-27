@@ -1044,6 +1044,7 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 .toast { position: fixed; z-index: 90; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom)); padding: 12px 18px; border-radius: 999px; background: #1b1612eb; color: #F2EBDD; font-size: 14px; box-shadow: 0 16px 40px -16px #000; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; transition: opacity .25s, transform var(--spring-soft-ms) var(--spring-soft); }
 .toast.on { opacity: 1; transform: translate(-50%, 0); }
 .ios-bar { display: none; }
+.shelf-back { display: none; }
 
 /* Things rise into place. */
 .reveal { opacity: 0; transform: translateY(18px); transition: opacity .6s ease var(--d, 0ms), transform var(--spring-ms) var(--spring) var(--d, 0ms); }

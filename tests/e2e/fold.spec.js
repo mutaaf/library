@@ -83,6 +83,10 @@ test.describe('measured hinges (Chromium)', () => {
     expect(l.right).toBe(540);
     expect(r.left).toBe(574);
     expect(r.right).toBe(1114);
+    // The way back to the library sits on the left screen, clear of the hinge.
+    const k = await box(page, '.shelf-back');
+    expect(k.left).toBeGreaterThanOrEqual(0);
+    expect(k.right).toBeLessThanOrEqual(540);
   });
 });
 

@@ -139,7 +139,10 @@ function shelf(pub, current) {
   const statuses = [...new Set(pub.books.map(statusKey))];
   const cats = Object.keys(CATEGORIES).filter((c) => pub.books.some((b) => b.category === c));
   const Tag = current ? 'nav' : 'section';
+  // On a book page in the open Duo the shelf is the split view's sidebar, so it carries the
+  // way back to the library's root (iPadOS: the sidebar's own back button). Hidden elsewhere.
   return `<${Tag} class="shelf leaf leaf-shelf" id="shelf" aria-labelledby="shelf-title" data-view="grid">
+      ${current ? `<a class="shelf-back" href="${BASE}"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Library</a>` : ''}
       <span class="anchor" id="books"></span>
       <header class="shelf-head">
         <div><h2 id="shelf-title">${current ? 'The shelf' : 'All Books'}</h2><p class="shelf-sub">Explore the full collection, organized by themes and categories.</p></div>
