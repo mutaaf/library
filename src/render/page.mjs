@@ -411,23 +411,22 @@ function hire(h) {
 }
 
 // ── Read Now (2026-10-27, owner: "pop culture app … light mode default"): Apple Music's
-// Recently Added row, the App Store's What's New, its tab bar and mini-player. Dates are
-// the books' own (addedAt when it joined, else updatedAt); nothing here claims a reading.
-const joined = (b) => b.addedAt || b.updatedAt;
+// Recently Added row, the App Store's What's New, its tab bar and mini-player. Order and
+// counts come only from addedAt (the day a book joined); updatedAt only says "updated".
 const titles = (bs) => (bs.length > 2 ? esc(bs[0].title) + ', ' + esc(bs[1].title) + ' and ' + (bs.length - 2) + ' more' : bs.map((b) => esc(b.title)).join(' and '));
 
 function fresh(pub) {
-  const order = pub.books.slice().sort((a, b) => (joined(a) === joined(b) ? a.featuredRank - b.featuredRank : joined(a) < joined(b) ? 1 : -1));
-  const days = [...new Set(order.map(joined))].slice(0, 4);
+  const order = pub.books.slice().sort((a, b) => (a.addedAt === b.addedAt ? a.featuredRank - b.featuredRank : a.addedAt < b.addedAt ? 1 : -1));
+  const days = [...new Set(pub.books.flatMap((b) => (b.updatedAt > b.addedAt ? [b.addedAt, b.updatedAt] : [b.addedAt])))].sort().reverse().slice(0, 4);
   const log = days.map((d) => {
-    const added = order.filter((b) => b.addedAt === d), touched = order.filter((b) => !b.addedAt && b.updatedAt === d);
-    const total = pub.books.filter((b) => joined(b) <= d).length;
-    const what = added.length ? '<b>New on the shelf</b><span>' + titles(added) + '</span>' : '<b>' + touched.length + (touched.length === 1 ? ' book' : ' books') + ' updated</b><span>' + titles(touched) + '</span>';
-    return `<li><time datetime="${d}">${fmtDate(d)}</time>${what}<i class="wn-v">${total} books</i></li>`;
+    const added = order.filter((b) => b.addedAt === d), touched = order.filter((b) => b.updatedAt === d && b.addedAt !== d);
+    const total = pub.books.filter((b) => b.addedAt <= d).length;
+    const lines = (added.length ? '<b>New on the shelf</b><span>' + titles(added) + '</span>' : '') + (touched.length ? '<b>' + touched.length + (touched.length === 1 ? ' book' : ' books') + ' updated</b><span>' + titles(touched) + '</span>' : '');
+    return `<li><time datetime="${d}">${fmtDate(d)}</time>${lines}<i class="wn-v">${total} books</i></li>`;
   }).join('');
   return `<section class="fresh" id="new" aria-labelledby="new-title">
       <header class="row-head"><h2 id="new-title">Recently Added</h2><a class="cta-link" href="#books">See all <span aria-hidden="true">›</span></a></header>
-      <ol class="rail">${order.slice(0, 12).map((b, i) => `<li style="--i:${i}"><a href="${BASE}${b.slug}/">${cover(b, 'md')}<b>${esc(b.title)}</b><span>${esc(shortAuthors(b.authors))}${b.addedAt ? ' <i class="rail-new">New</i>' : ''}</span></a></li>`).join('')}</ol>
+      <ol class="rail">${order.slice(0, 12).map((b, i) => `<li style="--i:${i}"><a href="${BASE}${b.slug}/">${cover(b, 'md')}<b>${esc(b.title)}</b><span>${esc(shortAuthors(b.authors))}${b.addedAt === order[0].addedAt && b.addedAt > pub.books.map((x) => x.addedAt).sort()[0] ? ' <i class="rail-new">New</i>' : ''}</span></a></li>`).join('')}</ol>
       <aside class="whats-new" aria-labelledby="wn-title"><h3 id="wn-title">What’s New</h3><ol>${log}</ol></aside>
     </section>`;
 }
