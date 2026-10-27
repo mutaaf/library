@@ -17,7 +17,7 @@ content format is in [docs/CONTENT.md](docs/CONTENT.md).
 4. **Links only once verified.** A resource needs `verifiedAt`. Full text is allowed only
    when the copy is authorized free or a library loan. Never link an unauthorized PDF.
 5. **Pages work without JavaScript.** Every page is complete HTML. `library.js` only
-   enhances it: the form, transitions, the shelf tools and the sky.
+   enhances it: the form, transitions, the shelf tools and the tab bar.
 6. **ES5 in `web/*.js`** (var, function, no arrows or template literals), like the
    personal site. Node code in `src/` and `test/` is modern ESM.
 7. **Motion is springs on transform and opacity**, generated in `src/render/spring.mjs`.

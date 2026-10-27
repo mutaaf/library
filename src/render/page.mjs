@@ -422,7 +422,7 @@ function fresh(pub) {
     const added = order.filter((b) => b.addedAt === d), touched = order.filter((b) => b.updatedAt === d && b.addedAt !== d);
     const total = pub.books.filter((b) => b.addedAt <= d).length;
     const lines = (added.length ? '<b>New on the shelf</b><span>' + titles(added) + '</span>' : '') + (touched.length ? '<b>' + touched.length + (touched.length === 1 ? ' book' : ' books') + ' updated</b><span>' + titles(touched) + '</span>' : '');
-    return `<li><time datetime="${d}">${fmtDate(d)}</time>${lines}<i class="wn-v">${total} books</i></li>`;
+    return `<li><time datetime="${d}">${fmtDate(d)}</time>${lines}<i class="wn-v">${total} ${total === 1 ? 'book' : 'books'}</i></li>`;
   }).join('');
   return `<section class="fresh" id="new" aria-labelledby="new-title">
       <header class="row-head"><h2 id="new-title">Recently Added</h2><a class="cta-link" href="#books">See all <span aria-hidden="true">›</span></a></header>
@@ -464,7 +464,7 @@ export function home(pub, opts = {}) {
   <main id="main" class="spread">
     <div class="night">
       ${mesh(pub)}
-      <section class="hero" data-shape="lib-book" aria-labelledby="hero-title">
+      <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="hero-eyebrow">The Leadership Library <span aria-hidden="true">·</span> Mutaaf Aziz</p>
           <h1 id="hero-title"><span class="vh">The Leadership Library: </span>Books that shape how I think. <span class="h1-dim">Lessons that shape how I lead.</span></h1>

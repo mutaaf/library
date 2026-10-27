@@ -65,7 +65,7 @@ in the repository (`gh label create add-book`).
       "accessType": "sample|borrow|buy|free-authorized", "isFullText": false, "verifiedAt": "2026-10-22" }
   ],
   "assistantDrafted": true,                      // true → the page says the summary was drafted with AI assistance
-  "addedAt": "2026-10-27",                       // optional; the day it joined the shelf (Recently Added, What's New)
+  "addedAt": "2026-10-22",                       // required; the day it joined the shelf (Recently Added, What's New)
   "updatedAt": "2026-10-22"
 }
 ```

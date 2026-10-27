@@ -79,13 +79,9 @@ button, input, select { font: inherit; color: inherit; }
 .nav-cta { padding: 10px 16px; border-radius: 999px; background: var(--brass); color: var(--ink); font-size: 14px; font-weight: 700; text-decoration: none; }
 .nav-cta:hover { background: var(--brass-hi); }
 
-/* ── Night: the sticky sky behind the hero and the story ── */
+/* ── Night: the hero band ── */
 .night { position: relative; overflow: clip; background: var(--night); color: var(--night-ink); isolation: isolate; }
 .night::before { content: ''; position: absolute; inset: 0; z-index: -1; background: radial-gradient(70% 50% at 70% 18%, #b48a4824, transparent 70%), radial-gradient(60% 40% at 15% 85%, #83947b1c, transparent 70%); }
-.sky { position: sticky; top: 0; height: 100vh; height: 100svh; margin-bottom: -100vh; margin-bottom: -100svh; z-index: -1; overflow: hidden; }
-.sky canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.sky .stage { position: absolute; inset: 0 0 0 38%; }
-.sky-fade { position: absolute; inset: 0; background: linear-gradient(90deg, var(--night) 0%, #0f131699 40%, transparent 70%), linear-gradient(0deg, var(--night) 0%, transparent 22%); }
 .hero { min-height: 100vh; min-height: 100svh; display: grid; align-content: center; padding: 120px var(--gutter-x) 96px; position: relative; max-width: 1180px; margin: 0 auto; }
 .hero-copy { max-width: 620px; }
 .hero .kicker, .story .kicker { color: var(--brass-hi); }
@@ -100,7 +96,6 @@ button, input, select { font: inherit; color: inherit; }
 .cta-ghost-dark { border-color: var(--edge); color: var(--text); }
 .proof { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 34px 0 0; padding: 0; list-style: none; font: 400 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--night-soft); }
 .proof li::before { content: '◆'; margin-right: 8px; color: var(--brass); font-size: 8px; vertical-align: 2px; }
-.shape-label { position: absolute; right: var(--gutter-x); bottom: 40px; margin: 0; font: 400 11px/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--night-soft); }
 .scroll-cue { position: absolute; left: 50%; bottom: 26px; width: 26px; height: 40px; border: 1px solid #f2ebdd40; border-radius: 14px; }
 .scroll-cue span { position: absolute; left: 50%; top: 8px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--brass-hi); animation: cue 2.2s var(--ease) infinite; }
 @keyframes cue { 0% { transform: translateY(0); opacity: 1; } 70% { transform: translateY(14px); opacity: 0; } 100% { opacity: 0; } }
@@ -109,12 +104,6 @@ button, input, select { font: inherit; color: inherit; }
 .story-head { max-width: 560px; margin-bottom: 48px; }
 .story-head h2 { margin: 0 0 14px; font-size: clamp(38px, 5vw, 64px); }
 .story-head p:not(.kicker) { margin: 0; color: var(--night-soft); }
-.steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 16vh; max-width: 480px; }
-.step { position: relative; padding: 26px 26px 28px; border-radius: 20px; background: #12161acc; border: 1px solid #ffffff12; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); opacity: .55; transform: translateY(8px); transition: opacity .5s var(--ease), transform .6s var(--ease), border-color .5s; }
-.step.active, .no-io .step { opacity: 1; transform: none; border-color: #b48a4866; }
-.step h3 { margin: 6px 0 8px; font-size: 32px; }
-.step p { margin: 0; color: var(--night-soft); }
-.step-n { position: absolute; right: 22px; top: 22px; font: 400 12px/1 var(--mono); color: var(--night-soft); }
 
 /* ── Claim labels (PRD §12): whose claim is it ── */
 .claim { display: inline-flex; align-items: center; gap: 7px; margin: 0 0 10px; font: 400 10.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .14em; color: var(--soft); }
@@ -316,9 +305,6 @@ button, input, select { font: inherit; color: inherit; }
 @media (max-width: 699px) {
   .nav-link { display: none; }
   .hero { padding-top: 110px; align-content: end; }
-  .sky .stage { inset: 0 0 40% 0; }
-  .sky-fade { background: linear-gradient(0deg, var(--night) 0%, #0f1316cc 45%, transparent 75%); }
-  .steps { gap: 40vh; }
   .shelf { padding-top: 72px; }
   .shelf-head { grid-template-columns: 1fr; }
   .tools { display: none; }
@@ -453,7 +439,7 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
   ::view-transition-group(*) { animation-name: none !important; }
   ::view-transition-old(*) { animation-name: fade-out !important; transform: none !important; }
   ::view-transition-new(*) { animation-name: fade-in !important; transform: none !important; }
-  .cover, .spine, .step, .cta, .conn, .scroll-cue span { transition: none !important; animation: none !important; }
+  .cover, .spine, .cta, .conn, .scroll-cue span { transition: none !important; animation: none !important; }
   .filters.sheet-in { animation: none; }
 }
 
@@ -476,8 +462,6 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
   radial-gradient(30% 40% at 12% 90%, #b48a481a, transparent 70%),
   repeating-linear-gradient(90deg, #ffffff05 0 9px, transparent 9px 13px, #00000014 13px 22px, transparent 22px 30px); }
 .night::after { content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(180deg, #0d0f11cc 0%, transparent 22%, transparent 70%, #0d0f11 100%), repeating-linear-gradient(180deg, transparent 0 150px, #00000059 150px 160px); opacity: .9; }
-.sky .stage { inset: 0 0 18% 46%; }
-.sky-fade { background: linear-gradient(90deg, #0d0f11 0%, #0d0f11b3 34%, transparent 62%), linear-gradient(0deg, #0d0f11 0%, transparent 26%); }
 .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: center; gap: 40px; min-height: min(100svh, 860px); padding-top: 110px; padding-bottom: 40px; }
 .hero h1 { font-size: clamp(54px, 7vw, 96px); line-height: .94; margin: 0 0 18px; }
 .hero-tag { margin: 0 0 14px; font: 400 clamp(20px, 2vw, 26px)/1.25 var(--display); color: var(--night-ink); }
@@ -753,12 +737,10 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 
 /* Hero: the room, lit by its lamp; the stack on the table; the aurora as motes in the lamplight. */
 .night { background: #1b120c; min-height: min(100svh, 940px); }
-.night::before, .night::after, .sky-fade, .story { display: none; }
+.night::before, .night::after, .story { display: none; }
 .room { position: absolute; inset: 0; z-index: -2; }
 .room img { width: 100%; height: 100%; object-fit: cover; object-position: 68% 50%; filter: brightness(1.22) saturate(1.06) contrast(1.02); }
 .room-shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, #160d07e6 0%, #160d07b8 30%, #160d0740 55%, transparent 72%), linear-gradient(0deg, #160d07cc 0%, transparent 30%), linear-gradient(180deg, #160d0799 0%, transparent 18%); }
-.sky { position: absolute; inset: 0; height: auto; margin: 0; z-index: -1; mix-blend-mode: screen; opacity: .65; }
-.sky .stage { inset: 6% 4% 44% 54%; }
 .hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); grid-template-rows: 1fr auto; align-items: center; gap: 28px 40px; max-width: 1320px; min-height: min(100svh, 940px); padding: 116px var(--gutter-x) 30px; }
 .hero .hero-copy { grid-column: 1; grid-row: 1; max-width: 600px; }
 .hero h1 { font-size: clamp(54px, 6.6vw, 94px); margin-bottom: 14px; }
@@ -842,7 +824,6 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
   .stack { transform: scale(.82) rotateX(-17deg) rotateY(-26deg); transform-origin: top center; margin-bottom: -50px; }
   .room-shade { background: linear-gradient(180deg, #160d07d9 0%, #160d07a6 45%, #160d07cc 100%); }
   .room img { object-position: 75% 50%; }
-  .sky .stage { inset: 40% 0 20% 10%; }
 }
 @media (max-width: 699px) {
   .nav { gap: 10px; padding: 6px 8px 6px 12px; }
