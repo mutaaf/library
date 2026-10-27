@@ -353,3 +353,75 @@ test('the Duo shows the philosophy and the rest, closed and open', async ({ page
   await expect(page.locator('.colophon #philosophy')).toHaveCount(0);
   await expect(page.locator('#philosophy')).toBeVisible();
 });
+
+// Glass (owner: "the app header moves on scroll; it should all be liquid glass and pin on
+// scroll"): every bar keeps its place, size and material from the first pixel to the end.
+test.describe('the bars are glass and pinned', () => {
+  const bar = (page, sel) => page.evaluate((sel) => {
+    const el = [...document.querySelectorAll(sel)].find((e) => e.getBoundingClientRect().width > 0);
+    const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+    return { top: Math.round(r.top), h: Math.round(r.height), bg: cs.backgroundColor, blur: cs.backdropFilter || cs.webkitBackdropFilter };
+  }, sel);
+  for (const [name, size, q, sel] of [
+    ['the app bar on the home', { width: 390, height: 844 }, '/library/', '.nav'],
+    ['the app bar on a book', { width: 1280, height: 800 }, '/library/radical-candor/', '.nav'],
+    ['the Duo bar on the shelf', { width: 382, height: 580 }, '/library/?duo=closed', '.ios-bar'],
+    ['the Duo bar on a book', { width: 382, height: 580 }, '/library/radical-candor/?duo=closed', '.ios-bar'],
+  ]) {
+    test(name, async ({ page }) => {
+      await page.setViewportSize(size);
+      await page.goto(q);
+      const first = await bar(page, sel);
+      expect(first.top).toBe(0);
+      expect(first.blur).toContain('blur');
+      for (const y of [12, 40, 600, 4000]) {
+        // instant: the page scrolls smoothly, and headless WebKit on Linux never runs that animation
+        const at = await page.evaluate((y) => { scrollTo({ top: y, behavior: 'instant' }); return scrollY; }, y);
+        expect(at).toBeGreaterThan(0);
+        await page.waitForTimeout(120);
+        expect(await bar(page, sel)).toEqual(first);
+      }
+    });
+  }
+  test('the book tabs: one blurred strip edge to edge, pinned under the bar', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/library/radical-candor/');
+    const at = await page.evaluate(() => { scrollTo({ top: document.querySelector('.tabs-bar').getBoundingClientRect().top + scrollY + 900, behavior: 'instant' }); return scrollY; });
+    expect(at).toBeGreaterThan(0);
+    await page.waitForTimeout(150);
+    const t = await page.evaluate(() => {
+      const bar = document.querySelector('.tabs-bar'), r = bar.getBoundingClientRect(), nav = document.querySelector('.nav').getBoundingClientRect();
+      const g = getComputedStyle(bar, '::before'), l = parseFloat(g.left), w = parseFloat(g.width);
+      return { top: Math.round(r.top), under: Math.round(nav.bottom), blur: g.backdropFilter || g.webkitBackdropFilter, covers: r.left + l <= 0 && r.left + l + w >= innerWidth, x: document.documentElement.scrollWidth - innerWidth };
+    });
+    expect(t.top).toBe(t.under);
+    expect(t.blur).toContain('blur');
+    expect(t.covers).toBe(true);
+    expect(t.x).toBeLessThanOrEqual(0);
+  });
+  test('the open spread\'s back bar stays at the top of its page, glass', async ({ page }) => {
+    await page.setViewportSize({ width: 951, height: 669 });
+    await page.goto('/library/radical-candor/?duo=open');
+    const read = () => page.evaluate(() => {
+      const el = document.querySelector('.shelf-back'), cs = getComputedStyle(el);
+      return { top: Math.round(el.getBoundingClientRect().top), blur: cs.backdropFilter || cs.webkitBackdropFilter, bg: cs.backgroundColor };
+    });
+    const first = await read();
+    expect(first.blur).toContain('blur');
+    const moved = await page.evaluate(() => { let p = document.querySelector('.shelf-back').parentElement; while (p && p.scrollHeight <= p.clientHeight) p = p.parentElement; p.scrollTo({ top: 2000, behavior: 'instant' }); return p.scrollTop; });
+    expect(moved).toBeGreaterThan(0);
+    await page.waitForTimeout(150);
+    expect(await read()).toEqual(first);
+  });
+  test('the phone tab bar floats as one glass capsule', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/library/');
+    // the same material as the top bar, not the old frosted slab it replaced
+    const look = (sel) => page.locator(sel).first().evaluate((e) => { const cs = getComputedStyle(e); return { r: parseFloat(cs.borderTopLeftRadius), bg: cs.backgroundColor, blur: cs.backdropFilter || cs.webkitBackdropFilter }; });
+    const nav = await look('.nav'), tab = await look('.tabbar');
+    expect(tab.r).toBeGreaterThanOrEqual(24);
+    expect(tab.bg).toBe(nav.bg);
+    expect(tab.blur).toBe(nav.blur);
+    if (await page.locator('.mini').count()) expect({ bg: (await look('.mini')).bg, blur: (await look('.mini')).blur }).toEqual({ bg: nav.bg, blur: nav.blur });
+  });
+});

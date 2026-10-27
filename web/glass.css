@@ -1,0 +1,74 @@
+/* ================================================================
+   GLASS (2026-10-27, owner: "the app header moves on scroll; it should all be liquid glass
+   and pin on scroll"). The last layer. One material for every bar, in every form:
+     the app's top bar, the book's section tabs, the phone's tab bar and Now Reading
+     mini-player, the iPhone Duo's navigation bar, the open spread's back bar.
+   Each is glass from the first pixel and stays pinned where it is: nothing changes its
+   size, place or material as you scroll. (Before, the top bar went from clear to frosted at
+   24px, which read as the bar moving, and the Duo's bar on the shelf frosted only once the
+   shelf's heading had scrolled away.)
+   Liquid Glass, said in CSS: a bright, saturated blur; a specular edge along the top; a
+   hairline that catches the light; a soft shadow under it. Under reduced transparency it
+   is solid.
+   ================================================================ */
+:root {
+  --glass: rgba(255, 255, 255, .74);
+  --glass-blur: blur(30px) saturate(180%) brightness(1.05);
+  --glass-edge: inset 0 .5px 0 rgba(255, 255, 255, .9), inset 0 0 0 .5px rgba(255, 255, 255, .45), inset 0 -.5px 0 rgba(0, 0, 0, .06);
+  --glass-shadow: 0 8px 24px -16px rgba(0, 0, 0, .3);
+  --glass-sheen: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 55%);
+}
+
+/* The material. (Each selector matches the specificity of the rules it replaces, including
+   the ones written inside :root:not(.duo) { }, so this later layer wins in every state.) */
+:root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book),
+:root:not(.duo) :is(.tabbar, .mini),
+.duo .ios-bar, .duo .ios-bar.show,
+.duo[data-fold="open"] .shelf-back {
+  isolation: isolate;
+  background: var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge), var(--glass-shadow);
+  border-color: transparent;
+}
+/* The sheen needs a positioned bar; the pinned bars already are (fixed or sticky), and their
+   position is never touched here. */
+:root:not(.duo) :is(.tabbar, .mini) { position: relative; }
+:root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book)::before,
+:root:not(.duo) :is(.tabbar, .mini)::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: var(--glass-sheen); opacity: .7;
+}
+/* The text on the bar is always the light-mode ink: the bar is glass over a light page. */
+:root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book) { color: var(--text); transition: none; }
+
+/* The book's section tabs run the full width of the window. A spread box-shadow can only paint
+   colour, not blur, so the strip sits in a wrapper (.tabs-bar) that is the sticky bar and
+   carries one blurred layer edge to edge. (The tabs scroll sideways, so they can't hold it:
+   their own overflow would clip it.) In the book form the wrapper steps aside (contents). */
+.tabs-bar { display: contents; }
+:root:not(.duo) .tabs-bar { display: block; position: sticky; top: var(--bar-h, calc(52px + env(safe-area-inset-top))); z-index: 6; margin-bottom: 8px; isolation: isolate; }
+:root:not(.duo) .tabs-bar::before { content: ''; position: absolute; inset: 0 -100vmax; z-index: -1; pointer-events: none; background: var(--glass-sheen), var(--glass);
+  -webkit-backdrop-filter: var(--glass-blur); backdrop-filter: var(--glass-blur); box-shadow: var(--glass-edge), var(--glass-shadow); }
+:root:not(.duo) .tabs-bar .tabs { position: static; margin-bottom: 0; background: none; box-shadow: none; clip-path: none; -webkit-backdrop-filter: none; backdrop-filter: none; border-bottom-color: transparent; }
+
+/* The phone's tab bar, as iOS draws it now: a capsule floating over the page, not a slab. */
+@media (max-width: 699px) {
+  :root:not(.duo) .tabbar { margin: 0 4px; padding: 6px 6px 4px; border-top: 0; border-radius: 30px; }
+  :root:not(.duo) .mini { border-radius: 22px; }
+}
+
+/* The Duo's bar keeps its inline title for when the large one scrolls away; only the
+   material is constant now. */
+.duo .ios-bar { border-bottom-color: transparent; transition: none; }
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass: #F9F9F9; --glass-blur: none; }
+  :root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book)::before,
+  :root:not(.duo) :is(.tabbar, .mini)::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before { display: none; }
+  :root:not(.duo) .tabs-bar::before { background: var(--glass); }
+  .duo[data-fold="open"] .shelf-back { background: var(--grouped); }
+}
+@media (prefers-contrast: more) {
+  :root { --glass: rgba(255, 255, 255, .92); --glass-edge: inset 0 -1px 0 rgba(0, 0, 0, .3); }
+}

@@ -11,6 +11,15 @@ own. New: Recently Added (a scroll-snap row) and What's New (from `addedAt`/`upd
 Settings-style squircle icons on each section, and on phones a tab bar with a Now Reading
 mini-player. The aurora-field sky is retired: it draws additively and vanishes on white.
 
+**Glass (2026-10-27):** the owner: "the app header moves on scroll; it should all be liquid
+glass and pin on scroll". `web/glass.css`, the last layer, gives every bar one material: the
+top bar, the book's section tabs, the phone's tab bar (now a floating capsule) and mini-player,
+the Duo's navigation bar and the open spread's back bar. Each is glass from the first pixel
+and pinned: no bar changes its size, place or material as you scroll (the top bar used to go
+from clear to frosted at 24px, and the Duo's bar on the shelf frosted only once the shelf's
+heading had scrolled away). The book's section tabs sit in a `.tabs-bar` wrapper that carries
+one blurred layer edge to edge. Solid under reduced transparency.
+
 The portrait in spines (2026-10-27): the spines rise into the head when it is first seen; a tap
 (on the head or a row) slides that book up out of the outline, dims the rest, tints the light
 behind the head with the book's colour and says what it gives away; a drag across the head flips
