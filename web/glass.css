@@ -19,10 +19,10 @@
   --glass-sheen: linear-gradient(to bottom, rgba(255, 255, 255, .55), rgba(255, 255, 255, 0) 55%);
 }
 
-/* The material. (:is() matches the specificity of every rule it replaces, so this later
-   layer wins whatever state class the bar is in.) */
+/* The material. (Each selector matches the specificity of the rules it replaces, including
+   the ones written inside :root:not(.duo) { }, so this later layer wins in every state.) */
 :root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book),
-.tabbar, .mini,
+:root:not(.duo) :is(.tabbar, .mini),
 .duo .ios-bar, .duo .ios-bar.show,
 .duo[data-fold="open"] .shelf-back {
   isolation: isolate;
@@ -34,9 +34,9 @@
 }
 /* The sheen needs a positioned bar; the pinned bars already are (fixed or sticky), and their
    position is never touched here. */
-.tabbar, .mini { position: relative; }
+:root:not(.duo) :is(.tabbar, .mini) { position: relative; }
 :root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book)::before,
-.tabbar::before, .mini::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before {
+:root:not(.duo) :is(.tabbar, .mini)::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before {
   content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none; background: var(--glass-sheen); opacity: .7;
 }
 /* The text on the bar is always the light-mode ink: the bar is glass over a light page. */
@@ -65,7 +65,7 @@
 @media (prefers-reduced-transparency: reduce) {
   :root { --glass: #F9F9F9; --glass-blur: none; }
   :root:not(.duo) :is(.nav, .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book)::before,
-  .tabbar::before, .mini::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before { display: none; }
+  :root:not(.duo) :is(.tabbar, .mini)::before, .duo .ios-bar::before, .duo[data-fold="open"] .shelf-back::before { display: none; }
   :root:not(.duo) .tabs-bar::before { background: var(--glass); }
 }
 @media (prefers-contrast: more) {

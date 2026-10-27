@@ -384,7 +384,7 @@ test.describe('the bars are glass and pinned', () => {
   test('the book tabs: one blurred strip edge to edge, pinned under the bar', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/library/radical-candor/');
-    await page.evaluate(() => scrollTo(0, document.querySelector('.tabs-bar').offsetTop + 900));
+    await page.evaluate(() => scrollTo(0, document.querySelector('.tabs-bar').getBoundingClientRect().top + scrollY + 900));
     await page.waitForTimeout(150);
     const t = await page.evaluate(() => {
       const bar = document.querySelector('.tabs-bar'), r = bar.getBoundingClientRect(), nav = document.querySelector('.nav').getBoundingClientRect();
@@ -412,8 +412,12 @@ test.describe('the bars are glass and pinned', () => {
   test('the phone tab bar floats as one glass capsule', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/library/');
-    const t = await page.locator('.tabbar').evaluate((e) => { const cs = getComputedStyle(e); return { r: parseFloat(cs.borderTopLeftRadius), blur: cs.backdropFilter || cs.webkitBackdropFilter }; });
-    expect(t.r).toBeGreaterThanOrEqual(24);
-    expect(t.blur).toContain('blur');
+    // the same material as the top bar, not the old frosted slab it replaced
+    const look = (sel) => page.locator(sel).first().evaluate((e) => { const cs = getComputedStyle(e); return { r: parseFloat(cs.borderTopLeftRadius), bg: cs.backgroundColor, blur: cs.backdropFilter || cs.webkitBackdropFilter }; });
+    const nav = await look('.nav'), tab = await look('.tabbar');
+    expect(tab.r).toBeGreaterThanOrEqual(24);
+    expect(tab.bg).toBe(nav.bg);
+    expect(tab.blur).toBe(nav.blur);
+    if (await page.locator('.mini').count()) expect({ bg: (await look('.mini')).bg, blur: (await look('.mini')).blur }).toEqual({ bg: nav.bg, blur: nav.blur });
   });
 });
