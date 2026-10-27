@@ -25,7 +25,9 @@ Use the **Add a book** issue form (README). `scripts/add-book.mjs` takes the fac
 Open Library with their sources in `verified`, picks a cover palette, and takes status,
 dates, rating and every word on the page only from what the owner typed. Left blank, the
 book goes up "On the shelf" with a draft one-line placeholder. The form's theme and shelf
-lists must match `content/themes.json` and `CATEGORIES` (a test checks).
+lists must match `content/themes.json` and `CATEGORIES` (a test checks). The workflow runs
+only on issues carrying the `add-book` label, which the form applies; the label must exist
+in the repository (`gh label create add-book`).
 
 ## `content/books/<slug>.json`
 

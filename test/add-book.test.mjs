@@ -29,6 +29,7 @@ test('understands titles, ISBNs and links', () => {
   assert.deepEqual(interpret('978-1-60358-055-7'), { isbn: '9781603580557' });
   assert.deepEqual(interpret('1603580557'), { isbn: '9781603580557' });
   assert.deepEqual(interpret('High Output Management by Andrew Grove'), { title: 'High Output Management', author: 'Andrew Grove' });
+  assert.deepEqual(interpret('Death by Meeting by Patrick Lencioni'), { title: 'Death by Meeting', author: 'Patrick Lencioni' });
   assert.deepEqual(interpret('https://www.amazon.com/Staff-Engineer/dp/1736417916/ref=x'), { isbn: '9781736417911' });
   assert.deepEqual(interpret('https://www.goodreads.com/book/show/40121378-atomic-habits'), { title: 'atomic habits' });
   assert.deepEqual(interpret('https://openlibrary.org/works/OL3737036W/Thinking_in_Systems'), { work: 'OL3737036W' });
@@ -63,6 +64,7 @@ test("the owner's words are published as theirs", () => {
   assert.equal(b.sections[0].kind, 'why');
   assert.throws(() => makeBook(meta, Object.assign({}, blank, { status: 'Reading now', started: 'Sept' }), ctx), /Started must look like/);
   assert.throws(() => makeBook(Object.assign({}, meta, { title: 'Drive' }), blank, ctx), /already on the shelf/);
+  assert.throws(() => makeBook(meta, Object.assign({}, blank, { rating: '4.5' }), ctx), /need a reading status/);
 });
 
 test('the issue form offers every theme and shelf, and nothing else', () => {

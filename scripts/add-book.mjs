@@ -105,7 +105,9 @@ export function interpret(input) {
     }
     throw new AddError("I can't read a book from " + host + ' links yet. Paste the title (or "Title by Author") or the ISBN instead.');
   }
-  const by = s.match(/^(.*?)\s+by\s+(.+)$/i);
+  // The last " by " splits ("Death by Meeting by Patrick Lencioni"); lookup() retries the
+  // whole string as a title if that finds nothing.
+  const by = s.match(/^(.*)\s+by\s+(.+)$/i);
   return by ? { title: by[1].trim(), author: by[2].trim() } : { title: s };
 }
 
@@ -134,13 +136,21 @@ export async function lookup(q) {
     if (!edition) throw new AddError('Open Library has no book with ISBN ' + q.isbn + '. Try the title instead.');
   } else if (q.edition) {
     edition = await get(OL + '/books/' + q.edition + '.json');
+    if (!edition) throw new AddError('Open Library has no edition ' + q.edition + '. Try the title or ISBN.');
   }
   let workKey = edition ? edition.works && edition.works[0] && edition.works[0].key : q.work ? '/works/' + q.work : null;
   if (!workKey) {
     const p = new URLSearchParams({ title: q.title, fields: 'key,title,author_name,first_publish_year,edition_count', limit: '5' });
     if (q.author) p.set('author', q.author);
     const r = await get(OL + '/search.json?' + p);
-    const docs = (r && r.docs) || [];
+    let docs = (r && r.docs) || [];
+    if (q.author) {
+      // "Death by Meeting" is a title, not "Death" by "Meeting": keep the split only when
+      // the author it found really is the one typed.
+      const last = q.author.toLowerCase().split(/\s+/).pop();
+      docs = docs.filter((d) => (d.author_name || []).some((a) => a.toLowerCase().includes(last)));
+      if (!docs.length) return lookup({ title: q.title + ' by ' + q.author });
+    }
     if (!docs.length) throw new AddError('Open Library found nothing for "' + q.title + '"' + (q.author ? ' by ' + q.author : '') + '. Check the spelling, add "by Author", or use the ISBN.');
     // Search ranks by relevance; a work whose title is exactly what was typed wins.
     const want = slugify(q.title);
@@ -223,6 +233,7 @@ export function makeBook(meta, form, ctx) {
   Object.assign(book, { verified: { on: today(), sources: meta.sources }, category, themes, featuredRank: ctx.nextRank });
 
   const status = STATUS_LABELS[form.status];
+  if (!status && (parseFloat(form.rating) > 0 || form.recommended || form.started || form.finished)) throw new AddError('A rating, a recommendation or dates need a reading status; pick one (for example Finished).');
   if (status) {
     const rd = { status };
     for (const [k, v] of [['startedAt', form.started], ['finishedAt', form.finished]]) {
