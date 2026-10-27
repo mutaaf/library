@@ -1,0 +1,125 @@
+/* ================================================================
+   FOLD (2026-10-27, owner: "so impressive for fold phones that we become the standard for
+   all the foldable features possible"). The last layer. The reference is docs/FOLDABLES.md.
+   One rule over all of it: no line of text ever crosses a hinge.
+   · Book posture (hinge down the middle): the open spread, its pages sized from the real
+     viewport segments, the gutter exactly the hinge's width; overlays keep to one page.
+   · Tabletop (hinge across the middle, half-folded like a laptop): the top screen is a
+     stage you look at, the bottom screen is where you read and tap. html[data-posture].
+   · Cover screens: nothing overflows down to 280px wide.
+   Measured geometry comes from env(viewport-segment-*); without a reported hinge (the
+   ?posture=tabletop emulation, or a device that reports none) the split is the middle.
+   ================================================================ */
+
+/* ── Book posture, measured ──────────────────────────────────────────────────────── */
+.duo[data-fold="open"] .toast { left: 75%; }
+@media (horizontal-viewport-segments: 2) {
+  .duo[data-fold="open"] .spread {
+    grid-template-columns: env(viewport-segment-width 0 0) calc(env(viewport-segment-left 1 0) - env(viewport-segment-right 0 0)) env(viewport-segment-width 1 0);
+    padding-left: 0; padding-right: 0;
+  }
+  .duo[data-fold="open"] .toast { left: calc(env(viewport-segment-left 1 0) + env(viewport-segment-width 1 0) / 2); }
+}
+
+/* ── Tabletop ────────────────────────────────────────────────────────────────────── */
+/* Where the top screen ends and the bottom one starts. The middle, unless the device
+   reports its hinge. (Inside the media query only: WebKit drops a declaration that uses the
+   two-index env() form, fallback and all.) */
+:root[data-posture="tabletop"] { --tt-top: 50vh; --tt-bot: 50vh; scroll-padding-top: calc(var(--tt-bot) + 76px); }
+@supports (height: 1dvh) { :root[data-posture="tabletop"] { --tt-top: 50dvh; --tt-bot: 50dvh; } }
+@media (vertical-viewport-segments: 2) {
+  :root[data-posture="tabletop"] { --tt-top: env(viewport-segment-bottom 0 0); --tt-bot: env(viewport-segment-top 0 1); }
+}
+/* Only pages with a stage take the split (the 404 has none, and stays one page). The class
+   is set by the renderer, so this doesn't depend on :has(). */
+[data-posture="tabletop"] body.has-stage { padding-top: var(--tt-bot); }
+[data-posture="tabletop"] body.has-stage .nav { top: calc(var(--tt-bot) + 8px); }
+/* Overlays stay on the bottom screen: the filter sheet never climbs over the hinge. */
+[data-posture="tabletop"] body.has-stage .filters { max-height: calc(100% - var(--tt-bot) - 8px); }
+[data-posture="tabletop"] .progress { display: none; }
+[data-posture="tabletop"] .hero { min-height: 0; padding-top: 96px; }
+
+/* The stage: the top screen, down to the hinge (which it paints dark, so nothing scrolls
+   through the gap). */
+[data-posture="tabletop"] .stage {
+  display: grid; place-items: center; position: fixed; z-index: 45; inset: 0 0 auto; height: var(--tt-bot);
+  padding: max(14px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right)) calc(var(--tt-bot) - var(--tt-top) + 14px) max(20px, env(safe-area-inset-left));
+  overflow: hidden; isolation: isolate;
+  background: linear-gradient(to top, #1d1d1f calc(var(--tt-bot) - var(--tt-top)), #fff 0);
+  box-shadow: 0 18px 30px -24px #0000004d;
+  view-transition-name: lib-stage;
+}
+[data-posture="tabletop"] .stage::before {
+  content: ''; position: absolute; z-index: -1; inset: 0 0 calc(var(--tt-bot) - var(--tt-top));
+  background: radial-gradient(70% 90% at 32% 55%, color-mix(in srgb, var(--cv-wash, var(--pick, #FFE4E8)) 34%, #fff) 0%, #fff 72%);
+  transition: --pick .6s ease;
+}
+
+/* A book, open on the table: the cover, lit and turned toward you; what you're reading. */
+.stage-book { display: grid; grid-template-columns: auto minmax(0, 26em); gap: clamp(16px, 4vw, 44px); align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 0; }
+.stage-cover { height: 100%; min-height: 0; display: grid; align-items: center; perspective: 900px; }
+.stage-cover .cover { width: auto; height: min(calc(var(--tt-top) - 44px), 340px); max-height: 100%; border-radius: 4px 10px 10px 4px; box-shadow: 0 30px 50px -22px #000a, inset 3px 0 0 #ffffff33; transform: rotateY(16deg); transform-origin: left center; }
+.stage-copy { display: grid; gap: 4px; min-width: 0; }
+.stage-k { margin: 0 0 4px; font: 600 12px/1.2 var(--body); letter-spacing: .06em; text-transform: uppercase; color: var(--am-ink, #D70F35); }
+.stage-title { font: 700 clamp(22px, 3.4vw, 38px)/1.05 var(--display); letter-spacing: -.03em; color: #1D1D1F; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.stage-by { font: 400 clamp(14px, 1.6vw, 18px)/1.3 var(--body); color: #515154; }
+.stage-rate { margin-top: 4px; font-size: 14px; letter-spacing: .1em; color: #1D1D1F; }
+.stage-rate span { margin-left: 8px; letter-spacing: 0; color: #515154; }
+.stage-now { display: flex; gap: 8px; align-items: baseline; margin: 14px 0 6px; font: 500 15px/1.3 var(--body); color: #1D1D1F; min-width: 0; }
+.stage-now-k { flex: none; padding: 2px 7px; border-radius: 6px; background: #1D1D1F; color: #fff; font: 600 11px/1.4 var(--body); letter-spacing: .04em; text-transform: uppercase; }
+#stage-now { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.stage-bar { display: block; height: 4px; border-radius: 2px; background: #0000001a; overflow: hidden; }
+.stage-bar i { display: block; height: 100%; background: var(--cv-wash, var(--am)); transform-origin: left; transform: scaleX(0); }
+/* Narrow tabletops (a flip phone half-open): the cover above, its name beside the bar. */
+@media (max-width: 560px) {
+  .stage-book { grid-template-columns: auto minmax(0, 1fr); gap: 16px; }
+  .stage-cover .cover { height: min(calc(var(--tt-top) - 60px), 220px); }
+  .stage-k { display: none; }
+  .stage-now { margin-top: 8px; font-size: 14px; }
+}
+/* On the bottom screen the hero keeps its facts and buttons; the stage has its cover and name. */
+[data-posture="tabletop"] .page-book .hero-cover { display: none; }
+[data-posture="tabletop"] .page-book .book-hero { grid-template-columns: minmax(0, 1fr); padding-top: 84px; }
+
+/* The home: the portrait's head on the top screen, its caption beside it. */
+[data-posture="tabletop"] .stage > .pt-bust { position: relative; top: 0; display: grid; grid-template-columns: auto minmax(0, 24em); gap: 8px clamp(16px, 4vw, 48px); align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 0; margin: 0; }
+[data-posture="tabletop"] .stage > .pt-bust svg { grid-row: 1 / 3; width: auto; height: calc(var(--tt-top) - 60px); max-width: 52vw; margin: 0; }
+[data-posture="tabletop"] .stage > .pt-bust .pt-plank { grid-column: 1; grid-row: 3; width: 80%; margin-top: -2px; }
+[data-posture="tabletop"] .stage > .pt-bust .pt-say { grid-column: 2; grid-row: 1 / 3; min-height: 0; margin: 0; text-align: left; }
+[data-posture="tabletop"] .stage > .pt-bust .pt-say b { font-size: clamp(19px, 2.6vw, 28px); }
+[data-posture="tabletop"] .stage > .pt-bust::before { display: none; }
+@media (max-width: 560px) {
+  [data-posture="tabletop"] .stage > .pt-bust { grid-template-columns: minmax(0, .9fr) minmax(0, 1fr); gap: 4px 12px; }
+  [data-posture="tabletop"] .stage > .pt-bust svg { height: auto; width: 100%; max-height: calc(var(--tt-top) - 60px); max-width: none; }
+  [data-posture="tabletop"] .stage > .pt-bust .pt-say b { font-size: 17px; }
+  [data-posture="tabletop"] .stage > .pt-bust .pt-say a { font-size: 13px; }
+}
+/* The list stays on the bottom screen, one column; each row opens to its line there too. */
+[data-posture="tabletop"] .portrait { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "list" "close"; }
+[data-posture="tabletop"] .portrait .pt-list button[aria-pressed="true"] .pt-line { display: block; }
+
+/* Folding into tabletop lifts the top screen like a lid, from the hinge; flattening lays it
+   back. (library.js sets data-fold-anim="lid-up|lid-down" for the view transition.)
+   Under reduced motion there is no transition: the change is instant. */
+html[data-fold-anim="lid-up"]::view-transition-new(lib-stage) { animation: var(--spring-ms) var(--spring) both lid-up; transform-origin: 50% 100%; }
+html[data-fold-anim="lid-down"]::view-transition-old(lib-stage) { animation: var(--spring-ms) var(--spring) both lid-down; transform-origin: 50% 100%; }
+@keyframes lid-up { from { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
+@keyframes lid-down { to { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
+
+/* ── Cover screens ─────────────────────────────────────────────────────────────────
+   The outer displays of book-style foldables, and Split View, run down to 280px wide. */
+.duo .hub-map a, .duo .hub-t { min-width: 0; }
+/* A search field's built-in width (about 20 characters) counts toward its row's minimum;
+   with a wide system font (Linux falls back to DejaVu Sans) that ran 18px off a 280px page. */
+.duo .ios-search { min-width: 0; }
+.duo .ios-search input { width: 0; }
+/* Both forms: the previous/next cards break a long title rather than run off the page. */
+.pg { min-width: 0; }
+.pg b { overflow-wrap: anywhere; }
+.duo .hub-t b { overflow-wrap: anywhere; }
+@media (max-width: 340px) { .duo .hub-map ul { grid-template-columns: minmax(0, 1fr); } }
+
+/* ── ?fold=debug ─────────────────────────────────────────────────────────────────── */
+.fold-debug { position: fixed; inset: 0; z-index: 999; pointer-events: none; }
+.fold-debug i { position: absolute; box-sizing: border-box; border: 2px dashed #FA2D48; background: #fa2d480d; font: 600 11px/1.6 ui-monospace, monospace; font-style: normal; color: #D70F35; padding: 2px 6px; }
+.fold-debug b { position: absolute; left: 50%; bottom: 10px; transform: translateX(-50%); padding: 4px 10px; border-radius: 999px; background: #1D1D1F; color: #fff; font: 600 11px/1.4 ui-monospace, monospace; white-space: nowrap; }

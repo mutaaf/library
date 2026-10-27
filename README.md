@@ -12,6 +12,9 @@ applications, critique, experiments and dated reflections as I write them.
 - **On the iPhone Duo:** it becomes a book. Closed, you hold one page. Open, the hinge is
   the gutter of a two-page spread, with the shelf on the left and the book on the right.
   Unfold mid-chapter and the shelf swings open from the hinge while you keep your place.
+- **On any foldable:** half-open it like a laptop (or a flip phone) and the top screen
+  becomes a stage: the book open on the table, or the portrait's head, while you read and
+  tap on the bottom screen. Every posture is in [docs/FOLDABLES.md](docs/FOLDABLES.md).
 
 ## Run it
 
@@ -27,7 +30,8 @@ npm run stack          # production locally: the site at / and the library at /l
 
 Add `?duo=open`, `?duo=closed` or `?duo=auto` to any URL to see the book form on a desktop.
 `auto` follows the window size, so resizing the window unfolds and folds it. `?duo=off`
-turns it off again for the tab.
+turns it off again for the tab. `?posture=tabletop` shows the half-folded layout, and
+`?fold=debug` draws the screen segments the page sees.
 
 ## Write in it
 

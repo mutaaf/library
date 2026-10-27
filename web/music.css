@@ -341,7 +341,8 @@
    book's colour; the caption and the row say what it gives away. Drag across the head to
    flip through them. */
 @property --pick { syntax: '<color>'; inherits: true; initial-value: #FFE4E8; }
-.portrait { --pick: #FFE4E8; transition: --pick .6s ease; }
+.portrait { --pick: #FFE4E8; }
+.portrait, .pt-bust, .stage { transition: --pick .6s ease; }
 .pt-bust { isolation: isolate; }
 .pt-bust::before { content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: -4%; height: 86%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--pick) 42%, transparent), transparent); pointer-events: none; }
 .duo .pt-bust { position: relative; top: 0; }
@@ -349,8 +350,8 @@
 :root:not(.duo) .portrait::before { display: none; }
 .pt-bust svg { touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
 .pt-sp.hover .pt-shade { opacity: .16; }
-.portrait.has-pick .pt-sp { opacity: .34; }
-.portrait.has-pick .pt-sp.on { opacity: .1; }
+.pt-bust.has-pick .pt-sp { opacity: .34; }
+.pt-bust.has-pick .pt-sp.on { opacity: .1; }
 .pt-out { transform-box: fill-box; transform-origin: 50% 100%; transform: translateY(-34px) scale(1.06); animation: pt-out var(--spring-snap-ms) var(--spring-snap) both; pointer-events: none; }
 .pt-out .pt-shade { opacity: 0; }
 .pt-out text { font: 600 10px var(--body); letter-spacing: .14em; dominant-baseline: middle; text-anchor: middle; }

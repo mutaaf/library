@@ -23,17 +23,23 @@ const claim = (c) => '<p class="claim claim-' + c + '">' + esc(CLAIMS[c]) + '</p
 const isNum = (n) => typeof n === 'number';
 
 // The <head> script runs before first paint: it decides the form (app, Duo closed, Duo
-// open) so the page never flashes the wrong layout. library.js keeps it current on resize.
+// open) and the posture (tabletop, when a foldable is half-folded with its hinge across the
+// screen) so the page never flashes the wrong layout. library.js keeps both current.
+// ?duo=open|closed|auto|off and ?posture=tabletop|auto|off emulate them (per tab).
 // ES5 on purpose, like the personal site.
-export const FORM_SCRIPT = `(function(){var d=document.documentElement,o=null;d.className+=' js';
-try{var q=/[?&]duo=(open|closed|auto|off)\\b/.exec(location.search);if(q)sessionStorage.setItem('lib-duo',q[1]);o=sessionStorage.getItem('lib-duo')}catch(e){}
+export const FORM_SCRIPT = `(function(){var d=document.documentElement,o=null,p=null;d.className+=' js';
+try{var q=/[?&]duo=(open|closed|auto|off)\\b/.exec(location.search);if(q)sessionStorage.setItem('lib-duo',q[1]);o=sessionStorage.getItem('lib-duo');
+var r=/[?&]posture=(tabletop|auto|off)\\b/.exec(location.search);if(r)sessionStorage.setItem('lib-posture',r[1]);p=sessionStorage.getItem('lib-posture')}catch(e){}
+var mm=function(m){return!!(window.matchMedia&&matchMedia(m).matches)};
+window.libPosture=function(){if(p==='off')return'';if(p==='tabletop')return'tabletop';return mm('(vertical-viewport-segments: 2)')?'tabletop':''};
 var s=window.screen||{},a=Math.min(s.width||0,s.height||0),b=Math.max(s.width||0,s.height||0);
-var seg=window.matchMedia&&matchMedia('(horizontal-viewport-segments: 2)').matches;
-var duo=o==='open'||o==='closed'||o==='auto'||(o!=='off'&&(seg||(/iPhone/.test(navigator.userAgent)&&__DUO_TEST__)));
-window.libForm=function(){if(!duo)return'';if(o==='open'||o==='closed')return o;
-if(window.matchMedia&&matchMedia('(horizontal-viewport-segments: 2)').matches)return'open';
+var iduo=/iPhone/.test(navigator.userAgent)&&__DUO_TEST__;
+window.libForm=function(){var seg=mm('(horizontal-viewport-segments: 2)');
+if(o==='off'||window.libPosture()||!(o||iduo||seg))return'';if(o==='open'||o==='closed')return o;
+if(seg)return'open';
 return innerWidth>=600&&innerWidth>innerHeight*1.1?'open':'closed'};
 var f=window.libForm();if(f){d.className+=' duo';d.setAttribute('data-fold',f)}
+var t=window.libPosture();if(t)d.setAttribute('data-posture',t);
 if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)d.className+=' still'})();`;
 
 function head({ title, description, canonical, jsonld, type }) {
@@ -445,6 +451,20 @@ const TAB_ICONS = {
   themes: '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="18" r="2"/><path d="m7 7 3 3m4 0 3-3m-7 7-2.6 3.4M14 14l2.6 2.6"/>',
   hire: '<path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3M4 13h16"/>',
 };
+// The stage: the top screen of a foldable in tabletop posture (web/fold.css). On a book it
+// is the book, open on the table, with where you are in it; on the home, library.js moves
+// the portrait's head up here and the list that drives it stays on the bottom screen.
+// Hidden, and never shown, without JS or a fold.
+function stage(b) {
+  if (!b) return '<div class="stage" id="stage" hidden></div>';
+  const r = b.reading;
+  return `<div class="stage" id="stage" hidden><div class="stage-book" aria-hidden="true" style="${coverVars(b.cover)}">
+    <div class="stage-cover">${cover(b, 'md')}</div>
+    <div class="stage-copy"><p class="stage-k">Open on the table</p><b class="stage-title">${esc(b.title)}</b><span class="stage-by">${esc(authorsText(b.authors))}</span>${r && isNum(r.rating) ? `<span class="stage-rate">${'★'.repeat(Math.round(r.rating))}<span>${r.rating.toFixed(1)}</span></span>` : ''}
+      <p class="stage-now"><span class="stage-now-k">Now</span><span id="stage-now">Overview</span></p><span class="stage-bar"><i id="stage-bar"></i></span></div>
+  </div></div>`;
+}
+
 function tabbar(page, pub, here) {
   const h = page === 'home' ? '' : BASE;
   const now = pub.books.find((b) => b.reading && b.reading.status === 'reading') || pub.books.find((b) => b.reading && b.reading.status === 'revisiting');
@@ -459,7 +479,8 @@ export function home(pub, opts = {}) {
   const jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Leadership Library', description: SITE_DESC, url: ORIGIN + BASE, author: Object.assign({ '@type': 'Person', name: 'Mutaaf Aziz', url: ORIGIN + '/' }, site.hire ? { jobTitle: site.hire.roles[0].title, worksFor: { '@type': 'Organization', name: site.hire.roles[0].org }, email: 'mailto:' + site.hire.contact.email, sameAs: [site.hire.contact.linkedin, site.hire.contact.site] } : {}), hasPart: pub.books.map((b) => ({ '@type': 'Book', name: b.title, url: ORIGIN + BASE + b.slug + '/', author: b.authors.map((n) => ({ '@type': 'Person', name: n })) })) };
   const ep = site.epigraph;
   const body = `
-<body class="page-home">
+<body class="page-home has-stage">
+  ${stage()}
   ${nav('home')}
   <div class="ios-bar"><span class="ios-back"></span><b class="ios-title" aria-hidden="true">Library</b></div>
   <main id="main" class="spread">
@@ -582,8 +603,9 @@ export function book(pub, b) {
   };
   const meta = [b.firstPublishedYear, b.pages ? b.pages + ' pages' : '', b.edition || '', CATEGORIES[b.category]].filter(Boolean).map((x) => `<span>${esc(String(x))}</span>`).join('');
   const body = `
-<body class="page-book" style="${coverVars(b.cover)}">
+<body class="page-book has-stage" style="${coverVars(b.cover)}">
   <div class="progress" aria-hidden="true"><i></i></div>
+  ${stage(b)}
   ${nav('book')}
   <div class="ios-bar"><a class="ios-back" href="${BASE}#books"><svg viewBox="0 0 12 20" aria-hidden="true"><path d="M10 2L2 10l8 8" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Library</a><b class="ios-title" aria-hidden="true">${esc(b.title)}</b><button type="button" class="ios-share" data-share hidden aria-label="Share"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M8 7l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 11v9h12v-9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></button></div>
   <main id="main" class="spread">

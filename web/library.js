@@ -13,6 +13,15 @@
   var defaultView = function () {}; // the shelf section replaces this
   var isDuo = function () { return root.classList.contains('duo'); };
   var fold = function () { return isDuo() ? root.getAttribute('data-fold') : ''; };
+  var posture = function () { return root.getAttribute('data-posture') || ''; };
+  // In tabletop the page reads on the bottom screen, below the stage (and the hinge).
+  // (Below the nav too, which floats at the top of the bottom screen.)
+  var paneTop = function () {
+    var st = posture() && $('stage');
+    if (!st) return 0;
+    var nv = $('nav'), b = st.getBoundingClientRect().bottom;
+    return nv ? Math.max(b, nv.getBoundingClientRect().bottom) : b;
+  };
 
   // ================= FORM: the Duo folds and unfolds =================
   // libForm() (from <head>) says which form the page should be in right now. When it
@@ -32,7 +41,7 @@
   // thing they're about to read, and how far down the pane it sits.
   function captureAnchor() {
     var box = scroller();
-    var top = (box ? box.getBoundingClientRect().top : 0) + stickyFloor() - 8;
+    var top = (box ? box.getBoundingClientRect().top : 0) + paneTop() + stickyFloor() - 8;
     var nodes = document.querySelectorAll('.book-hero, .sec, .fw li, .idea, .refl, .bk:not([hidden]), .colophon');
     for (var i = 0; i < nodes.length; i++) {
       var r = nodes[i].getBoundingClientRect();
@@ -43,10 +52,13 @@
   function restoreAnchor(a) {
     if (!a || !a.el.getClientRects().length) return;
     var box = scroller();
-    var top = (box ? box.getBoundingClientRect().top : 0) + stickyFloor();
+    var top = (box ? box.getBoundingClientRect().top : 0) + paneTop() + stickyFloor();
     var delta = a.el.getBoundingClientRect().top - top - Math.max(0, Math.min(a.off, 120));
     if (box) box.scrollTop += delta;
     else window.scrollTo(0, window.pageYOffset + delta);
+  }
+  function setPosture(t) {
+    if (t) root.setAttribute('data-posture', t); else root.removeAttribute('data-posture');
   }
   function setForm(f) {
     if (f) { root.classList.add('duo'); root.setAttribute('data-fold', f); }
@@ -65,10 +77,12 @@
     pending = 0;
     if (!window.libForm) return;
     var next = window.libForm(), prev = fold();
-    if (next === prev) { formWidth = window.innerWidth; return; }
+    var nextP = window.libPosture ? window.libPosture() : '', prevP = posture();
+    if (next === prev && nextP === prevP) { formWidth = window.innerWidth; return; }
     var anchor = lastAnchor || captureAnchor();
-    var dir = prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; };
+    // Half-folding lifts the top screen like a laptop lid; flattening lays it back down.
+    var dir = nextP !== prevP ? (nextP ? 'lid-up' : 'lid-down') : prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
+    var update = function () { setForm(next); setPosture(nextP); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; if (window.libStageFollow) window.libStageFollow(); if (window.libFoldDebug) window.libFoldDebug(); };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -79,15 +93,29 @@
   }
   window.addEventListener('resize', function () { if (!pending) pending = requestAnimationFrame(checkForm); });
   if (window.matchMedia) {
-    var segs = matchMedia('(horizontal-viewport-segments: 2)');
-    if (segs.addEventListener) segs.addEventListener('change', checkForm);
+    // A hinge appearing or turning, or the device folding, all re-decide the form.
+    ['(horizontal-viewport-segments: 2)', '(vertical-viewport-segments: 2)', '(device-posture: folded)'].forEach(function (m) {
+      var mq = matchMedia(m);
+      if (mq.addEventListener) mq.addEventListener('change', checkForm);
+      else if (mq.addListener) mq.addListener(checkForm);
+    });
   }
+  if (navigator.devicePosture && navigator.devicePosture.addEventListener) navigator.devicePosture.addEventListener('change', checkForm);
 
   // In the open Duo the home's right-hand page carries the portrait, the philosophy, how I
   // read, the journey, themes and insights, and work with me (under the colophon); folded or in the app form
   // they go back where they came from.
   var moved = [];
+  var bustMark = null;
   function arrange() {
+    // Tabletop: the portrait's head goes up to the stage (the top screen); its list stays
+    // below, so you tap on the bottom screen and watch the book come out on the top one.
+    var stageEl = $('stage'), bust = document.querySelector('.pt-bust');
+    if (stageEl && bust) {
+      if (!bustMark) { bustMark = document.createComment('bust-slot'); bust.parentNode.insertBefore(bustMark, bust); }
+      if (posture() === 'tabletop' && bust.parentNode !== stageEl) stageEl.appendChild(bust);
+      else if (posture() !== 'tabletop' && bust.parentNode === stageEl) bustMark.parentNode.insertBefore(bust, bustMark.nextSibling);
+    }
     var right = document.querySelector('.page-home .colophon');
     if (!right) return;
     if (!moved.length) {
@@ -429,16 +457,74 @@
     });
   });
 
+  // ================= TABLETOP: the book, open on the table =================
+  // On a book page the stage (the top screen) says which part of the book the bottom
+  // screen is on, and how far through it you are.
+  var stageNow = $('stage-now'), stageBar = $('stage-bar');
+  if (stageNow) {
+    var nowTick = 0;
+    // A heading's words, without the idea number set in front of them ("01").
+    var headingText = function (h) {
+      var c = h.cloneNode(true), n = c.querySelector('.idea-n');
+      if (n) n.parentNode.removeChild(n);
+      return c.textContent;
+    };
+    var follow = function () {
+      nowTick = 0;
+      if (posture() !== 'tabletop') return;
+      var tab = document.querySelector('.tabs [aria-selected="true"]');
+      var top = paneTop(), label = tab ? tab.textContent : '', line = top + (window.innerHeight - top) * 0.4;
+      var hs = document.querySelectorAll('.panel.on h3, .panel.on h4');
+      for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top <= line) label = headingText(hs[i]); else break; }
+      if (stageNow.textContent !== label) stageNow.textContent = label;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      stageBar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.pageYOffset / max) : 0) + ')';
+    };
+    window.addEventListener('scroll', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); }, { passive: true });
+    document.addEventListener('click', function () { setTimeout(follow, 0); });
+    window.addEventListener('resize', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); });
+    window.libStageFollow = follow; // checkForm calls it: half-folding fires no scroll or resize
+    follow();
+  }
+
+  // ?fold=debug draws the viewport segments, the hinge between them, and the form and
+  // posture the page chose: a check for anyone bringing this to a new foldable.
+  if (/[?&]fold=debug\b/.test(location.search)) {
+    var dbg = document.createElement('div');
+    dbg.className = 'fold-debug';
+    dbg.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(dbg);
+    window.libFoldDebug = function () {
+      var segs = window.viewport && window.viewport.segments && window.viewport.segments.length ? window.viewport.segments : [{ left: 0, top: 0, width: window.innerWidth, height: window.innerHeight }];
+      dbg.innerHTML = '';
+      [].forEach.call(segs, function (sg, i) {
+        var box = document.createElement('i');
+        box.style.cssText = 'left:' + sg.left + 'px;top:' + sg.top + 'px;width:' + sg.width + 'px;height:' + sg.height + 'px';
+        box.textContent = 'segment ' + i + ' · ' + Math.round(sg.width) + '×' + Math.round(sg.height);
+        dbg.appendChild(box);
+      });
+      var tag = document.createElement('b');
+      tag.textContent = 'form: ' + (fold() || 'app') + ' · posture: ' + (posture() || 'flat') + (window.matchMedia && matchMedia('(device-posture: folded)').matches ? ' · device folded' : '');
+      dbg.appendChild(tag);
+    };
+    window.libFoldDebug();
+    window.addEventListener('resize', window.libFoldDebug);
+  }
+
   // ================= THE PORTRAIT: a head made of spines =================
   // The spines rise into the head the first time it's seen. Tap one (or its row) and that
   // book slides out of the head, the rest dim, and the caption says what it gives away.
   // Drag a finger across the head to flip through them, like the index on an iOS list.
   var pt = $('portrait');
   if (pt) {
-    var ptSvg = pt.querySelector('.pt-bust svg');
-    var spines = [].slice.call(pt.querySelectorAll('.pt-sp'));
+    // The head (.pt-bust) can leave the section for the tabletop stage, so it is found on
+    // its own, and the state classes go on both: the section and the head.
+    var ptBust = document.querySelector('.pt-bust');
+    var ptSvg = ptBust.querySelector('svg');
+    var spines = [].slice.call(ptBust.querySelectorAll('.pt-sp'));
+    var ptState = function (name, on) { pt.classList.toggle(name, on); ptBust.classList.toggle(name, on); };
     var rows = [].slice.call(pt.querySelectorAll('.pt-list button'));
-    var pull = pt.querySelector('.pt-pull');
+    var pull = ptBust.querySelector('.pt-pull');
     var say = $('pt-say');
     var sayIdle = say.innerHTML;
     var picked = -1;
@@ -458,8 +544,9 @@
     var pick = function (i) {
       if (i === picked) return;
       picked = i;
-      pt.classList.toggle('has-pick', i >= 0);
-      pt.style.setProperty('--pick', i >= 0 ? rows[i].style.getPropertyValue('--w') : '');
+      ptState('has-pick', i >= 0);
+      var w = i >= 0 ? rows[i].style.getPropertyValue('--w') : '';
+      [pt, ptBust, $('stage')].forEach(function (el) { if (el) el.style.setProperty('--pick', w); });
       spines.forEach(function (g, j) { g.classList.toggle('on', j === i); g.classList.remove('hover'); });
       rows.forEach(function (r, j) { r.setAttribute('aria-pressed', String(j === i)); });
       // The book you pulled: a copy of its spine, outside the head's outline, sliding up.
@@ -491,7 +578,7 @@
     });
     ptSvg.addEventListener('pointermove', function (e) {
       // A mouse released outside the head never sent its pointerup here; forget that press.
-      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; pt.classList.remove('scrubbing'); say.setAttribute('aria-live', 'polite'); }
+      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; ptState('scrubbing', false); say.setAttribute('aria-live', 'polite'); }
       if (!scrub || e.pointerId !== scrub.id) {
         // A mouse just pointing previews the spine, until something is picked.
         if (fine && picked < 0 && e.pointerType === 'mouse') {
@@ -502,7 +589,7 @@
       }
       if (!scrub.moved && Math.abs(e.clientX - scrub.x) < 8) return;
       // While dragging, the caption stays quiet for screen readers; it speaks once at the end.
-      if (!scrub.moved) { scrub.moved = true; try { ptSvg.setPointerCapture(e.pointerId); } catch (x) {} pt.classList.add('scrubbing'); say.setAttribute('aria-live', 'off'); }
+      if (!scrub.moved) { scrub.moved = true; try { ptSvg.setPointerCapture(e.pointerId); } catch (x) {} ptState('scrubbing', true); say.setAttribute('aria-live', 'off'); }
       var i = spineAt(e.clientX);
       if (i !== picked) { pick(i); tick(); }
     });
@@ -510,7 +597,7 @@
       if (!scrub || e.pointerId !== scrub.id) return;
       var s = scrub;
       scrub = null;
-      pt.classList.remove('scrubbing');
+      ptState('scrubbing', false);
       if (s.moved) { say.setAttribute('aria-live', 'polite'); ptCaption(picked); }
       if (e.type === 'pointerup' && !s.moved && s.start >= 0) { pick(s.start === picked ? -1 : s.start); tick(); }
     };
@@ -539,12 +626,12 @@
       pick(-1);
     });
     // Arrival: the books slide up into the head, one after another.
-    if (still || !('IntersectionObserver' in window)) pt.classList.add('shelved');
+    if (still || !('IntersectionObserver' in window)) ptState('shelved', true);
     else {
       var sio = new IntersectionObserver(function (es) {
         if (!es[0].isIntersecting) return;
         sio.disconnect();
-        pt.classList.add('shelved');
+        ptState('shelved', true);
       }, { threshold: 0.2 });
       sio.observe(ptSvg);
     }
@@ -610,7 +697,7 @@
       peek.appendChild(box);
       var rc = li.getBoundingClientRect();
       peek.style.left = Math.max(12, rc.left - 300) + 'px';
-      peek.style.top = Math.max(70, Math.min(innerHeight - 220, rc.top - 40)) + 'px';
+      peek.style.top = Math.max(70, paneTop() + 12, Math.min(innerHeight - 220, rc.top - 40)) + 'px';
       peek.classList.add('on');
     };
     var hide = function () { peek.classList.remove('on'); };

@@ -35,7 +35,7 @@ src/duo.mjs         the iPhone Duo screen table used before first paint
 src/build.mjs       → dist/library/** (+ dist/_headers)
 scripts/add-book.mjs a book from a title/ISBN/link via Open Library (the Add a book issue
                     form + .github/workflows/add-book.yml; owner-only, pushes to main)
-web/                library.css → studio.css → duo.css → music.css (Read Now, last), library.js, icon.svg
+web/                library.css → studio.css → duo.css → music.css (Read Now) → fold.css (postures, last), library.js, icon.svg
 test/               node:test unit tests (+ fixtures/)
 tests/e2e/          Playwright, WebKit + Chromium
 ```
@@ -54,6 +54,10 @@ tests/e2e/          Playwright, WebKit + Chromium
     (`data-fold-anim="opening|closing"` while it runs) and restores the reader's heading.
   - **Testing on a desktop:** use `?duo=open|closed|auto|off`. It's remembered for the tab
     in sessionStorage.
+- **The tabletop posture** applies when `html[data-posture="tabletop"]` is set: a foldable
+  half-open with its hinge across the screen. The top screen becomes `#stage`; the page reads
+  below the hinge. Emulate it with `?posture=tabletop|auto|off`; `?fold=debug` draws the
+  segments. Every posture, its detection and its tests: [docs/FOLDABLES.md](docs/FOLDABLES.md).
 
 ## 3 · Deploy
 
