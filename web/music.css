@@ -354,7 +354,6 @@
 .pt-out { transform-box: fill-box; transform-origin: 50% 100%; transform: translateY(-34px) scale(1.06); animation: pt-out var(--spring-snap-ms) var(--spring-snap) both; pointer-events: none; }
 .pt-out .pt-shade { opacity: 0; }
 .scrubbing .pt-out { animation-duration: calc(var(--spring-snap-ms) * .6); }
-.pt-say { transition: opacity .2s; }
 .pt-say.swap > * { animation: pt-say var(--spring-soft-ms) var(--spring-soft) both; }
 .pt-say.swap > :nth-child(2) { animation-delay: 40ms; }
 .pt-say.swap > :nth-child(3) { animation-delay: 80ms; }
@@ -375,7 +374,6 @@
   .pt-list button[aria-pressed="true"] span { color: #6E6E73; }
   .pt-say-k { color: var(--am-ink); }
 }
-.duo .pt-list button[aria-pressed="true"] { background: #FFF0F2; }
 .duo .pt-list button { grid-template-rows: auto auto auto; }
 .duo .pt-line { font: italic 400 16px/1.4 var(--title); color: #3A3A3C; }
 .duo .pt-say a { color: var(--am-ink); }

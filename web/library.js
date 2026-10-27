@@ -442,6 +442,8 @@
     var say = $('pt-say');
     var sayIdle = say.innerHTML;
     var picked = -1;
+    // The caption reads the line out; the row's copy of it is for the eye only.
+    [].forEach.call(pt.querySelectorAll('.pt-line'), function (l) { l.setAttribute('aria-hidden', 'true'); });
     var tick = function () { if (navigator.vibrate && !still) try { navigator.vibrate(6); } catch (e) {} };
     var ptCaption = function (i) {
       if (i < 0) { say.innerHTML = sayIdle; return; }
@@ -458,7 +460,7 @@
       picked = i;
       pt.classList.toggle('has-pick', i >= 0);
       pt.style.setProperty('--pick', i >= 0 ? rows[i].style.getPropertyValue('--w') : '');
-      spines.forEach(function (g, j) { g.classList.toggle('on', j === i); });
+      spines.forEach(function (g, j) { g.classList.toggle('on', j === i); g.classList.remove('hover'); });
       rows.forEach(function (r, j) { r.setAttribute('aria-pressed', String(j === i)); });
       // The book you pulled: a copy of its spine, outside the head's outline, sliding up.
       while (pull.firstChild) pull.removeChild(pull.firstChild);
