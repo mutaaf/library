@@ -361,15 +361,16 @@ function portrait(pub, pt) {
       </div>
       <figure class="pt-bust">
         <svg viewBox="0 0 430 470" role="img" aria-label="A head in profile, made of the spines of the ${books.length} books on my shelf">
-          <defs><clipPath id="pt-head"><path d="${HEAD}"/></clipPath><linearGradient id="pt-light" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".16"/></linearGradient></defs>
+          <defs><filter id="pt-lift" x="-50%" y="-10%" width="200%" height="130%"><feDropShadow dx="0" dy="14" stdDeviation="9" flood-color="#000" flood-opacity=".32"/></filter><clipPath id="pt-head"><path d="${HEAD}"/></clipPath><linearGradient id="pt-light" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".28"/><stop offset=".55" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".16"/></linearGradient></defs>
           <g clip-path="url(#pt-head)">${spines.join('')}<rect x="0" y="0" width="430" height="470" fill="url(#pt-light)" pointer-events="none"/></g>
           <path class="pt-outline" d="${HEAD}"/>
+          <g class="pt-pull" filter="url(#pt-lift)" aria-hidden="true"></g>
         </svg>
         <div class="pt-plank" aria-hidden="true"></div>
         <figcaption class="pt-say" id="pt-say" aria-live="polite"><span class="pt-say-k">Tap a spine</span><b>Each book gives something away.</b></figcaption>
       </figure>
       <ol class="pt-list">
-        ${books.map((b, i) => `<li><button type="button" data-pt="${i}" data-href="${BASE}${b.slug}/" data-title="${esc(b.title)}" data-line="${esc(pt.traits[b.slug].line)}" style="--c:${b.cover.bg};--f:${b.cover.foil}" aria-pressed="false"><i aria-hidden="true"></i><b>${esc(pt.traits[b.slug].short)}</b><span>${esc(b.title)}</span></button></li>`).join('\n        ')}
+        ${books.map((b, i) => `<li><button type="button" data-pt="${i}" data-href="${BASE}${b.slug}/" data-title="${esc(b.title)}" data-line="${esc(pt.traits[b.slug].line)}" style="--c:${b.cover.bg};--f:${b.cover.foil};--w:${wash(b.cover)}" aria-pressed="false"><i aria-hidden="true"></i><b>${esc(pt.traits[b.slug].short)}</b><span>${esc(b.title)}</span><em class="pt-line">${esc(pt.traits[b.slug].line)}</em></button></li>`).join('\n        ')}
       </ol>
       <p class="pt-close">${esc(pt.closing)}</p>
     </section>`;
