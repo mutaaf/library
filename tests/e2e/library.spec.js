@@ -353,3 +353,39 @@ test('the Duo shows the philosophy and the rest, closed and open', async ({ page
   await expect(page.locator('.colophon #philosophy')).toHaveCount(0);
   await expect(page.locator('#philosophy')).toBeVisible();
 });
+
+// Glass (owner: "the app header moves on scroll; it should all be liquid glass and pin on
+// scroll"): every bar keeps its place, size and material from the first pixel to the end.
+test.describe('the bars are glass and pinned', () => {
+  const bar = (page, sel) => page.evaluate((sel) => {
+    const el = [...document.querySelectorAll(sel)].find((e) => e.getBoundingClientRect().width > 0);
+    const r = el.getBoundingClientRect(), cs = getComputedStyle(el);
+    return { top: Math.round(r.top), h: Math.round(r.height), bg: cs.backgroundColor, blur: cs.backdropFilter || cs.webkitBackdropFilter };
+  }, sel);
+  for (const [name, size, q, sel] of [
+    ['the app bar on the home', { width: 390, height: 844 }, '/library/', '.nav'],
+    ['the app bar on a book', { width: 1280, height: 800 }, '/library/radical-candor/', '.nav'],
+    ['the Duo bar on the shelf', { width: 382, height: 580 }, '/library/?duo=closed', '.ios-bar'],
+    ['the Duo bar on a book', { width: 382, height: 580 }, '/library/radical-candor/?duo=closed', '.ios-bar'],
+  ]) {
+    test(name, async ({ page }) => {
+      await page.setViewportSize(size);
+      await page.goto(q);
+      const first = await bar(page, sel);
+      expect(first.top).toBe(0);
+      expect(first.blur).toContain('blur');
+      for (const y of [12, 40, 600, 4000]) {
+        await page.evaluate((y) => scrollTo(0, y), y);
+        await page.waitForTimeout(120);
+        expect(await bar(page, sel)).toEqual(first);
+      }
+    });
+  }
+  test('the phone tab bar floats as one glass capsule', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/library/');
+    const t = await page.locator('.tabbar').evaluate((e) => { const cs = getComputedStyle(e); return { r: parseFloat(cs.borderTopLeftRadius), blur: cs.backdropFilter || cs.webkitBackdropFilter }; });
+    expect(t.r).toBeGreaterThanOrEqual(24);
+    expect(t.blur).toContain('blur');
+  });
+});

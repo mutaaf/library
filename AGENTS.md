@@ -35,7 +35,7 @@ src/duo.mjs         the iPhone Duo screen table used before first paint
 src/build.mjs       → dist/library/** (+ dist/_headers)
 scripts/add-book.mjs a book from a title/ISBN/link via Open Library (the Add a book issue
                     form + .github/workflows/add-book.yml; owner-only, pushes to main)
-web/                library.css → studio.css → duo.css → music.css (Read Now) → fold.css (postures, last), library.js, icon.svg
+web/                library.css → studio.css → duo.css → music.css (Read Now) → fold.css (postures) → glass.css (every bar, last), library.js, icon.svg
 test/               node:test unit tests (+ fixtures/)
 tests/e2e/          Playwright, WebKit + Chromium
 ```
