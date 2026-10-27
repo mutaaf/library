@@ -142,6 +142,65 @@ test.describe('without JavaScript', () => {
     await expect(page.locator('#thesis')).toBeVisible();
     await expect(page.locator('.idea').first()).toBeVisible();
   });
+  test('the portrait still says what every book gives away', async ({ page }) => {
+    await page.goto('/library/');
+    await expect(page.locator('.pt-line:visible')).toHaveCount(await page.locator('.pt-sp').count());
+  });
+});
+
+test.describe('the portrait in spines', () => {
+  for (const [form, size, q] of [['app form', { width: 1280, height: 860 }, ''], ['phone', { width: 390, height: 844 }, ''], ['Duo, closed', { width: 382, height: 680 }, '?duo=closed'], ['Duo, open', { width: 951, height: 669 }, '?duo=open']]) {
+    test(form + ': the spines arrive, a tap pulls one out, a drag flips through them', async ({ page }) => {
+      await page.setViewportSize(size);
+      await page.goto('/library/' + q);
+      const pt = page.locator('#portrait');
+      await pt.locator('svg').scrollIntoViewIfNeeded();
+      await expect(pt).toHaveClass(/shelved/);
+      await page.waitForFunction(() => [...document.querySelectorAll('.pt-sp')].every((g) => getComputedStyle(g).transform === 'none'));
+      // Tap a spine in the head.
+      const sp = pt.locator('.pt-sp').nth(2);
+      await sp.click({ force: true });
+      await expect(sp).toHaveClass(/on/);
+      await expect(pt.locator('.pt-pull .pt-out')).toHaveCount(1);
+      // The pulled-out book keeps its title centred on its spine.
+      const off = await page.evaluate(() => { const o = document.querySelector('.pt-out'), t = o.querySelector('text').getBoundingClientRect(), r = o.querySelector('rect').getBoundingClientRect(); return Math.abs((t.top + t.bottom) / 2 - (r.top + r.bottom) / 2) + Math.abs((t.left + t.right) / 2 - (r.left + r.right) / 2); });
+      expect(off).toBeLessThan(40);
+      const row = pt.locator('.pt-list button').nth(2);
+      await expect(row).toHaveAttribute('aria-pressed', 'true');
+      await expect(pt.locator('#pt-say b')).toHaveText(await row.getAttribute('data-line'));
+      await expect(pt.locator('#pt-say a')).toHaveAttribute('href', await row.getAttribute('data-href'));
+      // The caption never runs into the list.
+      const say = await pt.locator('#pt-say').boundingBox();
+      const list = await pt.locator('.pt-list').boundingBox();
+      if (say.x < list.x + list.width && list.x < say.x + say.width) expect(say.y + say.height).toBeLessThanOrEqual(list.y + 1);
+      // Tap it again: back in the head.
+      await sp.click({ force: true });
+      await expect(pt).not.toHaveClass(/has-pick/);
+      await expect(pt.locator('.pt-pull .pt-out')).toHaveCount(0);
+      // Drag across the head: the book under the finger is the one pulled out.
+      const box = await pt.locator('svg').boundingBox();
+      await page.mouse.move(box.x + box.width * 0.2, box.y + box.height * 0.5);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width * 0.75, box.y + box.height * 0.5, { steps: 12 });
+      await page.mouse.up();
+      const last = await pt.locator('.pt-sp.on').getAttribute('data-pt');
+      expect(+last).toBeGreaterThan(4);
+      // A row picks its spine; arrows move through them; Escape puts it back.
+      await row.click();
+      await expect(sp).toHaveClass(/on/);
+      await row.focus(); // Safari doesn't focus a button on click; keyboard users arrive by Tab
+      await page.keyboard.press('ArrowDown');
+      await expect(pt.locator('.pt-sp').nth(3)).toHaveClass(/on/);
+      await expect(pt.locator('.pt-list button').nth(3)).toBeFocused();
+      await page.keyboard.press('Escape');
+      await expect(pt).not.toHaveClass(/has-pick/);
+      // Escape works from the head too, not only from the list.
+      await sp.click({ force: true });
+      await page.evaluate(() => document.activeElement && document.activeElement.blur());
+      await page.keyboard.press('Escape');
+      await expect(pt).not.toHaveClass(/has-pick/);
+    });
+  }
 });
 
 test.describe('book form (iPhone Duo)', () => {

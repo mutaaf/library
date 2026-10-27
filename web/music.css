@@ -242,7 +242,7 @@
 }
 
 /* ── The book form (iPhone Duo): the same light, said in iOS ──────────────────── */
-.duo { --brass: var(--am-fill); --brass-hi: var(--am); --brass-ink: var(--am-ink); --tint: var(--am-ink); }
+.duo { --brass: var(--am-fill); --brass-hi: var(--am); --brass-ink: var(--am-ink); --tint: var(--am-ink); --tint-fill: #fa2d481f; }
 .duo .dock { display: none; }
 .duo[data-fold="closed"] .page-home .night { background: #fff; color: var(--text); box-shadow: 0 0 0 .5px #0000000f, 0 24px 44px -28px #0000004d; }
 .duo .night .mesh { position: absolute; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; filter: blur(40px) saturate(140%); opacity: .45; }
@@ -335,13 +335,63 @@
 .duo #new-title::before, .duo .shelf-head h2::before, .duo .journey-head h2::before { width: 32px; height: 32px; margin-bottom: 10px; border-radius: 8px; background-size: 20px; }
 .duo[data-fold="closed"] .page-home .fresh { order: 1; }
 
+/* ── The portrait, alive (both forms) ─────────────────────────────────────────────
+   Tap a spine and that book slides up out of the head (a copy drawn outside the outline,
+   .pt-out), leaving its slot dark; the rest dim; the light behind the head takes the
+   book's colour; the caption and the row say what it gives away. Drag across the head to
+   flip through them. */
+@property --pick { syntax: '<color>'; inherits: true; initial-value: #FFE4E8; }
+.portrait { --pick: #FFE4E8; transition: --pick .6s ease; }
+.pt-bust { isolation: isolate; }
+.pt-bust::before { content: ''; position: absolute; z-index: -1; left: 0; right: 0; top: -4%; height: 86%; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in srgb, var(--pick) 42%, transparent), transparent); pointer-events: none; }
+.duo .pt-bust { position: relative; top: 0; }
+@media (max-width: 900px) { .pt-bust { position: relative; top: 0; } }
+:root:not(.duo) .portrait::before { display: none; }
+.pt-bust svg { touch-action: pan-y; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+.pt-sp.hover .pt-shade { opacity: .16; }
+.portrait.has-pick .pt-sp { opacity: .34; }
+.portrait.has-pick .pt-sp.on { opacity: .1; }
+.pt-out { transform-box: fill-box; transform-origin: 50% 100%; transform: translateY(-34px) scale(1.06); animation: pt-out var(--spring-snap-ms) var(--spring-snap) both; pointer-events: none; }
+.pt-out .pt-shade { opacity: 0; }
+.pt-out text { font: 600 10px var(--body); letter-spacing: .14em; dominant-baseline: middle; text-anchor: middle; }
+.scrubbing .pt-out { animation-duration: calc(var(--spring-snap-ms) * .6); }
+.pt-say.swap > * { animation: pt-say var(--spring-soft-ms) var(--spring-soft) both; }
+.pt-say.swap > :nth-child(2) { animation-delay: 40ms; }
+.pt-say.swap > :nth-child(3) { animation-delay: 80ms; }
+.pt-say a { text-decoration: none; }
+.pt-say a:hover { text-decoration: underline; }
+
+/* The rows: each one opens to its line. Without JS every line is already showing. */
+.pt-list button { grid-template-rows: auto auto auto; }
+.pt-list i { grid-row: 1 / 4; align-self: center; transition: transform var(--spring-snap-ms) var(--spring-snap); }
+.pt-line { grid-column: 2; display: block; padding-top: 6px; font: italic 400 16px/1.4 var(--serif, Georgia, serif); color: #3A3A3C; white-space: normal; }
+.js .pt-line { display: none; }
+.js .pt-list button[aria-pressed="true"] .pt-line { display: block; animation: pt-say var(--spring-soft-ms) var(--spring-soft) both; }
+.pt-list button[aria-pressed="true"] i { transform: scaleX(1.4) scaleY(1.12); }
+/* Wide app form: the head stays in view beside the list, so the caption says it. */
+@media (min-width: 901px) { :root.js:not(.duo) .pt-list button[aria-pressed="true"] .pt-line { display: none; } }
+:root:not(.duo) {
+  .pt-list button[aria-pressed="true"] { background: #fff; color: var(--text); box-shadow: 0 0 0 2px var(--w, var(--am)), 0 14px 30px -18px #0000008c; }
+  .pt-list button[aria-pressed="true"] span { color: #6E6E73; }
+  .pt-say-k { color: var(--am-ink); }
+}
+.duo .pt-line { font: italic 400 16px/1.4 var(--title); color: #3A3A3C; }
+.duo .pt-say a { color: var(--am-ink); }
+.still .pt-sp, .still .pt-out, .still .pt-say > *, .still .pt-line, .still .pt-list i { transition: none !important; animation: none !important; }
+.still.js .pt-sp { transform: none; }
+
 @keyframes mesh-a { to { transform: translate(-18%, 14%) scale(1.15); } }
 @keyframes mesh-b { to { transform: translate(14%, -12%) scale(.9); } }
 @keyframes mesh-c { to { transform: translate(12%, 10%) scale(1.2); } }
 @keyframes eq { from { transform: scaleY(.25); } to { transform: scaleY(1); } }
+@keyframes pt-out { from { transform: none; } }
+@keyframes pt-fade { from { opacity: 0; } }
+@keyframes pt-say { from { opacity: 0; transform: translateY(6px); } }
 @keyframes rail-in { from { opacity: 0; transform: translateX(28px) scale(.96); } }
 @media (prefers-reduced-motion: reduce) {
-  .mesh i, .mini-eq i, .rail li { animation: none !important; }
+  .mesh i, .mini-eq i, .rail li, .pt-out, .pt-line { animation: none !important; }
+  .pt-list i { transition: none !important; }
+  .pt-say.swap > * { animation: pt-fade 150ms ease both !important; }
   .mini-eq i:nth-child(odd) { transform: scaleY(.55); }
 }
 .still .mesh i, .still .mini-eq i { animation: none !important; }

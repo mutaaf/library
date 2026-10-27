@@ -345,7 +345,7 @@
     };
     btn.addEventListener('click', function () { if (panel.hidden) openPanel(); else closePanel(); });
     $('doneFilters').addEventListener('click', closePanel);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); closePanel(); } });
     // Drag the sheet down from its grip (or from anywhere, once its content is at the top).
     var drag = null;
     panel.addEventListener('pointerdown', function (e) {
@@ -428,6 +428,127 @@
       [].forEach.call(document.querySelectorAll('.stop'), function (s) { s.classList.toggle('dim', !!k && s.getAttribute('data-k') !== k); });
     });
   });
+
+  // ================= THE PORTRAIT: a head made of spines =================
+  // The spines rise into the head the first time it's seen. Tap one (or its row) and that
+  // book slides out of the head, the rest dim, and the caption says what it gives away.
+  // Drag a finger across the head to flip through them, like the index on an iOS list.
+  var pt = $('portrait');
+  if (pt) {
+    var ptSvg = pt.querySelector('.pt-bust svg');
+    var spines = [].slice.call(pt.querySelectorAll('.pt-sp'));
+    var rows = [].slice.call(pt.querySelectorAll('.pt-list button'));
+    var pull = pt.querySelector('.pt-pull');
+    var say = $('pt-say');
+    var sayIdle = say.innerHTML;
+    var picked = -1;
+    // The caption reads the line out; the row's copy of it is for the eye only.
+    [].forEach.call(pt.querySelectorAll('.pt-line'), function (l) { l.setAttribute('aria-hidden', 'true'); });
+    var tick = function () { if (navigator.vibrate && !still) try { navigator.vibrate(6); } catch (e) {} };
+    var ptCaption = function (i) {
+      if (i < 0) { say.innerHTML = sayIdle; return; }
+      var r = rows[i];
+      say.innerHTML = '';
+      var k = document.createElement('span'); k.className = 'pt-say-k'; k.textContent = r.querySelector('b').textContent;
+      var b = document.createElement('b'); b.textContent = r.getAttribute('data-line');
+      var a = document.createElement('a'); a.href = r.getAttribute('data-href'); a.textContent = 'From ' + r.getAttribute('data-title') + ' →';
+      say.appendChild(k); say.appendChild(b); say.appendChild(a);
+      say.classList.remove('swap'); void say.offsetWidth; say.classList.add('swap');
+    };
+    var pick = function (i) {
+      if (i === picked) return;
+      picked = i;
+      pt.classList.toggle('has-pick', i >= 0);
+      pt.style.setProperty('--pick', i >= 0 ? rows[i].style.getPropertyValue('--w') : '');
+      spines.forEach(function (g, j) { g.classList.toggle('on', j === i); g.classList.remove('hover'); });
+      rows.forEach(function (r, j) { r.setAttribute('aria-pressed', String(j === i)); });
+      // The book you pulled: a copy of its spine, outside the head's outline, sliding up.
+      while (pull.firstChild) pull.removeChild(pull.firstChild);
+      if (i >= 0) {
+        var c = spines[i].cloneNode(true);
+        c.removeAttribute('data-pt'); c.removeAttribute('style'); c.setAttribute('class', 'pt-out');
+        pull.appendChild(c);
+      }
+      ptCaption(i);
+    };
+    // Which spine is under this x (in screen pixels)? The nearest, so a drag never falls
+    // into the gaps; pass max to only count one within that many pixels (a tap).
+    var spineAt = function (clientX, max) {
+      var best = -1, dist = Infinity;
+      spines.forEach(function (g, j) {
+        var r = g.firstChild.getBoundingClientRect();
+        var d = clientX < r.left ? r.left - clientX : clientX > r.right ? clientX - r.right : 0;
+        if (d < dist) { dist = d; best = j; }
+      });
+      return dist <= (max === undefined ? Infinity : max) ? best : -1;
+    };
+    var scrub = null;
+    ptSvg.addEventListener('pointerdown', function (e) {
+      if (e.button) return;
+      // A tap counts only on a spine inside the head; a drag finds the nearest one.
+      var hit = e.target.closest && e.target.closest('.pt-sp');
+      scrub = { id: e.pointerId, x: e.clientX, start: hit ? spines.indexOf(hit) : -1, moved: false };
+    });
+    ptSvg.addEventListener('pointermove', function (e) {
+      // A mouse released outside the head never sent its pointerup here; forget that press.
+      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; pt.classList.remove('scrubbing'); say.setAttribute('aria-live', 'polite'); }
+      if (!scrub || e.pointerId !== scrub.id) {
+        // A mouse just pointing previews the spine, until something is picked.
+        if (fine && picked < 0 && e.pointerType === 'mouse') {
+          var h = spineAt(e.clientX, 6);
+          spines.forEach(function (g, j) { g.classList.toggle('hover', j === h); });
+        }
+        return;
+      }
+      if (!scrub.moved && Math.abs(e.clientX - scrub.x) < 8) return;
+      // While dragging, the caption stays quiet for screen readers; it speaks once at the end.
+      if (!scrub.moved) { scrub.moved = true; try { ptSvg.setPointerCapture(e.pointerId); } catch (x) {} pt.classList.add('scrubbing'); say.setAttribute('aria-live', 'off'); }
+      var i = spineAt(e.clientX);
+      if (i !== picked) { pick(i); tick(); }
+    });
+    var endScrub = function (e) {
+      if (!scrub || e.pointerId !== scrub.id) return;
+      var s = scrub;
+      scrub = null;
+      pt.classList.remove('scrubbing');
+      if (s.moved) { say.setAttribute('aria-live', 'polite'); ptCaption(picked); }
+      if (e.type === 'pointerup' && !s.moved && s.start >= 0) { pick(s.start === picked ? -1 : s.start); tick(); }
+    };
+    ptSvg.addEventListener('pointerup', endScrub);
+    ptSvg.addEventListener('pointercancel', endScrub);
+    ptSvg.addEventListener('pointerleave', function () { spines.forEach(function (g) { g.classList.remove('hover'); }); });
+    rows.forEach(function (r, j) {
+      r.addEventListener('click', function () { pick(j === picked ? -1 : j); });
+    });
+    // Up and down move through the list (and the head) from the keyboard.
+    pt.querySelector('.pt-list').addEventListener('keydown', function (e) {
+      var i = rows.indexOf(document.activeElement);
+      if (i < 0) return;
+      var n = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? rows.length - 1 : null;
+      if (n === null || n < 0 || n >= rows.length) return;
+      e.preventDefault();
+      rows[n].focus();
+      pick(n);
+    });
+    // Escape puts the book back, wherever focus is.
+    // (Not when Escape already means something else: clearing a field, closing the filters.)
+    document.addEventListener('keydown', function (e) {
+      var fp = $('filters');
+      if (e.key !== 'Escape' || picked < 0 || e.defaultPrevented || (fp && !fp.hidden) || document.querySelector('.sheet-scrim')) return;
+      if (e.target.closest && e.target.closest('input, select, textarea')) return;
+      pick(-1);
+    });
+    // Arrival: the books slide up into the head, one after another.
+    if (still || !('IntersectionObserver' in window)) pt.classList.add('shelved');
+    else {
+      var sio = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        sio.disconnect();
+        pt.classList.add('shelved');
+      }, { threshold: 0.2 });
+      sio.observe(ptSvg);
+    }
+  }
 
   // ================= INTERACTIONS =================
   // Everything visible does something: stats filter, books peek, the loop plays, themes

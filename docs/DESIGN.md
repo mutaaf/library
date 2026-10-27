@@ -11,6 +11,12 @@ own. New: Recently Added (a scroll-snap row) and What's New (from `addedAt`/`upd
 Settings-style squircle icons on each section, and on phones a tab bar with a Now Reading
 mini-player. The aurora-field sky is retired: it draws additively and vanishes on white.
 
+The portrait in spines (2026-10-27): the spines rise into the head when it is first seen; a tap
+(on the head or a row) slides that book up out of the outline, dims the rest, tints the light
+behind the head with the book's colour and says what it gives away; a drag across the head flips
+through them like the index on an iOS list (a 6ms haptic tick where the device has one). Arrow
+keys move through the rows; Escape puts the book back. Without JS every row shows its line.
+
 **Studio (2026-10-23):** the owner asked for "extremely modern, Apple and Tesla inspired".
 `web/studio.css` restyles the app form (scoped to `:root:not(.duo)`, built between
 `library.css` and `duo.css`). Black full-bleed bands for the hero, philosophy, journey and
@@ -36,7 +42,7 @@ keeps its HIG layer, retinted to system blue with SF Pro headings.
 
 | Form | When | Layout |
 |---|---|---|
-| App | default, and no-JS | Hearth's pattern: pill nav, sticky aurora sky behind the hero and the "How I read" story, then the shelf (Shelf / Grid / List; Grid default ≤600px), closer, footer. Book pages: dark cover hero, then labelled sections. |
+| App | default, and no-JS | pill nav, a white hero over a drifting mesh of cover colours, Recently Added, the portrait in spines, the sections, then the shelf (Shelf / Grid / List; Grid default ≤600px), closer, footer. Book pages: dark cover hero, then labelled sections. |
 | Book, closed | Duo cover display | One parchment page. `/library/` is the shelf of spines; a book's URL is that book, its hero a rounded card. |
 | Book, open | Duo inner display (landscape, ≥600px wide) | A two-page spread: `grid-template-columns: 1fr 2px 1fr`, the gutter on the hinge. Shelf left, book right (a colophon on `/library/`). Each page scrolls on its own. |
 
@@ -65,7 +71,7 @@ segments get the open layout.
   view-transition name each).
 - **The filter sheet** follows your finger on phones and flings closed past 90px or
   0.6px/ms.
-- **Reduced motion:** a 120ms crossfade, nothing spatial. The sky becomes one still frame.
+- **Reduced motion:** a 120ms crossfade, nothing spatial. The mesh holds still; the portrait's spines are already in the head and its caption crossfades.
 
 ## Measured: iPhone Duo (Xcode 27.1 simulator, iOS 27.1, 2026-10-22)
 
