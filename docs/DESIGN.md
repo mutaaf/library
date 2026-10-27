@@ -44,7 +44,7 @@ keeps its HIG layer, retinted to system blue with SF Pro headings.
 |---|---|---|
 | App | default, and no-JS | pill nav, a white hero over a drifting mesh of cover colours, Recently Added, the portrait in spines, the sections, then the shelf (Shelf / Grid / List; Grid default ≤600px), closer, footer. Book pages: dark cover hero, then labelled sections. |
 | Book, closed | Duo cover display | One parchment page. `/library/` is the shelf of spines; a book's URL is that book, its hero a rounded card. |
-| Book, open | Duo inner display (landscape, ≥600px wide) | A two-page spread: `grid-template-columns: 1fr 2px 1fr`, the gutter on the hinge. Shelf left, book right (a colophon on `/library/`). Each page scrolls on its own. |
+| Book, open | Duo inner display (landscape, ≥600px wide) | A two-page spread: `grid-template-columns: 1fr 2px 1fr`, the gutter on the hinge. Shelf left, book right (a colophon on `/library/`). Each page scrolls on its own. On a book, the shelf keeps an iOS back button, "‹ Library", at its top: the way back to the root. |
 | Tabletop | any foldable half-open with the hinge across the screen | The app form below the hinge; the top screen is a stage (the book open on the table, or the portrait's head). |
 
 Portrait-open and Split View fall back to the closed layout. Chromium foldables spanning two
