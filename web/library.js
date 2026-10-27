@@ -485,11 +485,13 @@
     var scrub = null;
     ptSvg.addEventListener('pointerdown', function (e) {
       if (e.button) return;
-      scrub = { id: e.pointerId, x: e.clientX, start: spineAt(e.clientX, 6), moved: false };
+      // A tap counts only on a spine inside the head; a drag finds the nearest one.
+      var hit = e.target.closest && e.target.closest('.pt-sp');
+      scrub = { id: e.pointerId, x: e.clientX, start: hit ? spines.indexOf(hit) : -1, moved: false };
     });
     ptSvg.addEventListener('pointermove', function (e) {
       // A mouse released outside the head never sent its pointerup here; forget that press.
-      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; pt.classList.remove('scrubbing'); }
+      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; pt.classList.remove('scrubbing'); say.setAttribute('aria-live', 'polite'); }
       if (!scrub || e.pointerId !== scrub.id) {
         // A mouse just pointing previews the spine, until something is picked.
         if (fine && picked < 0 && e.pointerType === 'mouse') {
@@ -499,7 +501,8 @@
         return;
       }
       if (!scrub.moved && Math.abs(e.clientX - scrub.x) < 8) return;
-      if (!scrub.moved) { scrub.moved = true; try { ptSvg.setPointerCapture(e.pointerId); } catch (x) {} pt.classList.add('scrubbing'); }
+      // While dragging, the caption stays quiet for screen readers; it speaks once at the end.
+      if (!scrub.moved) { scrub.moved = true; try { ptSvg.setPointerCapture(e.pointerId); } catch (x) {} pt.classList.add('scrubbing'); say.setAttribute('aria-live', 'off'); }
       var i = spineAt(e.clientX);
       if (i !== picked) { pick(i); tick(); }
     });
@@ -508,6 +511,7 @@
       var s = scrub;
       scrub = null;
       pt.classList.remove('scrubbing');
+      if (s.moved) { say.setAttribute('aria-live', 'polite'); ptCaption(picked); }
       if (e.type === 'pointerup' && !s.moved && s.start >= 0) { pick(s.start === picked ? -1 : s.start); tick(); }
     };
     ptSvg.addEventListener('pointerup', endScrub);
