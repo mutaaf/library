@@ -1,3 +1,5 @@
+/* The app form's top bar height: the tabs strip pins exactly under it (here and glass.css). */
+:root { --bar-h: calc(52px + env(safe-area-inset-top)); }
 /* ================================================================
    STUDIO (2026-10-23, owner: "extremely modern, Apple and Tesla inspired").
    The app form's skin. library.css keeps the layout and the hooks; this layer restyles
@@ -64,7 +66,7 @@
   .badge { background: var(--blue); color: #fff; }
 
   /* ── Global bar: full width, frosted, 52px ── */
-  .nav { top: 0; left: 0; transform: none; width: 100%; height: calc(52px + env(safe-area-inset-top)); grid-template-columns: auto 1fr auto auto; gap: 20px;
+  .nav { top: 0; left: 0; transform: none; width: 100%; height: var(--bar-h); grid-template-columns: auto 1fr auto auto; gap: 20px;
     padding: env(safe-area-inset-top) max(22px, env(safe-area-inset-right)) 0 max(22px, env(safe-area-inset-left)); border: 0; border-radius: 0; color: var(--night-ink); background: transparent; box-shadow: none; }
   .nav.scrolled, .nav.floating, .page-book .nav, .page-404 .nav, .nav-book { background: #161617cc; color: var(--night-ink); border: 0; box-shadow: 0 1px 0 #ffffff12; backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
   .mono { height: 52px; }
@@ -319,7 +321,7 @@
   .pull { margin-top: 6px; padding: 18px 22px; border: 0; border-left: 2px solid var(--blue-hi); border-radius: 0 14px 14px 0; background: #ffffff0f; }
   .pull p { font: italic 400 clamp(20px, 1.8vw, 24px)/1.35 var(--serif); color: #F5F5F7; }
   .hero-cover .cover { transform: rotateY(-10deg); box-shadow: inset 4px 0 0 -1px #00000040, 30px 50px 80px -30px #000, 0 0 120px -20px color-mix(in srgb, var(--cv-bg) 80%, transparent); }
-  .tabs { position: sticky; top: calc(52px + env(safe-area-inset-top)); z-index: 6; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #E8E8ED; background: #ffffffe0; box-shadow: 0 0 0 100vmax #ffffffe0; clip-path: inset(0 -100vmax); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+  .tabs { position: sticky; top: var(--bar-h); z-index: 6; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #E8E8ED; background: #ffffffe0; box-shadow: 0 0 0 100vmax #ffffffe0; clip-path: inset(0 -100vmax); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
   .tabs a { padding: 16px 14px; font-size: 15px; letter-spacing: -.01em; }
   .tabs a[aria-selected="true"] { font-weight: 600; }
   .tabs a[aria-selected="true"]::after { background: var(--blue); }
