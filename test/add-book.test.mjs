@@ -71,6 +71,6 @@ test('the issue form offers every theme and shelf, and nothing else', () => {
   assert.deepEqual([...themeBlock.matchAll(/- label: (.+)/g)].map((m) => m[1].trim()), themes.map((t) => t.name));
   for (const name of Object.values(CATEGORIES)) assert.ok(y.includes(JSON.stringify(name)), 'Shelf option ' + name);
   for (const label of ['Book', 'Reading status', 'Finished (YYYY-MM)', 'Started (YYYY-MM)', 'Your rating', 'Recommend it?', 'Shelf', 'Themes', 'In one line (your words)', "Why it's on your shelf (your words)", 'Your takeaway (your words)', 'Authors (only if Open Library gets them wrong)']) {
-    assert.ok(y.includes('label: ' + label + '\n') || y.includes("label: " + label.replace(/'/g, "'") + '\n'), 'form field ' + label);
+    assert.ok(y.includes('label: ' + label + '\n'), 'form field ' + label);
   }
 });

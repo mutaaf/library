@@ -9,10 +9,6 @@ on:
   issue_comment:
     types: [created]
 
-concurrency:
-  group: add-book
-  cancel-in-progress: false
-
 permissions:
   contents: write
   issues: write
@@ -25,6 +21,10 @@ jobs:
       github.event.issue.user.login == github.repository_owner
     runs-on: ubuntu-latest
     timeout-minutes: 30
+    # In the job, not the workflow, so comments that skip both jobs never queue here.
+    concurrency:
+      group: add-book
+      cancel-in-progress: false
     env:
       GH_TOKEN: ${{ github.token }}
       ISSUE: ${{ github.event.issue.number }}
@@ -43,8 +43,10 @@ jobs:
         run: printf '%s' "$BODY" > "$RUNNER_TEMP/issue.md" && node scripts/add-book.mjs --issue "$RUNNER_TEMP/issue.md"
       - run: npx playwright install --with-deps chromium webkit
       - name: Build, unit tests, e2e (WebKit + Chromium)
+        id: check
         run: npm run check
       - name: Publish
+        id: publish
         env:
           SLUG: ${{ steps.book.outputs.slug }}
           TITLE: ${{ steps.book.outputs.title }}
@@ -55,6 +57,7 @@ jobs:
           git commit -q -m "Add a book: $TITLE" -m "From issue #$ISSUE (the Add a book form)."
           git pull -q --rebase origin main && git push -q origin HEAD:main
       - name: Wait for it to go live, then reply
+        id: reply
         env:
           SLUG: ${{ steps.book.outputs.slug }}
           TITLE: ${{ steps.book.outputs.title }}
@@ -69,9 +72,27 @@ jobs:
         if: failure()
         env:
           ERR: ${{ steps.book.outputs.error }}
+          CHECK: ${{ steps.check.outcome }}
+          PUBLISH: ${{ steps.publish.outcome }}
+          SLUG: ${{ steps.book.outputs.slug }}
         run: |
-          if [ -n "$ERR" ]; then MSG="❌ $ERR"; else MSG="❌ The site check failed with this book, so nothing was published. [See the run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."; fi
-          gh issue comment "$ISSUE" --body "$(printf '%s\n\nTo try again: edit the issue (for example, use the ISBN), then close and reopen it.' "$MSG")"
+          RUN="[See the run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+          AGAIN="To try again: edit the issue (for example, use the ISBN), then close and reopen it."
+          if [ "$PUBLISH" = "success" ]; then
+            MSG="⚠️ The book was published (https://mutaafaziz.com/library/$SLUG/), but replying failed. $RUN. Comment **/remove** to take it back out.
+
+          <!-- book-slug:$SLUG -->"
+          elif [ -n "$ERR" ]; then MSG="❌ $ERR
+
+          $AGAIN"
+          elif [ "$CHECK" = "failure" ]; then MSG="❌ The site check failed with this book, so nothing was published. $RUN.
+
+          $AGAIN"
+          else MSG="❌ Something failed before the book could be published (nothing went live). $RUN.
+
+          $AGAIN"
+          fi
+          gh issue comment "$ISSUE" --body "$MSG"
 
   remove:
     if: >-
@@ -80,7 +101,10 @@ jobs:
       github.event.comment.user.login == github.repository_owner &&
       startsWith(github.event.comment.body, '/remove')
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
+    concurrency:
+      group: add-book
+      cancel-in-progress: false
     env:
       GH_TOKEN: ${{ github.token }}
       ISSUE: ${{ github.event.issue.number }}
@@ -101,7 +125,8 @@ jobs:
           SLUG: ${{ steps.find.outputs.slug }}
         run: |
           node scripts/add-book.mjs --remove "$SLUG"
-          npm run build && npm test
+          npx playwright install --with-deps chromium webkit
+          npm run check
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A content/

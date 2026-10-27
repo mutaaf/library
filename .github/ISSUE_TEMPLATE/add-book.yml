@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Type a **title** (add "by Author" if it is ambiguous), an **ISBN**, or paste an **Amazon, Goodreads or Open Library link**. The title, authors, year, publisher, pages and cover come from Open Library. The rest is optional, and anything you write is published in your words. Submit, and you will get a reply with the live link in about 5 minutes.
+        Type a **title** (add "by Author" if it is ambiguous), an **ISBN**, or paste an **Amazon, Goodreads or Open Library link**. The title, authors, year, publisher, pages and cover come from Open Library. The rest is optional, and anything you write is published in your words. Submit, and you will get a reply with the live link in a few minutes.
   - type: input
     id: book
     attributes:
