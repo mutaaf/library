@@ -126,7 +126,6 @@ test.describe('cover screens', () => {
         await page.goto(url);
         expect(await noOverflow(page), url).toBeLessThanOrEqual(0);
       }
-      await page.goto('/library/?duo=auto');
     });
   }
 });

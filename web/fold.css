@@ -113,6 +113,7 @@ html[data-fold-anim="lid-down"]::view-transition-old(lib-stage) { animation: var
    with a wide system font (Linux falls back to DejaVu Sans) that ran 18px off a 280px page. */
 .duo .ios-search { min-width: 0; }
 .duo .ios-search input { width: 0; }
+/* Both forms: the previous/next cards break a long title rather than run off the page. */
 .pg { min-width: 0; }
 .pg b { overflow-wrap: anywhere; }
 .duo .hub-t b { overflow-wrap: anywhere; }
