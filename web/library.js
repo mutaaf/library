@@ -345,7 +345,7 @@
     };
     btn.addEventListener('click', function () { if (panel.hidden) openPanel(); else closePanel(); });
     $('doneFilters').addEventListener('click', closePanel);
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) closePanel(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { e.preventDefault(); closePanel(); } });
     // Drag the sheet down from its grip (or from anywhere, once its content is at the top).
     var drag = null;
     panel.addEventListener('pointerdown', function (e) {
@@ -488,6 +488,8 @@
       scrub = { id: e.pointerId, x: e.clientX, start: spineAt(e.clientX, 6), moved: false };
     });
     ptSvg.addEventListener('pointermove', function (e) {
+      // A mouse released outside the head never sent its pointerup here; forget that press.
+      if (scrub && e.pointerType === 'mouse' && !e.buttons) { scrub = null; pt.classList.remove('scrubbing'); }
       if (!scrub || e.pointerId !== scrub.id) {
         // A mouse just pointing previews the spine, until something is picked.
         if (fine && picked < 0 && e.pointerType === 'mouse') {
@@ -527,7 +529,8 @@
     // Escape puts the book back, wherever focus is.
     // (Not when Escape already means something else: clearing a field, closing the filters.)
     document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Escape' || picked < 0 || e.defaultPrevented || document.querySelector('.sheet-scrim')) return;
+      var fp = $('filters');
+      if (e.key !== 'Escape' || picked < 0 || e.defaultPrevented || (fp && !fp.hidden) || document.querySelector('.sheet-scrim')) return;
       if (e.target.closest && e.target.closest('input, select, textarea')) return;
       pick(-1);
     });

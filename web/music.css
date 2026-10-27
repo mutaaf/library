@@ -375,10 +375,9 @@
   .pt-list button[aria-pressed="true"] span { color: #6E6E73; }
   .pt-say-k { color: var(--am-ink); }
 }
-.duo .pt-list button { grid-template-rows: auto auto auto; }
 .duo .pt-line { font: italic 400 16px/1.4 var(--title); color: #3A3A3C; }
 .duo .pt-say a { color: var(--am-ink); }
-.still .pt-sp, .still .pt-out, .still .pt-say > *, .still .pt-line { transition: none !important; animation: none !important; }
+.still .pt-sp, .still .pt-out, .still .pt-say > *, .still .pt-line, .still .pt-list i { transition: none !important; animation: none !important; }
 .still.js .pt-sp { transform: none; }
 
 @keyframes mesh-a { to { transform: translate(-18%, 14%) scale(1.15); } }
@@ -391,6 +390,7 @@
 @keyframes rail-in { from { opacity: 0; transform: translateX(28px) scale(.96); } }
 @media (prefers-reduced-motion: reduce) {
   .mesh i, .mini-eq i, .rail li, .pt-out, .pt-line { animation: none !important; }
+  .pt-list i { transition: none !important; }
   .pt-say.swap > * { animation: pt-fade 150ms ease both !important; }
   .mini-eq i:nth-child(odd) { transform: scaleY(.55); }
 }
