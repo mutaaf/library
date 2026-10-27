@@ -35,6 +35,11 @@ See **[docs/CONTENT.md](docs/CONTENT.md)**. In short: every block says whose cla
 (*Book's argument*, *My interpretation*, *My application*, *My critique*), and nothing
 is public until its `visibility` is `published`. Edit, open a PR, merge: it deploys.
 
+**Add a book from your phone:** [open the Add a book form](https://github.com/mutaaf/library/issues/new?template=add-book.yml),
+type a title, ISBN or link, submit. About five minutes later the issue gets a reply with
+the live link. Comment `/remove` on it to take the book back out. From a laptop:
+`npm run add -- "Thinking in Systems"`, then commit.
+
 ## How it's built
 
 See **[docs/DESIGN.md](docs/DESIGN.md)** and **[AGENTS.md](AGENTS.md)**. It's static HTML

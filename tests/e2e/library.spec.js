@@ -1,8 +1,12 @@
 // The PRD's acceptance tests (§14) that a browser can check, in both forms.
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { readdirSync, readFileSync } from 'node:fs';
 
-const TITLES = ['Become an Effective Software Engineering Manager', 'An Elegant Puzzle', 'The Manager’s Path', 'Peopleware', 'Extreme Programming Explained', 'The Five Dysfunctions of a Team', 'Drive', 'Radical Candor', 'The 48 Laws of Power', 'Clean Code', 'Accelerate'];
+// The shelf grows through the "Add a book" form, so the expectations come from content/.
+const BOOKS = readdirSync('content/books').filter((f) => f.endsWith('.json')).map((f) => JSON.parse(readFileSync('content/books/' + f, 'utf8')));
+const TITLES = BOOKS.map((b) => b.title);
+const count = (fn) => BOOKS.filter(fn).length;
 const noOverflow = (page) => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
 
 test.describe('app form', () => {
@@ -30,12 +34,12 @@ test.describe('app form', () => {
     await expect(page.locator('.bk:not([hidden])')).toHaveCount(TITLES.length);
     await page.click('#filterBtn');
     await page.locator('.chip', { hasText: 'Motivation' }).click();
-    await expect(page.locator('.bk:not([hidden])')).toHaveCount(1);
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(count((b) => b.themes.includes('motivation')));
     await expect(page.locator('#filterCount')).toHaveText('1');
     await page.selectOption('#sort', 'year');
     await page.click('#resetFilters');
     await page.locator('.cat[data-cat="teams-people"]').click();
-    await expect(page.locator('.bk:not([hidden])')).toHaveCount(3);
+    await expect(page.locator('.bk:not([hidden])')).toHaveCount(count((b) => b.category === 'teams-people'));
     await page.click('#resetFilters');
     await expect(page.locator('.bk:not([hidden])')).toHaveCount(TITLES.length);
     await expect(page.locator('.bk').first()).toHaveAttribute('data-slug', 'become-an-effective-software-engineering-manager');

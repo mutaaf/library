@@ -19,6 +19,14 @@ PR, merge it: Workers Builds rebuilds and deploys. The build validates every fil
 And every block carries a `visibility`: `draft` or `published`. **Drafts never reach the
 build output**: the build drops them, and a test greps `dist/` for every draft string.
 
+## Adding a book
+
+Use the **Add a book** issue form (README). `scripts/add-book.mjs` takes the facts from
+Open Library with their sources in `verified`, picks a cover palette, and takes status,
+dates, rating and every word on the page only from what the owner typed. Left blank, the
+book goes up "On the shelf" with a draft one-line placeholder. The form's theme and shelf
+lists must match `content/themes.json` and `CATEGORIES` (a test checks).
+
 ## `content/books/<slug>.json`
 
 ```jsonc

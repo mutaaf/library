@@ -1,0 +1,87 @@
+name: Add a book
+description: Title, ISBN or link. Everything else is optional; the book goes live in a few minutes.
+title: "Add a book"
+labels: [add-book]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Type a **title** (add "by Author" if it is ambiguous), an **ISBN**, or paste an **Amazon, Goodreads or Open Library link**. The title, authors, year, publisher, pages and cover come from Open Library. The rest is optional, and anything you write is published in your words. Submit, and you will get a reply with the live link in about 5 minutes.
+  - type: input
+    id: book
+    attributes:
+      label: Book
+      placeholder: "Thinking in Systems  ·  9781603580557  ·  https://www.goodreads.com/book/show/…"
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Reading status
+      options: ["On the shelf (no status)", "Want to read", "Up next", "Reading now", "Finished", "Revisiting"]
+      default: 0
+  - type: input
+    id: finished
+    attributes:
+      label: Finished (YYYY-MM)
+      description: Leave blank for a finished book and it uses this month.
+      placeholder: "2026-10"
+  - type: input
+    id: started
+    attributes:
+      label: Started (YYYY-MM)
+      placeholder: "2026-09"
+  - type: dropdown
+    id: rating
+    attributes:
+      label: Your rating
+      options: ["No rating", "5", "4.5", "4", "3.5", "3", "2.5", "2", "1.5", "1"]
+      default: 0
+  - type: checkboxes
+    id: recommended
+    attributes:
+      label: Recommend it?
+      options:
+        - label: I recommend this book
+  - type: dropdown
+    id: category
+    attributes:
+      label: Shelf
+      options: ["Engineering Leadership", "Teams & People", "Strategy & Influence", "Personal Growth"]
+      default: 0
+  - type: checkboxes
+    id: themes
+    attributes:
+      label: Themes
+      description: Pick any. None picked uses the shelf's main theme.
+      options:
+        - label: Management craft
+        - label: Organizational design
+        - label: Leadership progression
+        - label: Team culture
+        - label: Engineering excellence
+        - label: Trust and accountability
+        - label: Motivation
+        - label: Feedback and coaching
+        - label: Power and influence
+        - label: Scaling organizations
+        - label: Delivery performance
+  - type: input
+    id: oneline
+    attributes:
+      label: In one line (your words)
+      description: Shown on the shelf card. Up to 140 characters.
+  - type: textarea
+    id: why
+    attributes:
+      label: Why it's on your shelf (your words)
+  - type: textarea
+    id: takeaway
+    attributes:
+      label: Your takeaway (your words)
+      description: Up to 160 characters becomes the quote on the book page; longer becomes a Takeaways section.
+  - type: input
+    id: authors
+    attributes:
+      label: Authors (only if Open Library gets them wrong)
+      description: Comma-separated. Open Library sometimes lists an editor or foreword writer as an author.
