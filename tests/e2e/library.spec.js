@@ -79,12 +79,14 @@ test.describe('app form', () => {
     await expect(page.locator('.lost-list a')).toHaveCount(TITLES.length);
   });
 
-  for (const path of ['/library/', '/library/the-48-laws-of-power/']) {
-    test(`no serious accessibility violations on ${path}`, async ({ page }) => {
+  // Desktop, and a phone: the tab bar and the Now Reading player only exist below 700px.
+  for (const [path, w, h] of [['/library/', 1280, 720], ['/library/the-48-laws-of-power/', 1280, 720], ['/library/', 390, 844], ['/library/drive/', 390, 844]]) {
+    test(`no serious accessibility violations on ${path} at ${w}px`, async ({ page }) => {
+      await page.setViewportSize({ width: w, height: h });
       await page.goto(path);
       // Measure settled colours, not mid-way through the scroll reveal.
       await page.evaluate(() => document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in')));
-      await page.addStyleTag({ content: '.reveal{transition:none!important}' });
+      await page.addStyleTag({ content: '.reveal{transition:none!important} .rail li{animation:none!important}' });
       const r = await new AxeBuilder({ page }).analyze();
       const bad = r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
       expect(bad.map((v) => v.id + ': ' + v.nodes.length)).toEqual([]);

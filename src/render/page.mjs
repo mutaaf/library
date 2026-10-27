@@ -426,7 +426,7 @@ function fresh(pub) {
   }).join('');
   return `<section class="fresh" id="new" aria-labelledby="new-title">
       <header class="row-head"><h2 id="new-title">Recently Added</h2><a class="cta-link" href="#books">See all <span aria-hidden="true">›</span></a></header>
-      <ol class="rail">${order.slice(0, 12).map((b, i) => `<li style="--i:${i}"><a href="${BASE}${b.slug}/">${cover(b, 'md')}<b>${esc(b.title)}</b><span>${esc(shortAuthors(b.authors))}${b.addedAt === order[0].addedAt && b.addedAt > pub.books.map((x) => x.addedAt).sort()[0] ? ' <i class="rail-new">New</i>' : ''}</span></a></li>`).join('')}</ol>
+      <ol class="rail">${order.slice(0, 12).map((b, i) => `<li style="--i:${i}"><a href="${BASE}${b.slug}/">${cover(b, 'md')}<b>${esc(b.title)}</b><span>${esc(shortAuthors(b.authors))}</span>${b.addedAt === order[0].addedAt && b.addedAt > pub.books.map((x) => x.addedAt).sort()[0] ? '<i class="rail-new"><span class="vh">, </span>New</i>' : ''}</a></li>`).join('')}</ol>
       <aside class="whats-new" aria-labelledby="wn-title"><h3 id="wn-title">What’s New</h3><ol>${log}</ol></aside>
     </section>`;
 }
