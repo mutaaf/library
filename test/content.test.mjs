@@ -28,8 +28,10 @@ test('drafts never reach a rendered page; published blocks do', () => {
 
 test('the real catalog: every book once, honest reading data, no unverified links', () => {
   const { all, pub } = load(ROOT);
-  assert.equal(pub.books.length, 11);
-  assert.equal(new Set(pub.books.map((b) => b.title)).size, 11);
+  // The shelf grows through the "Add a book" form, so no fixed count: at least the
+  // original eleven, every one listed once.
+  assert.ok(pub.books.length >= 11);
+  assert.equal(new Set(pub.books.map((b) => b.title)).size, pub.books.length);
   for (const b of all.books) {
     // Owner decision 2026-10-22: personal sections and reading data are published in the
     // owner's voice, but every reading entry must say whether the owner has confirmed it.

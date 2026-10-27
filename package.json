@@ -14,7 +14,8 @@
     "test": "node --test \"test/*.test.mjs\"",
     "e2e": "playwright test",
     "check": "npm run build && npm test && npm run e2e",
-    "stack": "npm run build && node scripts/stack.mjs"
+    "stack": "npm run build && node scripts/stack.mjs",
+    "add": "node scripts/add-book.mjs"
   },
   "homepage": "https://mutaafaziz.com/library/",
   "repository": {

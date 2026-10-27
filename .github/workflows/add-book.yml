@@ -1,0 +1,137 @@
+# Add a book from the "Add a book" issue form: look it up, write it, run the full check,
+# push to main (Workers Builds deploys it), reply with the live link and close the issue.
+# A "/remove" comment on that issue takes the book back out. Only the repository owner
+# can trigger either; anyone else's issue is left alone.
+name: Add a book
+on:
+  issues:
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  add:
+    if: >-
+      github.event_name == 'issues' &&
+      contains(github.event.issue.labels.*.name, 'add-book') &&
+      github.event.issue.user.login == github.repository_owner
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # In the job, not the workflow, so comments that skip both jobs never queue here.
+    concurrency:
+      group: add-book
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: gh issue comment "$ISSUE" --body "📚 On it. Looking the book up on Open Library…"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Look it up and write it
+        id: book
+        env:
+          BODY: ${{ github.event.issue.body }}
+        run: printf '%s' "$BODY" > "$RUNNER_TEMP/issue.md" && node scripts/add-book.mjs --issue "$RUNNER_TEMP/issue.md"
+      - run: npx playwright install --with-deps chromium webkit
+      - name: Build, unit tests, e2e (WebKit + Chromium)
+        id: check
+        run: npm run check
+      - name: Publish
+        id: publish
+        env:
+          SLUG: ${{ steps.book.outputs.slug }}
+          TITLE: ${{ steps.book.outputs.title }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add content/
+          git commit -q -m "Add a book: $TITLE" -m "From issue #$ISSUE (the Add a book form)."
+          git pull -q --rebase origin main && git push -q origin HEAD:main
+      - name: Wait for it to go live, then reply
+        id: reply
+        env:
+          SLUG: ${{ steps.book.outputs.slug }}
+          TITLE: ${{ steps.book.outputs.title }}
+        run: |
+          URL="https://mutaafaziz.com/library/$SLUG/"
+          for i in $(seq 1 40); do curl -sf -o /dev/null "$URL" && break; sleep 15; done
+          FACTS=$(node -e 'const b=require("./content/books/"+process.argv[1]+".json");const r=b.reading;console.log(["**"+b.title+"**"+(b.subtitle?": "+b.subtitle:""),"by "+b.authors.join(", "),[b.firstPublishedYear,b.publisher,b.pages&&b.pages+" pages",b.isbn13&&"ISBN "+b.isbn13].filter(Boolean).join(" · "),r?"Status: "+r.status+(r.rating?" · "+r.rating+"★":""):"On the shelf (no status yet)",b.coverImage?"Cover: Open Library":"Cover: drawn by the shelf (Open Library has none)"].map(x=>"- "+x).join("\n"))' "$SLUG")
+          curl -sf -o /dev/null "$URL" && LIVE="✅ Live: $URL" || LIVE="⏳ Pushed; Cloudflare is still deploying. It will be at $URL"
+          gh issue comment "$ISSUE" --body "$(printf '%s\n\n%s\n\nFacts from Open Library, sources in [content/books/%s.json](https://github.com/%s/blob/main/content/books/%s.json) (tap the pencil there to change anything).\n\nWrong book? Comment **/remove** and it comes back off the shelf.\n\n<!-- book-slug:%s -->' "$LIVE" "$FACTS" "$SLUG" "$GITHUB_REPOSITORY" "$SLUG" "$SLUG")"
+          gh issue close "$ISSUE" --reason completed
+      - name: Say what went wrong
+        if: failure()
+        env:
+          ERR: ${{ steps.book.outputs.error }}
+          CHECK: ${{ steps.check.outcome }}
+          PUBLISH: ${{ steps.publish.outcome }}
+          SLUG: ${{ steps.book.outputs.slug }}
+        run: |
+          RUN="[See the run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)"
+          AGAIN="To try again: edit the issue (for example, use the ISBN), then close and reopen it."
+          if [ "$PUBLISH" = "success" ]; then
+            MSG="⚠️ The book was published (https://mutaafaziz.com/library/$SLUG/), but replying failed. $RUN. Comment **/remove** to take it back out.
+
+          <!-- book-slug:$SLUG -->"
+          elif [ -n "$ERR" ]; then MSG="❌ $ERR
+
+          $AGAIN"
+          elif [ "$CHECK" = "failure" ]; then MSG="❌ The site check failed with this book, so nothing was published. $RUN.
+
+          $AGAIN"
+          else MSG="❌ Something failed before the book could be published (nothing went live). $RUN.
+
+          $AGAIN"
+          fi
+          gh issue comment "$ISSUE" --body "$MSG"
+
+  remove:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      contains(github.event.issue.labels.*.name, 'add-book') &&
+      github.event.comment.user.login == github.repository_owner &&
+      startsWith(github.event.comment.body, '/remove')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: add-book
+      cancel-in-progress: false
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Find the book this issue added
+        id: find
+        run: |
+          SLUG=$(gh api "repos/$GITHUB_REPOSITORY/issues/$ISSUE/comments" --paginate --jq '.[] | select(.user.login == "github-actions[bot]") | .body' | grep -o 'book-slug:[a-z0-9-]*' | tail -1 | cut -d: -f2)
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+      - name: Remove, check, publish
+        env:
+          SLUG: ${{ steps.find.outputs.slug }}
+        run: |
+          node scripts/add-book.mjs --remove "$SLUG"
+          npx playwright install --with-deps chromium webkit
+          npm run check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A content/
+          git commit -q -m "Remove a book: $SLUG" -m "From issue #$ISSUE (/remove)."
+          git pull -q --rebase origin main && git push -q origin HEAD:main
+          gh issue comment "$ISSUE" --body "🗑️ Removed **$SLUG**. It leaves the site in a couple of minutes."
+      - if: failure()
+        run: gh issue comment "$ISSUE" --body "❌ Couldn't remove it. [See the run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."

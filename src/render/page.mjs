@@ -528,7 +528,9 @@ export function book(pub, b) {
   const i = pub.books.indexOf(b);
   const prev = pub.books[(i - 1 + pub.books.length) % pub.books.length];
   const next = pub.books[(i + 1) % pub.books.length];
-  const description = (b.pullQuote ? b.pullQuote.text + ' ' : b.oneLine ? b.oneLine.text + ' ' : '') + b.title + ' by ' + authorsText(b.authors) + ': my analysis, rating and takeaways in the Leadership Library.';
+  // Name only what the page has: a book added with just its facts claims no analysis.
+  const has = [b.sections.length || b.ideas.length || b.framework ? 'analysis' : '', b.reading && isNum(b.reading.rating) ? 'rating' : '', b.pullQuote || b.sections.some((s) => s.kind === 'takeaways') ? 'takeaways' : ''].filter(Boolean);
+  const description = (b.pullQuote ? b.pullQuote.text + ' ' : b.oneLine ? b.oneLine.text + ' ' : '') + b.title + ' by ' + authorsText(b.authors) + (has.length ? ': my ' + (has.length > 1 ? has.slice(0, -1).join(', ') + ' and ' + has[has.length - 1] : has[0]) + ' in the Leadership Library.' : ', on the shelf in the Leadership Library.');
   const jsonld = {
     '@context': 'https://schema.org', '@type': 'WebPage', name: b.title + ' · The Leadership Library', url: ORIGIN + BASE + b.slug + '/', dateModified: b.updatedAt,
     mainEntity: Object.assign({ '@type': 'Book', name: b.title, author: b.authors.map((n) => ({ '@type': 'Person', name: n })), datePublished: String(b.firstPublishedYear) },
