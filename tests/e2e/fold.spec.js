@@ -95,9 +95,18 @@ test.describe('tabletop, emulated (any engine)', () => {
     await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running' || a.effect.getComputedTiming().iterations === Infinity));
     const r = await new AxeBuilder({ page }).analyze();
     expect(r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => v.id + ': ' + v.nodes.length)).toEqual([]);
+    // The filter sheet opens on the bottom screen and never climbs over the fold.
+    await page.locator('#filterBtn').scrollIntoViewIfNeeded();
+    await page.locator('#filterBtn').click();
+    await expect(page.locator('#filters')).toBeVisible();
+    await page.waitForFunction(() => document.getElementById('filters').getAnimations().every((a) => a.playState !== 'running'));
+    expect((await box(page, '#filters')).top).toBeGreaterThanOrEqual(st.bottom);
+    await page.keyboard.press('Escape');
     await page.goto('/library/drive/');
     await expect(page.locator('#stage .stage-title')).toHaveText('Drive');
     expect(await noOverflow(page)).toBeLessThanOrEqual(0);
+    await page.goto('/library/nothing-here/');
+    expect((await box(page, 'main')).top).toBeLessThan(200); // the 404 has no stage, so no split
     await page.goto('/library/?posture=off');
     await expect(page.locator('html')).not.toHaveAttribute('data-posture', /./);
     await expect(page.locator('#stage')).toBeHidden();

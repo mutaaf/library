@@ -470,7 +470,7 @@
     };
     window.addEventListener('scroll', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); }, { passive: true });
     document.addEventListener('click', function () { setTimeout(follow, 0); });
-    window.addEventListener('resize', follow);
+    window.addEventListener('resize', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); });
     follow();
   }
 
@@ -684,7 +684,7 @@
       peek.appendChild(box);
       var rc = li.getBoundingClientRect();
       peek.style.left = Math.max(12, rc.left - 300) + 'px';
-      peek.style.top = Math.max(70, Math.min(innerHeight - 220, rc.top - 40)) + 'px';
+      peek.style.top = Math.max(70, paneTop() + 12, Math.min(innerHeight - 220, rc.top - 40)) + 'px';
       peek.classList.add('on');
     };
     var hide = function () { peek.classList.remove('on'); };

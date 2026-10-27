@@ -30,8 +30,11 @@
 @media (vertical-viewport-segments: 2) {
   :root[data-posture="tabletop"] { --tt-top: env(viewport-segment-bottom 0 0); --tt-bot: env(viewport-segment-top 0 1); }
 }
-[data-posture="tabletop"] body { padding-top: var(--tt-bot); }
-[data-posture="tabletop"] .nav { top: calc(var(--tt-bot) + 8px); }
+/* Only pages with a stage take the split (the 404 has none, and stays one page). */
+[data-posture="tabletop"] body:has(> .stage) { padding-top: var(--tt-bot); }
+[data-posture="tabletop"] body:has(> .stage) .nav { top: calc(var(--tt-bot) + 8px); }
+/* Overlays stay on the bottom screen: the filter sheet never climbs over the hinge. */
+[data-posture="tabletop"] body:has(> .stage) .filters { max-height: calc(100% - var(--tt-bot) - 8px); }
 [data-posture="tabletop"] .progress { display: none; }
 [data-posture="tabletop"] .hero { min-height: 0; padding-top: 96px; }
 
@@ -95,15 +98,12 @@
 [data-posture="tabletop"] .portrait .pt-list button[aria-pressed="true"] .pt-line { display: block; }
 
 /* Folding into tabletop lifts the top screen like a lid, from the hinge; flattening lays it
-   back. (library.js sets data-fold-anim="lid-up|lid-down" for the view transition.) */
+   back. (library.js sets data-fold-anim="lid-up|lid-down" for the view transition.)
+   Under reduced motion there is no transition: the change is instant. */
 html[data-fold-anim="lid-up"]::view-transition-new(lib-stage) { animation: var(--spring-ms) var(--spring) both lid-up; transform-origin: 50% 100%; }
 html[data-fold-anim="lid-down"]::view-transition-old(lib-stage) { animation: var(--spring-ms) var(--spring) both lid-down; transform-origin: 50% 100%; }
 @keyframes lid-up { from { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
 @keyframes lid-down { to { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
-@media (prefers-reduced-motion: reduce) {
-  html[data-fold-anim]::view-transition-new(lib-stage), html[data-fold-anim]::view-transition-old(lib-stage) { animation: 120ms ease both lid-fade; }
-}
-@keyframes lid-fade { from { opacity: 0; } }
 
 /* ── ?fold=debug ─────────────────────────────────────────────────────────────────── */
 .fold-debug { position: fixed; inset: 0; z-index: 999; pointer-events: none; }

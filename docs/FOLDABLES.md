@@ -13,7 +13,8 @@ stage). The tests are `tests/e2e/fold.spec.js` and `tests/e2e/library.spec.js`.
 |---|---|---|---|
 | **Flat, one screen** | any phone, a foldable's cover screen, a foldable opened flat | The app form (phones get the tab bar and Now Reading). Nothing overflows down to 280px wide. | the default |
 | **Duo, closed** | iPhone Duo cover display | The book form: one page, iOS navigation, inset lists. | iPhone user agent + the screen table in `src/duo.mjs` |
-| **Book** (hinge down the middle) | iPhone Duo open; Galaxy Fold, Pixel Fold or Surface Duo half-open like a book | A two-page spread: the shelf on the left, the book on the right, each scrolling on its own. With a reported hinge, each page is exactly one segment and the gutter is exactly the hinge (`env(viewport-segment-*)`); toasts sit on the right page, never across the fold. | `(horizontal-viewport-segments: 2)`; on the Duo, a landscape inner display |
+| **Book** (hinge down the middle) | iPhone Duo open; Galaxy Fold, Pixel Fold or Surface Duo half-open like a book | A two-page spread: the shelf on the left, the book on the right, each scrolling on its own. With a reported hinge, each page is exactly one segment and the gutter is exactly the hinge (`env(viewport-segment-*)`); toasts sit on the right page, never across the fold. In tabletop the filter sheet and the
+book peek stay on the bottom screen. | `(horizontal-viewport-segments: 2)`; on the Duo, a landscape inner display |
 | **Tabletop** (hinge across the middle) | a Fold or Pixel Fold half-open in landscape like a laptop; a Galaxy Z Flip or Razr half-open | The top screen is a **stage** to look at; the bottom screen is where you read and tap. On a book: the book "open on the table" (cover, title, rating, the section you're on and how far through you are). On the home: the portrait's head, driven by its list on the bottom screen: tap a row below and the book slides out of the head above. | `(vertical-viewport-segments: 2)` → `html[data-posture="tabletop"]` |
 
 Tabletop takes the app form even on a Duo: a half-folded screen is a stage and a desk, not a
@@ -35,7 +36,7 @@ both the form and the posture:
 - **The portrait's head** moves to the stage and back (`arrange()`), keeping whichever book
   you'd pulled out.
 
-Under reduced motion each of these is a 120ms crossfade.
+Under reduced motion there is no transition: the change is instant.
 
 ## Geometry
 
@@ -76,8 +77,10 @@ Under reduced motion each of these is a 120ms crossfade.
   page starts above it, and a tap on the bottom screen pulls the book out on the top one.
 - **Tabletop, a book:** the stage names the book and follows the section you scroll to.
 - **Live changes:** flat, then tabletop, then flat, then book, with no reload.
-- **Book, measured** (Surface Duo 2: 540 + 34 + 540): each page is exactly one screen and the
+- **Book, measured** (the original Surface Duo, Chrome DevTools' preset: 540 + 34 + 540): each page is exactly one screen and the
   gutter is exactly the hinge.
+- **Overlays in tabletop:** the filter sheet opens on the bottom screen and never reaches
+  above the hinge.
 - **A flip phone half-open,** in WebKit and Chromium: the split is right, nothing overflows,
   and axe finds no serious issues.
 - **Cover screens** at 280 and 344px: nothing runs off the side, in both forms.
