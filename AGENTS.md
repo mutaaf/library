@@ -42,10 +42,10 @@ tests/e2e/          Playwright, WebKit + Chromium
 
 ## 2 · The two forms
 
-- **The app form** is the default, and what every device gets without JS. It is Hearth's
-  landing pattern: `.nav` pill, `.night` with a sticky `.sky` behind `.hero` and the
-  `.story` steps, then the shelf, the `.closer` and the `.foot`. Keep its vocabulary in step
-  with `hearth/site`.
+- **The app form** is the default, and what every device gets without JS: the `.nav`, the
+  `.night` hero (a `.mesh` of cover colours), Recently Added (`.fresh`), the sections, the
+  shelf, `.hire`, the `.closer` and the `.foot`; on phones a `.dock` tab bar with a Now
+  Reading mini-player. The look is music.css (Read Now, docs/DESIGN.md).
 - **The book form** applies when `html.duo` is set, with `data-fold="closed|open"`.
   - **Detection:** the `<head>` script sets it before paint. An iPhone user agent plus
     the screen table in `src/duo.mjs` means a Duo. So do two horizontal viewport segments

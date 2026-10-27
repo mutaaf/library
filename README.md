@@ -2,7 +2,7 @@
 
 *Books that shape how I think. Lessons that shape how I lead.*
 
-Live at **[mutaafaziz.com/library](https://mutaafaziz.com/library/)**: nine books on engineering
+Live at **[mutaafaziz.com/library](https://mutaafaziz.com/library/)**: books on engineering
 leadership, each with a labelled summary of its argument, and my own interpretation,
 applications, critique, experiments and dated reflections as I write them.
 
