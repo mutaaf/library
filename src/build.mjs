@@ -33,7 +33,7 @@ export function build({ quiet } = {}) {
   // studio.css restyles the app form (scoped to :root:not(.duo)); duo.css is the book
   // form's Apple (HIG) layer; music.css (Read Now) lights both and adds the new pieces.
   // They come after library.css, in that order, so they win.
-  const css = springs + ['library.css', 'studio.css', 'duo.css', 'music.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
+  const css = springs + ['library.css', 'studio.css', 'duo.css', 'music.css', 'fold.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
   const js = readFileSync(path.join(ROOT, 'web', 'library.js'), 'utf8');
   const version = createHash('sha256').update(css + js).digest('hex').slice(0, 10);
 

@@ -1064,8 +1064,6 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 .pt-sp text { font: 600 10px var(--body); letter-spacing: .14em; dominant-baseline: middle; text-anchor: middle; pointer-events: none; }
 .pt-shade { fill: #fff; opacity: 0; transition: opacity .25s ease; }
 .pt-sp:hover .pt-shade { opacity: .12; }
-.portrait.has-pick .pt-sp { opacity: .32; }
-.portrait.has-pick .pt-sp.on { opacity: 1; }
 .pt-outline { fill: none; stroke: #2a1e15; stroke-opacity: .55; stroke-width: 1.4; pointer-events: none; }
 .pt-plank { width: 78%; height: 16px; margin: -4px auto 0; border-radius: 3px; background: linear-gradient(#5a4331, var(--walnut-deep)); box-shadow: 0 14px 22px -12px #000a; }
 .pt-say { min-height: 5.6em; max-width: 30em; margin: 22px auto 0; text-align: center; }
@@ -1082,7 +1080,7 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 .pt-close { grid-area: close; margin: 26px 0 0; padding-left: 18px; border-left: 3px solid var(--brass); font: italic 400 clamp(21px, 2vw, 26px)/1.3 var(--display); }
 /* The spines are shelved into the head, one at a time, when it scrolls into view. */
 .js .pt-sp { transform: translateY(110%); }
-.js .portrait.shelved .pt-sp { transform: none; transition: transform var(--spring-ms) var(--spring) calc(var(--i) * 70ms), opacity .35s ease; }
+.js .pt-bust.shelved .pt-sp { transform: none; transition: transform var(--spring-ms) var(--spring) calc(var(--i) * 70ms), opacity .35s ease; }
 @media (prefers-reduced-motion: reduce) { .js .pt-sp { transform: none; } }
 @media (max-width: 900px) {
   .portrait { grid-template-columns: minmax(0, 1fr); grid-template-areas: "copy" "bust" "list" "close"; padding-top: 64px; }
