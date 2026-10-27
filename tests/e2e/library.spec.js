@@ -375,7 +375,9 @@ test.describe('the bars are glass and pinned', () => {
       expect(first.top).toBe(0);
       expect(first.blur).toContain('blur');
       for (const y of [12, 40, 600, 4000]) {
-        await page.evaluate((y) => scrollTo(0, y), y);
+        // instant: the page scrolls smoothly, and headless WebKit on Linux never runs that animation
+        const at = await page.evaluate((y) => { scrollTo({ top: y, behavior: 'instant' }); return scrollY; }, y);
+        expect(at).toBeGreaterThan(0);
         await page.waitForTimeout(120);
         expect(await bar(page, sel)).toEqual(first);
       }
@@ -384,7 +386,8 @@ test.describe('the bars are glass and pinned', () => {
   test('the book tabs: one blurred strip edge to edge, pinned under the bar', async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto('/library/radical-candor/');
-    await page.evaluate(() => scrollTo(0, document.querySelector('.tabs-bar').getBoundingClientRect().top + scrollY + 900));
+    const at = await page.evaluate(() => { scrollTo({ top: document.querySelector('.tabs-bar').getBoundingClientRect().top + scrollY + 900, behavior: 'instant' }); return scrollY; });
+    expect(at).toBeGreaterThan(0);
     await page.waitForTimeout(150);
     const t = await page.evaluate(() => {
       const bar = document.querySelector('.tabs-bar'), r = bar.getBoundingClientRect(), nav = document.querySelector('.nav').getBoundingClientRect();
@@ -405,7 +408,8 @@ test.describe('the bars are glass and pinned', () => {
     });
     const first = await read();
     expect(first.blur).toContain('blur');
-    await page.evaluate(() => { let p = document.querySelector('.shelf-back').parentElement; while (p && p.scrollHeight <= p.clientHeight) p = p.parentElement; if (p) p.scrollTop = 2000; });
+    const moved = await page.evaluate(() => { let p = document.querySelector('.shelf-back').parentElement; while (p && p.scrollHeight <= p.clientHeight) p = p.parentElement; p.scrollTo({ top: 2000, behavior: 'instant' }); return p.scrollTop; });
+    expect(moved).toBeGreaterThan(0);
     await page.waitForTimeout(150);
     expect(await read()).toEqual(first);
   });
