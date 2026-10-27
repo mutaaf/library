@@ -140,17 +140,23 @@ export async function lookup(q) {
   }
   let workKey = edition ? edition.works && edition.works[0] && edition.works[0].key : q.work ? '/works/' + q.work : null;
   if (!workKey) {
-    const p = new URLSearchParams({ title: q.title, fields: 'key,title,author_name,first_publish_year,edition_count', limit: '5' });
-    if (q.author) p.set('author', q.author);
-    const r = await get(OL + '/search.json?' + p);
-    let docs = (r && r.docs) || [];
+    const search = async (title, author) => {
+      const p = new URLSearchParams({ title, fields: 'key,title,author_name,first_publish_year,edition_count', limit: '5' });
+      if (author) p.set('author', author);
+      const r = await get(OL + '/search.json?' + p);
+      return (r && r.docs) || [];
+    };
+    let docs;
     if (q.author) {
-      // "Death by Meeting" is a title, not "Death" by "Meeting": keep the split only when
-      // the author it found really is the one typed.
+      // "Death by Meeting" is a title, not "Death" by "Meeting": a book titled exactly what
+      // was typed wins; otherwise the split stands only if its author really matches.
+      const whole = q.title + ' by ' + q.author;
+      const asTitle = await search(whole);
       const last = q.author.toLowerCase().split(/\s+/).pop();
-      docs = docs.filter((d) => (d.author_name || []).some((a) => a.toLowerCase().includes(last)));
-      if (!docs.length) return lookup({ title: q.title + ' by ' + q.author });
-    }
+      docs = asTitle.some((d) => slugify(d.title) === slugify(whole)) ? asTitle : (await search(q.title, q.author)).filter((d) => (d.author_name || []).some((x) => x.toLowerCase().split(/\s+/).includes(last)));
+      if (docs === asTitle) q = { title: whole };
+      else if (!docs.length) { docs = asTitle; q = { title: whole }; }
+    } else docs = await search(q.title);
     if (!docs.length) throw new AddError('Open Library found nothing for "' + q.title + '"' + (q.author ? ' by ' + q.author : '') + '. Check the spelling, add "by Author", or use the ISBN.');
     // Search ranks by relevance; a work whose title is exactly what was typed wins.
     const want = slugify(q.title);
