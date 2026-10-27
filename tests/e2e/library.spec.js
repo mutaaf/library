@@ -162,6 +162,9 @@ test.describe('the portrait in spines', () => {
       await sp.click({ force: true });
       await expect(sp).toHaveClass(/on/);
       await expect(pt.locator('.pt-pull .pt-out')).toHaveCount(1);
+      // The pulled-out book keeps its title centred on its spine.
+      const off = await page.evaluate(() => { const o = document.querySelector('.pt-out'), t = o.querySelector('text').getBoundingClientRect(), r = o.querySelector('rect').getBoundingClientRect(); return Math.abs((t.top + t.bottom) / 2 - (r.top + r.bottom) / 2) + Math.abs((t.left + t.right) / 2 - (r.left + r.right) / 2); });
+      expect(off).toBeLessThan(40);
       const row = pt.locator('.pt-list button').nth(2);
       await expect(row).toHaveAttribute('aria-pressed', 'true');
       await expect(pt.locator('#pt-say b')).toHaveText(await row.getAttribute('data-line'));

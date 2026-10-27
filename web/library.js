@@ -525,7 +525,12 @@
       pick(n);
     });
     // Escape puts the book back, wherever focus is.
-    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && picked >= 0) pick(-1); });
+    // (Not when Escape already means something else: clearing a field, closing the filters.)
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape' || picked < 0 || e.defaultPrevented || document.querySelector('.sheet-scrim')) return;
+      if (e.target.closest && e.target.closest('input, select, textarea')) return;
+      pick(-1);
+    });
     // Arrival: the books slide up into the head, one after another.
     if (still || !('IntersectionObserver' in window)) pt.classList.add('shelved');
     else {

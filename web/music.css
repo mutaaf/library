@@ -353,6 +353,7 @@
 .portrait.has-pick .pt-sp.on { opacity: .1; }
 .pt-out { transform-box: fill-box; transform-origin: 50% 100%; transform: translateY(-34px) scale(1.06); animation: pt-out var(--spring-snap-ms) var(--spring-snap) both; pointer-events: none; }
 .pt-out .pt-shade { opacity: 0; }
+.pt-out text { font: 600 10px var(--body); letter-spacing: .14em; dominant-baseline: middle; text-anchor: middle; }
 .scrubbing .pt-out { animation-duration: calc(var(--spring-snap-ms) * .6); }
 .pt-say.swap > * { animation: pt-say var(--spring-soft-ms) var(--spring-soft) both; }
 .pt-say.swap > :nth-child(2) { animation-delay: 40ms; }
