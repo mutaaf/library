@@ -68,7 +68,7 @@
 .stage-now-k { flex: none; padding: 2px 7px; border-radius: 6px; background: #1D1D1F; color: #fff; font: 600 11px/1.4 var(--body); letter-spacing: .04em; text-transform: uppercase; }
 #stage-now { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .stage-bar { display: block; height: 4px; border-radius: 2px; background: #0000001a; overflow: hidden; }
-.stage-bar i { display: block; height: 100%; background: var(--cv-wash, var(--am)); transform-origin: left; transform: scaleX(0); transition: transform .2s linear; }
+.stage-bar i { display: block; height: 100%; background: var(--cv-wash, var(--am)); transform-origin: left; transform: scaleX(0); }
 /* Narrow tabletops (a flip phone half-open): the cover above, its name beside the bar. */
 @media (max-width: 560px) {
   .stage-book { grid-template-columns: auto minmax(0, 1fr); gap: 16px; }
@@ -104,6 +104,12 @@ html[data-fold-anim="lid-up"]::view-transition-new(lib-stage) { animation: var(-
 html[data-fold-anim="lid-down"]::view-transition-old(lib-stage) { animation: var(--spring-ms) var(--spring) both lid-down; transform-origin: 50% 100%; }
 @keyframes lid-up { from { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
 @keyframes lid-down { to { opacity: 0; transform: perspective(1400px) rotateX(-78deg); } }
+
+/* ── Cover screens ─────────────────────────────────────────────────────────────────
+   The outer displays of book-style foldables, and Split View, run down to 280px wide. */
+.duo .hub-map a, .duo .hub-t { min-width: 0; }
+.duo .hub-t b { overflow-wrap: anywhere; }
+@media (max-width: 340px) { .duo .hub-map ul { grid-template-columns: minmax(0, 1fr); } }
 
 /* ── ?fold=debug ─────────────────────────────────────────────────────────────────── */
 .fold-debug { position: fixed; inset: 0; z-index: 999; pointer-events: none; }

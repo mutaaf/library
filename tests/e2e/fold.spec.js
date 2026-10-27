@@ -49,6 +49,11 @@ test.describe('measured hinges (Chromium)', () => {
     await page.mouse.wheel(0, 1600);
     await expect(page.locator('#stage-now')).not.toHaveText(first);
     await expect.poll(() => page.locator('#stage-bar').evaluate((e) => getComputedStyle(e).transform)).not.toBe(bar0);
+    // Key ideas are numbered on the page; the stage names them without the number.
+    await page.locator('#tab-ideas').click();
+    await page.locator('.panel.on .idea h4').nth(1).scrollIntoViewIfNeeded();
+    await page.mouse.wheel(0, 200);
+    await expect(page.locator('#stage-now')).not.toHaveText(/^(\d|Key)/);
   });
 
   test('folding and flattening while reading: the page follows, nothing reloads', async ({ page }) => {
@@ -117,7 +122,7 @@ test.describe('cover screens', () => {
   for (const [w, h] of [[280, 653], [344, 882]]) {
     test(w + 'px wide: nothing runs off the side', async ({ page }) => {
       await page.setViewportSize({ width: w, height: h });
-      for (const url of ['/library/', '/library/drive/', '/library/?duo=closed', '/library/the-five-dysfunctions-of-a-team/?duo=closed']) {
+      for (const url of ['/library/', '/library/drive/', '/library/?duo=closed', '/library/five-dysfunctions-of-a-team/?duo=closed']) {
         await page.goto(url);
         expect(await noOverflow(page), url).toBeLessThanOrEqual(0);
       }

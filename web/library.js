@@ -76,7 +76,7 @@
     var anchor = lastAnchor || captureAnchor();
     // Half-folding lifts the top screen like a laptop lid; flattening lays it back down.
     var dir = nextP !== prevP ? (nextP ? 'lid-up' : 'lid-down') : prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); setPosture(nextP); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; if (window.libFoldDebug) window.libFoldDebug(); };
+    var update = function () { setForm(next); setPosture(nextP); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; if (window.libStageFollow) window.libStageFollow(); if (window.libFoldDebug) window.libFoldDebug(); };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -457,13 +457,19 @@
   var stageNow = $('stage-now'), stageBar = $('stage-bar');
   if (stageNow) {
     var nowTick = 0;
+    // A heading's words, without the idea number set in front of them ("01").
+    var headingText = function (h) {
+      var c = h.cloneNode(true), n = c.querySelector('.idea-n');
+      if (n) n.parentNode.removeChild(n);
+      return c.textContent;
+    };
     var follow = function () {
       nowTick = 0;
       if (posture() !== 'tabletop') return;
       var tab = document.querySelector('.tabs [aria-selected="true"]');
       var top = paneTop(), label = tab ? tab.textContent : '', line = top + (window.innerHeight - top) * 0.4;
       var hs = document.querySelectorAll('.panel.on h3, .panel.on h4');
-      for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top <= line) label = hs[i].textContent; else break; }
+      for (var i = 0; i < hs.length; i++) { if (hs[i].getBoundingClientRect().top <= line) label = headingText(hs[i]); else break; }
       if (stageNow.textContent !== label) stageNow.textContent = label;
       var max = document.documentElement.scrollHeight - window.innerHeight;
       stageBar.style.transform = 'scaleX(' + (max > 0 ? Math.min(1, window.pageYOffset / max) : 0) + ')';
@@ -471,6 +477,7 @@
     window.addEventListener('scroll', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); }, { passive: true });
     document.addEventListener('click', function () { setTimeout(follow, 0); });
     window.addEventListener('resize', function () { if (!nowTick) nowTick = requestAnimationFrame(follow); });
+    window.libStageFollow = follow; // checkForm calls it: half-folding fires no scroll or resize
     follow();
   }
 
