@@ -471,26 +471,29 @@
       }
       ptCaption(i);
     };
-    // Which spine is under this x (in screen pixels)? Nearest one, so the gaps never miss.
-    var spineAt = function (clientX) {
+    // Which spine is under this x (in screen pixels)? The nearest, so a drag never falls
+    // into the gaps; pass max to only count one within that many pixels (a tap).
+    var spineAt = function (clientX, max) {
       var best = -1, dist = Infinity;
       spines.forEach(function (g, j) {
         var r = g.firstChild.getBoundingClientRect();
         var d = clientX < r.left ? r.left - clientX : clientX > r.right ? clientX - r.right : 0;
         if (d < dist) { dist = d; best = j; }
       });
-      return best;
+      return dist <= (max === undefined ? Infinity : max) ? best : -1;
     };
     var scrub = null;
     ptSvg.addEventListener('pointerdown', function (e) {
       if (e.button) return;
-      var i = spineAt(e.clientX);
-      scrub = { id: e.pointerId, x: e.clientX, start: i, moved: false };
+      scrub = { id: e.pointerId, x: e.clientX, start: spineAt(e.clientX, 6), moved: false };
     });
     ptSvg.addEventListener('pointermove', function (e) {
       if (!scrub || e.pointerId !== scrub.id) {
         // A mouse just pointing previews the spine, until something is picked.
-        if (fine && picked < 0 && e.pointerType === 'mouse') spines.forEach(function (g, j) { g.classList.toggle('hover', j === spineAt(e.clientX)); });
+        if (fine && picked < 0 && e.pointerType === 'mouse') {
+          var h = spineAt(e.clientX, 6);
+          spines.forEach(function (g, j) { g.classList.toggle('hover', j === h); });
+        }
         return;
       }
       if (!scrub.moved && Math.abs(e.clientX - scrub.x) < 8) return;
@@ -511,17 +514,18 @@
     rows.forEach(function (r, j) {
       r.addEventListener('click', function () { pick(j === picked ? -1 : j); });
     });
-    // Up and down move through the list (and the head) from the keyboard; Escape puts it back.
+    // Up and down move through the list (and the head) from the keyboard.
     pt.querySelector('.pt-list').addEventListener('keydown', function (e) {
       var i = rows.indexOf(document.activeElement);
       if (i < 0) return;
       var n = e.key === 'ArrowDown' || e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowUp' || e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? rows.length - 1 : null;
-      if (e.key === 'Escape' && picked >= 0) { pick(-1); return; }
       if (n === null || n < 0 || n >= rows.length) return;
       e.preventDefault();
       rows[n].focus();
       pick(n);
     });
+    // Escape puts the book back, wherever focus is.
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && picked >= 0) pick(-1); });
     // Arrival: the books slide up into the head, one after another.
     if (still || !('IntersectionObserver' in window)) pt.classList.add('shelved');
     else {

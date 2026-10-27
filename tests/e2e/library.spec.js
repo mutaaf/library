@@ -191,6 +191,11 @@ test.describe('the portrait in spines', () => {
       await expect(pt.locator('.pt-list button').nth(3)).toBeFocused();
       await page.keyboard.press('Escape');
       await expect(pt).not.toHaveClass(/has-pick/);
+      // Escape works from the head too, not only from the list.
+      await sp.click({ force: true });
+      await page.evaluate(() => document.activeElement && document.activeElement.blur());
+      await page.keyboard.press('Escape');
+      await expect(pt).not.toHaveClass(/has-pick/);
     });
   }
 });
