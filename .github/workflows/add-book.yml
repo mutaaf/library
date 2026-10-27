@@ -65,7 +65,7 @@ jobs:
           URL="https://mutaafaziz.com/library/$SLUG/"
           for i in $(seq 1 40); do curl -sf -o /dev/null "$URL" && break; sleep 15; done
           FACTS=$(node -e 'const b=require("./content/books/"+process.argv[1]+".json");const r=b.reading;console.log(["**"+b.title+"**"+(b.subtitle?": "+b.subtitle:""),"by "+b.authors.join(", "),[b.firstPublishedYear,b.publisher,b.pages&&b.pages+" pages",b.isbn13&&"ISBN "+b.isbn13].filter(Boolean).join(" · "),r?"Status: "+r.status+(r.rating?" · "+r.rating+"★":""):"On the shelf (no status yet)",b.coverImage?"Cover: Open Library":"Cover: drawn by the shelf (Open Library has none)"].map(x=>"- "+x).join("\n"))' "$SLUG")
-          curl -sf -o /dev/null "$URL" && LIVE="✅ Live: $URL" || LIVE="⏳ Pushed; Cloudflare is still deploying. It will be at $URL"
+          curl -sf -o /dev/null "$URL" && LIVE="✨ **New on the shelf.** It's in Recently Added and What's New: $URL" || LIVE="⏳ Pushed; Cloudflare is still deploying. It will be at $URL"
           gh issue comment "$ISSUE" --body "$(printf '%s\n\n%s\n\nFacts from Open Library, sources in [content/books/%s.json](https://github.com/%s/blob/main/content/books/%s.json) (tap the pencil there to change anything).\n\nWrong book? Comment **/remove** and it comes back off the shelf.\n\n<!-- book-slug:%s -->' "$LIVE" "$FACTS" "$SLUG" "$GITHUB_REPOSITORY" "$SLUG" "$SLUG")"
           gh issue close "$ISSUE" --reason completed
       - name: Say what went wrong

@@ -268,7 +268,7 @@ export function makeBook(meta, form, ctx) {
   book.sections = [];
   if (form.why) book.sections.push({ kind: 'why', claim: 'interpretation', visibility: 'published', body: form.why.trim() });
   if (takeaway && takeaway.length > 160) book.sections.push({ kind: 'takeaways', claim: 'application', visibility: 'published', body: form.takeaway.trim() });
-  Object.assign(book, { ideas: [], resources: [], assistantDrafted: false, updatedAt: today() });
+  Object.assign(book, { ideas: [], resources: [], assistantDrafted: false, addedAt: today(), updatedAt: today() });
   return book;
 }
 

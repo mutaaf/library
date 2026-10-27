@@ -91,7 +91,7 @@
     var right = document.querySelector('.page-home .colophon');
     if (!right) return;
     if (!moved.length) {
-      ['portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row'), $('hire')]).forEach(function (el) {
+      ['new', 'portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row'), $('hire')]).forEach(function (el) {
         if (!el) return;
         var mark = document.createComment('home-slot');
         el.parentNode.insertBefore(mark, el);
@@ -669,6 +669,22 @@
     steps.forEach(function (s) { io.observe(s); });
     if (hero) io.observe(hero);
   } else root.classList.add('no-io');
+
+  // The phone tab bar follows the reader: the tab for the section in the middle of the
+  // screen lights up, Home above the shelf.
+  var docks = [].slice.call(document.querySelectorAll('.tabbar a[data-dock]'));
+  if (docks.length && document.querySelector('.page-home') && 'IntersectionObserver' in window) {
+    var spots = { books: $('books') && $('books').parentNode, journey: $('journey'), themes: document.querySelector('.duo-row'), hire: $('hire') };
+    var lit = function (k) { docks.forEach(function (a) { if (a.getAttribute('data-dock') === k) a.setAttribute('aria-current', k === 'home' ? 'page' : 'true'); else a.removeAttribute('aria-current'); }); };
+    var seen = {};
+    var tio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { seen[e.target.getAttribute('data-spot')] = e.isIntersecting; });
+      var k = 'home';
+      ['books', 'journey', 'themes', 'hire'].forEach(function (s) { if (seen[s]) k = s; });
+      lit(k);
+    }, { rootMargin: '-50% 0px -50% 0px' });
+    Object.keys(spots).forEach(function (k) { if (spots[k]) { spots[k].setAttribute('data-spot', k); tio.observe(spots[k]); } });
+  }
 
   var nav = $('nav');
   if (nav && document.querySelector('.page-home')) {

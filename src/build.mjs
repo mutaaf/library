@@ -32,8 +32,9 @@ export function build({ quiet } = {}) {
   const page = spring(0.55, 1), soft = spring(0.42, 0.82), snap = spring(0.3, 0.9);
   const springs = `:root{--spring:${page.easing};--spring-ms:${page.ms}ms;--spring-soft:${soft.easing};--spring-soft-ms:${soft.ms}ms;--spring-snap:${snap.easing};--spring-snap-ms:${snap.ms}ms}\n`;
   // studio.css restyles the app form (scoped to :root:not(.duo)); duo.css is the book
-  // form's Apple (HIG) layer. They come after library.css, in that order, so they win.
-  const css = springs + ['library.css', 'studio.css', 'duo.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
+  // form's Apple (HIG) layer; music.css (Read Now) lights both and adds the new pieces.
+  // They come after library.css, in that order, so they win.
+  const css = springs + ['library.css', 'studio.css', 'duo.css', 'music.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
   const js = readFileSync(path.join(ROOT, 'web', 'library.js'), 'utf8');
   const shapes = readFileSync(path.join(ROOT, 'web', 'shapes.js'), 'utf8');
   const version = createHash('sha256').update(css + js + shapes).digest('hex').slice(0, 10);

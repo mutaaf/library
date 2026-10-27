@@ -102,6 +102,7 @@ export function validateBook(book, file, themeSlugs) {
   });
   t(typeof book.assistantDrafted === 'boolean', 'assistantDrafted', 'must be true or false');
   t(DATE.test(book.updatedAt), 'updatedAt', 'must be YYYY-MM-DD');
+  if (book.addedAt !== undefined) t(DATE.test(book.addedAt), 'addedAt', 'must be YYYY-MM-DD (the day it joined the shelf)');
   return errors;
 }
 

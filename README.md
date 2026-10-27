@@ -6,9 +6,9 @@ Live at **[mutaafaziz.com/library](https://mutaafaziz.com/library/)**: nine book
 leadership, each with a labelled summary of its argument, and my own interpretation,
 applications, critique, experiments and dated reflections as I write them.
 
-- **Everywhere:** the same app pattern as [Hearth](https://mutaafaziz.com/hearth/) and
-  COLD GAS. A frosted nav, an [aurora-field](https://github.com/mutaaf/aurora-field) sky
-  that assembles into a shelf, an open book and a balance, then the shelf.
+- **Everywhere:** light, in the manner of Apple Music and Apple Books. A frosted nav, a
+  hero lit by a drifting mesh of the covers' own colours, Recently Added and What's New,
+  every book page washed in its cover, and on phones a tab bar with a Now Reading player.
 - **On the iPhone Duo:** it becomes a book. Closed, you hold one page. Open, the hinge is
   the gutter of a two-page spread, with the shelf on the left and the book on the right.
   Unfold mid-chapter and the shelf swings open from the hinge while you keep your place.
