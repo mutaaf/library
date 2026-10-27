@@ -30,11 +30,12 @@
 @media (vertical-viewport-segments: 2) {
   :root[data-posture="tabletop"] { --tt-top: env(viewport-segment-bottom 0 0); --tt-bot: env(viewport-segment-top 0 1); }
 }
-/* Only pages with a stage take the split (the 404 has none, and stays one page). */
-[data-posture="tabletop"] body:has(> .stage) { padding-top: var(--tt-bot); }
-[data-posture="tabletop"] body:has(> .stage) .nav { top: calc(var(--tt-bot) + 8px); }
+/* Only pages with a stage take the split (the 404 has none, and stays one page). The class
+   is set by the renderer, so this doesn't depend on :has(). */
+[data-posture="tabletop"] body.has-stage { padding-top: var(--tt-bot); }
+[data-posture="tabletop"] body.has-stage .nav { top: calc(var(--tt-bot) + 8px); }
 /* Overlays stay on the bottom screen: the filter sheet never climbs over the hinge. */
-[data-posture="tabletop"] body:has(> .stage) .filters { max-height: calc(100% - var(--tt-bot) - 8px); }
+[data-posture="tabletop"] body.has-stage .filters { max-height: calc(100% - var(--tt-bot) - 8px); }
 [data-posture="tabletop"] .progress { display: none; }
 [data-posture="tabletop"] .hero { min-height: 0; padding-top: 96px; }
 
@@ -108,6 +109,12 @@ html[data-fold-anim="lid-down"]::view-transition-old(lib-stage) { animation: var
 /* ── Cover screens ─────────────────────────────────────────────────────────────────
    The outer displays of book-style foldables, and Split View, run down to 280px wide. */
 .duo .hub-map a, .duo .hub-t { min-width: 0; }
+/* A search field's built-in width (about 20 characters) counts toward its row's minimum;
+   with a wide system font (Linux falls back to DejaVu Sans) that ran 18px off a 280px page. */
+.duo .ios-search { min-width: 0; }
+.duo .ios-search input { width: 0; }
+.pg { min-width: 0; }
+.pg b { overflow-wrap: anywhere; }
 .duo .hub-t b { overflow-wrap: anywhere; }
 @media (max-width: 340px) { .duo .hub-map ul { grid-template-columns: minmax(0, 1fr); } }
 

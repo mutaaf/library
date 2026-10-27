@@ -479,7 +479,7 @@ export function home(pub, opts = {}) {
   const jsonld = { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Leadership Library', description: SITE_DESC, url: ORIGIN + BASE, author: Object.assign({ '@type': 'Person', name: 'Mutaaf Aziz', url: ORIGIN + '/' }, site.hire ? { jobTitle: site.hire.roles[0].title, worksFor: { '@type': 'Organization', name: site.hire.roles[0].org }, email: 'mailto:' + site.hire.contact.email, sameAs: [site.hire.contact.linkedin, site.hire.contact.site] } : {}), hasPart: pub.books.map((b) => ({ '@type': 'Book', name: b.title, url: ORIGIN + BASE + b.slug + '/', author: b.authors.map((n) => ({ '@type': 'Person', name: n })) })) };
   const ep = site.epigraph;
   const body = `
-<body class="page-home">
+<body class="page-home has-stage">
   ${stage()}
   ${nav('home')}
   <div class="ios-bar"><span class="ios-back"></span><b class="ios-title" aria-hidden="true">Library</b></div>
@@ -603,7 +603,7 @@ export function book(pub, b) {
   };
   const meta = [b.firstPublishedYear, b.pages ? b.pages + ' pages' : '', b.edition || '', CATEGORIES[b.category]].filter(Boolean).map((x) => `<span>${esc(String(x))}</span>`).join('');
   const body = `
-<body class="page-book" style="${coverVars(b.cover)}">
+<body class="page-book has-stage" style="${coverVars(b.cover)}">
   <div class="progress" aria-hidden="true"><i></i></div>
   ${stage(b)}
   ${nav('book')}

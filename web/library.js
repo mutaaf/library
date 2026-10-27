@@ -15,7 +15,13 @@
   var fold = function () { return isDuo() ? root.getAttribute('data-fold') : ''; };
   var posture = function () { return root.getAttribute('data-posture') || ''; };
   // In tabletop the page reads on the bottom screen, below the stage (and the hinge).
-  var paneTop = function () { var st = posture() && $('stage'); return st ? st.getBoundingClientRect().bottom : 0; };
+  // (Below the nav too, which floats at the top of the bottom screen.)
+  var paneTop = function () {
+    var st = posture() && $('stage');
+    if (!st) return 0;
+    var nv = $('nav'), b = st.getBoundingClientRect().bottom;
+    return nv ? Math.max(b, nv.getBoundingClientRect().bottom) : b;
+  };
 
   // ================= FORM: the Duo folds and unfolds =================
   // libForm() (from <head>) says which form the page should be in right now. When it

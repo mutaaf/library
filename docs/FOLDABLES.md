@@ -86,6 +86,12 @@ Under reduced motion there is no transition: the change is instant.
 
 ## Not yet measured
 
+- **Real devices.** Every hinge above was checked with Chromium's display-feature emulation,
+  the same API a device feeds, and with `?posture=tabletop`; none on a Galaxy Fold or Flip,
+  a Pixel Fold, a Razr or a Surface Duo yet. The posture table says what each should get
+  if, as Chrome documents, it reports its hinge as viewport segments. Check one with
+  `?fold=debug` and record it here.
+
 - **The iPhone Duo's open display, and whether iOS reports viewport segments** (see
   docs/DESIGN.md § Measured). iOS has no Device Posture API, so a Duo held half-open
   in portrait shows the closed layout until Safari reports a hinge.
