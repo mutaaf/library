@@ -630,7 +630,7 @@ export function book(pub, b) {
         </div>
       </header>
       <div class="book-body">
-        <nav class="tabs" role="tablist" aria-label="About this book">${tabs.map(([id, label], k) => `<a role="tab" id="tab-${id}" href="#panel-${id}" aria-controls="panel-${id}" aria-selected="${k === 0}" data-tab="${id}">${esc(label)}</a>`).join('')}</nav>
+        <div class="tabs-bar"><nav class="tabs" role="tablist" aria-label="About this book">${tabs.map(([id, label], k) => `<a role="tab" id="tab-${id}" href="#panel-${id}" aria-controls="panel-${id}" aria-selected="${k === 0}" data-tab="${id}">${esc(label)}</a>`).join('')}</nav></div>
         <div class="book-grid">
           <div class="panels">${tabs.map(([id, label, html]) => `
             <div class="panel" role="tabpanel" id="panel-${id}" aria-labelledby="tab-${id}"><h2 class="panel-h">${esc(label)}</h2>${html}</div>`).join('')}

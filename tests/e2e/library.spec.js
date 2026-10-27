@@ -381,6 +381,34 @@ test.describe('the bars are glass and pinned', () => {
       }
     });
   }
+  test('the book tabs: one blurred strip edge to edge, pinned under the bar', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/library/radical-candor/');
+    await page.evaluate(() => scrollTo(0, document.querySelector('.tabs-bar').offsetTop + 900));
+    await page.waitForTimeout(150);
+    const t = await page.evaluate(() => {
+      const bar = document.querySelector('.tabs-bar'), r = bar.getBoundingClientRect(), nav = document.querySelector('.nav').getBoundingClientRect();
+      const g = getComputedStyle(bar, '::before'), l = parseFloat(g.left), w = parseFloat(g.width);
+      return { top: Math.round(r.top), under: Math.round(nav.bottom), blur: g.backdropFilter || g.webkitBackdropFilter, covers: r.left + l <= 0 && r.left + l + w >= innerWidth, x: document.documentElement.scrollWidth - innerWidth };
+    });
+    expect(t.top).toBe(t.under);
+    expect(t.blur).toContain('blur');
+    expect(t.covers).toBe(true);
+    expect(t.x).toBeLessThanOrEqual(0);
+  });
+  test('the open spread\'s back bar stays at the top of its page, glass', async ({ page }) => {
+    await page.setViewportSize({ width: 951, height: 669 });
+    await page.goto('/library/radical-candor/?duo=open');
+    const read = () => page.evaluate(() => {
+      const el = document.querySelector('.shelf-back'), cs = getComputedStyle(el);
+      return { top: Math.round(el.getBoundingClientRect().top), blur: cs.backdropFilter || cs.webkitBackdropFilter, bg: cs.backgroundColor };
+    });
+    const first = await read();
+    expect(first.blur).toContain('blur');
+    await page.evaluate(() => { let p = document.querySelector('.shelf-back').parentElement; while (p && p.scrollHeight <= p.clientHeight) p = p.parentElement; if (p) p.scrollTop = 2000; });
+    await page.waitForTimeout(150);
+    expect(await read()).toEqual(first);
+  });
   test('the phone tab bar floats as one glass capsule', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/library/');

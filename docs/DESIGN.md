@@ -16,7 +16,9 @@ glass and pin on scroll". `web/glass.css`, the last layer, gives every bar one m
 top bar, the book's section tabs, the phone's tab bar (now a floating capsule) and mini-player,
 the Duo's navigation bar and the open spread's back bar. Each is glass from the first pixel
 and pinned: no bar changes its size, place or material as you scroll (the top bar used to go
-from clear to frosted at 24px, and the Duo's bar on the shelf never frosted). Solid under
+from clear to frosted at 24px, and the Duo's bar on the shelf frosted only once the shelf's
+heading had scrolled away). The book's section tabs sit in a `.tabs-bar` wrapper that carries
+one blurred layer edge to edge. Solid under
 reduced transparency.
 
 The portrait in spines (2026-10-27): the spines rise into the head when it is first seen; a tap
