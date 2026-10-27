@@ -1,6 +1,6 @@
 // mutaafaziz.com/library: progressive enhancement. Without this file every page still
 // reads top to bottom. ES5 on purpose (old devices are part of the audience).
-// Sections: form (fold/unfold) · open-book transitions · shelf tools · sky.
+// Sections: form (fold/unfold) · open-book transitions · shelf tools · tab bar.
 (function () {
   var root = document.documentElement;
   var still = root.classList.contains('still');
@@ -68,7 +68,7 @@
     if (next === prev) { formWidth = window.innerWidth; return; }
     var anchor = lastAnchor || captureAnchor();
     var dir = prev === 'open' ? 'closing' : next === 'open' ? 'opening' : '';
-    var update = function () { setForm(next); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; sky(); };
+    var update = function () { setForm(next); formWidth = window.innerWidth; defaultView(); arrange(); restoreAnchor(anchor); lastAnchor = anchor; };
     if (!dir || still || !document.startViewTransition) { update(); return; }
     root.setAttribute('data-fold-anim', dir);
     var done = function () { root.removeAttribute('data-fold-anim'); };
@@ -91,7 +91,7 @@
     var right = document.querySelector('.page-home .colophon');
     if (!right) return;
     if (!moved.length) {
-      ['portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row'), $('hire')]).forEach(function (el) {
+      ['new', 'portrait', 'philosophy', 'how', 'journey'].map($).concat([document.querySelector('.duo-row'), $('hire')]).forEach(function (el) {
         if (!el) return;
         var mark = document.createComment('home-slot');
         el.parentNode.insertBefore(mark, el);
@@ -623,52 +623,21 @@
     new IntersectionObserver(function (es) { iosBar.classList.toggle('show', !es[0].isIntersecting && es[0].boundingClientRect.top < 80); }, { threshold: 0, rootMargin: '-56px 0px 0px 0px' }).observe(big);
   }
 
-  // ================= THE SKY (app form, home page only) =================
-  // Hearth's pattern: a sticky aurora-field behind the hero and the story; the step in the
-  // middle of the screen picks the shape. Started lazily, never in the book form.
-  var field = null;
-  var LABELS = { 'lib-shelf': 'the shelf', 'lib-book': 'the argument', mind: 'the interpretation', teams: 'the team', 'lib-scales': 'the critique' };
-  function sky() {
-    var canvas = $('field');
-    if (!canvas) return;
-    if (isDuo()) { if (field && field.pause) field.pause(); return; }
-    if (field) { if (field.play) field.play(); return; }
-    if (!window.AuroraField || !window.LibraryShapes) return;
-    window.LibraryShapes.register(window.AuroraField);
-    var label = $('shapeLabel');
-    try {
-      field = window.AuroraField.create(canvas, {
-        shapes: window.LibraryShapes.names.concat(['mind', 'teams']),
-        rotation: ['lib-book', 'lib-shelf', 'lib-scales'],
-        initial: 'lib-book',
-        palette: { preset: 'ember', point: [245, 214, 160], accent: [215, 176, 108] },
-        cycle: 5600,
-        depth: 2.6,
-        stage: $('stage'),
-        count: function (w) { return w > 760 ? 8000 : 3600; },
-        interactive: false,
-        onShape: function (n) { if (LABELS[n] && label) label.textContent = LABELS[n]; },
-      });
-    } catch (e) { field = null; }
+  // The phone tab bar follows the reader: the tab for the section in the middle of the
+  // screen lights up, Home above the shelf.
+  var docks = [].slice.call(document.querySelectorAll('.tabbar a[data-dock]'));
+  if (docks.length && document.querySelector('.page-home') && 'IntersectionObserver' in window) {
+    var spots = { books: $('books') && $('books').parentNode, journey: $('journey'), themes: document.querySelector('.duo-row'), hire: $('hire') };
+    var lit = function (k) { docks.forEach(function (a) { if (a.getAttribute('data-dock') === k) a.setAttribute('aria-current', k === 'home' ? 'page' : 'true'); else a.removeAttribute('aria-current'); }); };
+    var seen = {};
+    var tio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { seen[e.target.getAttribute('data-spot')] = e.isIntersecting; });
+      var k = 'home';
+      ['books', 'journey', 'themes', 'hire'].forEach(function (s) { if (seen[s]) k = s; });
+      lit(k);
+    }, { rootMargin: '-50% 0px -50% 0px' });
+    Object.keys(spots).forEach(function (k) { if (spots[k]) { spots[k].setAttribute('data-spot', k); tio.observe(spots[k]); } });
   }
-  sky();
-
-  var steps = [].slice.call(document.querySelectorAll('.step'));
-  var hero = document.querySelector('.hero');
-  if (steps.length && 'IntersectionObserver' in window) {
-    var current = null;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
-        if (!e.isIntersecting) return;
-        if (e.target === hero) { steps.forEach(function (s) { s.classList.remove('active'); }); current = null; return; }
-        steps.forEach(function (s) { s.classList.toggle('active', s === e.target); });
-        var n = e.target.getAttribute('data-shape');
-        if (field && n !== current) { current = n; field.setShape(n, { pin: 60000 }); }
-      });
-    }, { rootMargin: '-45% 0px -45% 0px' });
-    steps.forEach(function (s) { io.observe(s); });
-    if (hero) io.observe(hero);
-  } else root.classList.add('no-io');
 
   var nav = $('nav');
   if (nav && document.querySelector('.page-home')) {

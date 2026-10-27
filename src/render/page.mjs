@@ -15,7 +15,10 @@ const fmtDate = (d) => new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { 
 const fmtMonth = (m) => MONTHS[+m.slice(5, 7) - 1] + ' ' + m.slice(0, 4);
 const statusKey = (b) => (b.reading ? b.reading.status : 'shelf');
 const statusText = (b) => (b.reading ? STATUS[b.reading.status] : 'On the shelf');
-const coverVars = (c) => '--cv-bg:' + c.bg + ';--cv-ink:' + c.ink + ';--cv-foil:' + c.foil;
+// --cv-wash: the most saturated of the three, the colour Apple Music would pull from the art.
+const sat = (h) => { const c = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16)); return Math.max(...c) - Math.min(...c); };
+const wash = (c) => [c.bg, c.ink, c.foil].sort((x, y) => sat(y) - sat(x))[0];
+const coverVars = (c) => '--cv-bg:' + c.bg + ';--cv-ink:' + c.ink + ';--cv-foil:' + c.foil + ';--cv-wash:' + wash(c);
 const claim = (c) => '<p class="claim claim-' + c + '">' + esc(CLAIMS[c]) + '</p>';
 const isNum = (n) => typeof n === 'number';
 
@@ -84,13 +87,12 @@ function nav(page) {
 function foot() {
   return `<footer class="foot">
     <a href="/">← mutaafaziz.com</a>
-    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a> · particles by <a href="https://github.com/mutaaf/aurora-field">aurora-field</a></span>
+    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a></span>
   </footer>`;
 }
 
 function scripts(page) {
-  const sky = page === 'home' ? `\n  <script src="${BASE}vendor/aurora-field.min.js" defer></script>\n  <script src="${BASE}shapes.js?v=__V__" defer></script>` : '';
-  return sky + `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>`;
+  return `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>`;
 }
 
 // A cover: the real image when we have one, over a typographic cover that shows if the
@@ -408,6 +410,48 @@ function hire(h) {
     </section>`;
 }
 
+// ── Read Now (2026-10-27, owner: "pop culture app … light mode default"): Apple Music's
+// Recently Added row, the App Store's What's New, its tab bar and mini-player. Order and
+// counts come only from addedAt (the day a book joined); updatedAt only says "updated".
+const titles = (bs) => (bs.length > 2 ? esc(bs[0].title) + ', ' + esc(bs[1].title) + ' and ' + (bs.length - 2) + ' more' : bs.map((b) => esc(b.title)).join(' and '));
+
+function fresh(pub) {
+  const order = pub.books.slice().sort((a, b) => (a.addedAt === b.addedAt ? a.featuredRank - b.featuredRank : a.addedAt < b.addedAt ? 1 : -1));
+  const days = [...new Set(pub.books.flatMap((b) => (b.updatedAt > b.addedAt ? [b.addedAt, b.updatedAt] : [b.addedAt])))].sort().reverse().slice(0, 4);
+  const log = days.map((d) => {
+    const added = order.filter((b) => b.addedAt === d), touched = order.filter((b) => b.updatedAt === d && b.addedAt !== d);
+    const total = pub.books.filter((b) => b.addedAt <= d).length;
+    const lines = (added.length ? '<b>New on the shelf</b><span>' + titles(added) + '</span>' : '') + (touched.length ? '<b>' + touched.length + (touched.length === 1 ? ' book' : ' books') + ' updated</b><span>' + titles(touched) + '</span>' : '');
+    return `<li><time datetime="${d}">${fmtDate(d)}</time>${lines}<i class="wn-v">${total} ${total === 1 ? 'book' : 'books'}</i></li>`;
+  }).join('');
+  return `<section class="fresh" id="new" aria-labelledby="new-title">
+      <header class="row-head"><h2 id="new-title">Recently Added</h2><a class="cta-link" href="#books">See all <span aria-hidden="true">›</span></a></header>
+      <ol class="rail">${order.slice(0, 12).map((b, i) => `<li style="--i:${i}"><a href="${BASE}${b.slug}/">${cover(b, 'md')}<b>${esc(b.title)}</b><span>${esc(shortAuthors(b.authors))}</span>${b.addedAt === order[0].addedAt && b.addedAt > pub.books.map((x) => x.addedAt).sort()[0] ? '<i class="rail-new"><span class="vh">, </span>New</i>' : ''}</a></li>`).join('')}</ol>
+      <aside class="whats-new" aria-labelledby="wn-title"><h3 id="wn-title">What’s New</h3><ol>${log}</ol></aside>
+    </section>`;
+}
+
+// The hero's colour: four blurred blobs from the most saturated cover colours, drifting.
+function mesh(pub) {
+  const cs = [...new Set(pub.books.map((b) => wash(b.cover)))].sort((x, y) => sat(y) - sat(x)).slice(0, 4);
+  return `<div class="mesh" aria-hidden="true">${cs.map((c) => `<i style="--c:${c}"></i>`).join('')}</div>`;
+}
+
+const TAB_ICONS = {
+  home: '<path d="M4 10.5 12 4l8 6.5V20h-5v-6h-6v6H4z"/>',
+  books: '<path d="M5 4h4v16H5zM10.5 4h4v16h-4z"/><path d="m16 5.2 3.6-1 3 15.4-3.6 1z" transform="translate(-2.4 0)"/>',
+  journey: '<path d="M3 19 9 9l4 6 3-4 5 8z"/><circle cx="17" cy="6" r="2"/>',
+  themes: '<circle cx="12" cy="12" r="3"/><circle cx="5" cy="6" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="18" r="2"/><path d="m7 7 3 3m4 0 3-3m-7 7-2.6 3.4M14 14l2.6 2.6"/>',
+  hire: '<path d="M4 8h16v11H4z"/><path d="M9 8V5h6v3M4 13h16"/>',
+};
+function tabbar(page, pub, here) {
+  const h = page === 'home' ? '' : BASE;
+  const now = pub.books.find((b) => b.reading && b.reading.status === 'reading') || pub.books.find((b) => b.reading && b.reading.status === 'revisiting');
+  const mini = now && now !== here ? `<a class="mini" href="${BASE}${now.slug}/">${cover(now, 'xs')}<span class="mini-t"><b>${esc(now.title)}</b><span>${esc(statusText(now))} · ${esc(shortAuthors(now.authors))}</span></span><span class="mini-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span></a>` : '';
+  const tabs = [['home', page === 'home' ? '#main' : BASE, 'Home'], ['books', h + '#books', 'Library'], ['journey', h + '#journey', 'Journey'], ['themes', h + '#themes', 'Themes'], ['hire', h + '#hire', 'Hire me']];
+  return `<div class="dock">${mini}<nav class="tabbar" aria-label="Sections">${tabs.map(([k, href, label]) => `<a href="${href}" data-dock="${k}"${k === 'home' && page === 'home' ? ' aria-current="page"' : ''}><svg viewBox="0 0 24 24" aria-hidden="true">${TAB_ICONS[k]}</svg><span>${label}</span></a>`).join('')}</nav></div>`;
+}
+
 export function home(pub, opts = {}) {
   const site = opts.site || {};
   const featured = pub.books[0];
@@ -419,11 +463,8 @@ export function home(pub, opts = {}) {
   <div class="ios-bar"><span class="ios-back"></span><b class="ios-title" aria-hidden="true">Library</b></div>
   <main id="main" class="spread">
     <div class="night">
-      <div class="sky" aria-hidden="true">
-        <canvas id="field"></canvas>
-        <div class="stage" id="stage"></div>
-      </div>
-      <section class="hero" data-shape="lib-book" aria-labelledby="hero-title">
+      ${mesh(pub)}
+      <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
           <p class="hero-eyebrow">The Leadership Library <span aria-hidden="true">·</span> Mutaaf Aziz</p>
           <h1 id="hero-title"><span class="vh">The Leadership Library: </span>Books that shape how I think. <span class="h1-dim">Lessons that shape how I lead.</span></h1>
@@ -440,6 +481,7 @@ export function home(pub, opts = {}) {
         <div class="stats-wrap">${counts(pub)}</div>
       </section>
     </div>
+    ${fresh(pub)}
     ${portrait(pub, site.portrait)}
     ${philosophy(pub, site.philosophy)}
     <section class="how" id="how" aria-labelledby="how-title">
@@ -476,6 +518,7 @@ export function home(pub, opts = {}) {
       <div class="ctas"><a class="cta" href="/#control">About me</a><a class="cta-link" href="#books">Back to the books <span aria-hidden="true">›</span></a></div>
     </section>
   </main>
+  ${tabbar('home', pub)}
   ${foot()}${scripts('home')}
 </body>
 </html>
@@ -576,6 +619,7 @@ export function book(pub, b) {
       </div>
     </article>
   </main>
+  ${tabbar('book', pub, b)}
   ${foot()}${scripts('book')}
 </body>
 </html>

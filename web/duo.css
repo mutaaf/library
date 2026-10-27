@@ -336,7 +336,6 @@
 }
 
 /* The hero, closed: a Today card above the shelf. */
-.duo .page-home .sky { display: none; }
 .duo[data-fold="closed"] .page-home .night { display: block; order: 0; min-height: 0; margin: calc(52px + env(safe-area-inset-top)) 12px 0; border-radius: var(--card-r); overflow: hidden; background: var(--glow); color: #F5F5F7; box-shadow: 0 30px 50px -30px #0009; }
 .duo .hero { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: none; grid-template-areas: none; justify-items: center; gap: 0; min-height: 0; max-width: none; margin: 0; padding: 30px 20px 20px; text-align: center; }
 .duo .hero > * { grid-column: 1; grid-row: auto; }

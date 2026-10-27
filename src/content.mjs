@@ -107,6 +107,7 @@ export function publicView(all) {
       resources: b.resources,
       assistantDrafted: b.assistantDrafted,
       updatedAt: b.updatedAt,
+      addedAt: b.addedAt,
       reflections: all.reflections.filter((r) => r.book === b.slug && isPub(r)).sort((x, y) => (x.id < y.id ? 1 : -1)),
       experiments: all.experiments.filter((x) => x.book === b.slug && isPub(x)),
     }));

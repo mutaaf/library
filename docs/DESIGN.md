@@ -2,6 +2,15 @@
 
 ## Why it looks like this
 
+**Read Now (2026-10-27):** the owner asked for "the most appealing and pop culture app …
+light mode default" and picked Apple Music / Books. `web/music.css` is the last layer, over
+both forms: the black bands turn white and `#F5F5F7`, the accent is Apple Music's red
+(`#FA2D48` to look at, `#E0193F` under white text, `#D70F35` as text), the hero is a drifting
+mesh of the most saturated cover colours (`--cv-wash`), and each book page is washed in its
+own. New: Recently Added (a scroll-snap row) and What's New (from `addedAt`/`updatedAt`),
+Settings-style squircle icons on each section, and on phones a tab bar with a Now Reading
+mini-player. The aurora-field sky is retired: it draws additively and vanishes on white.
+
 **Studio (2026-10-23):** the owner asked for "extremely modern, Apple and Tesla inspired".
 `web/studio.css` restyles the app form (scoped to `:root:not(.duo)`, built between
 `library.css` and `duo.css`). Black full-bleed bands for the hero, philosophy, journey and

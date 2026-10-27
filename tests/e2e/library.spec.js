@@ -79,12 +79,14 @@ test.describe('app form', () => {
     await expect(page.locator('.lost-list a')).toHaveCount(TITLES.length);
   });
 
-  for (const path of ['/library/', '/library/the-48-laws-of-power/']) {
-    test(`no serious accessibility violations on ${path}`, async ({ page }) => {
+  // Desktop, and a phone: the tab bar and the Now Reading player only exist below 700px.
+  for (const [path, w, h] of [['/library/', 1280, 720], ['/library/the-48-laws-of-power/', 1280, 720], ['/library/', 390, 844], ['/library/drive/', 390, 844]]) {
+    test(`no serious accessibility violations on ${path} at ${w}px`, async ({ page }) => {
+      await page.setViewportSize({ width: w, height: h });
       await page.goto(path);
       // Measure settled colours, not mid-way through the scroll reveal.
       await page.evaluate(() => document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in')));
-      await page.addStyleTag({ content: '.reveal{transition:none!important}' });
+      await page.addStyleTag({ content: '.reveal{transition:none!important} .rail li{animation:none!important}' });
       const r = await new AxeBuilder({ page }).analyze();
       const bad = r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
       expect(bad.map((v) => v.id + ': ' + v.nodes.length)).toEqual([]);
@@ -111,9 +113,22 @@ test.describe('work with me', () => {
     await page.setViewportSize({ width: 951, height: 669 });
     await page.goto('/library/?duo=open');
     await expect(page.locator('.colophon #hire')).toBeAttached();
-    // Text on the dark cards stays light (a colophon rule once greyed it out).
-    const dark = await page.locator('.colophon .hire p, .colophon .philo p').evaluateAll((ps) => ps.filter((p) => { const m = getComputedStyle(p).color.match(/\d+/g).map(Number); return m[0] + m[1] + m[2] < 300 && !(m[3] === 0); }).length);
-    expect(dark).toBe(0);
+    // Text on the cards reaches 4.5:1 against the card behind it (a colophon rule once greyed it out).
+    const faint = await page.locator('.colophon .hire p, .colophon .philo p').evaluateAll((ps) => {
+      const rgb = (c) => c.match(/[\d.]+/g).map(Number);
+      const lum = (c) => { const v = rgb(c).slice(0, 3).map((x) => x / 255).map((x) => (x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4)); return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2]; };
+      // The nearest painted background: a solid colour, or a gradient's first stop.
+      const bg = (el) => {
+        for (; el; el = el.parentElement) {
+          const st = getComputedStyle(el), g = /gradient/.test(st.backgroundImage) && st.backgroundImage.match(/rgba?\([^)]*\)/);
+          if (g && rgb(g[0])[3] !== 0) return g[0];
+          if (rgb(st.backgroundColor)[3] !== 0) return st.backgroundColor;
+        }
+        return 'rgb(255, 255, 255)';
+      };
+      return ps.filter((p) => { const c = getComputedStyle(p).color; if (rgb(c)[3] === 0 || !p.textContent.trim()) return false; const a = lum(c), b = lum(bg(p)); return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) < 4.5; }).map((p) => p.className + ': ' + p.textContent.slice(0, 30));
+    });
+    expect(faint).toEqual([]);
   });
 });
 

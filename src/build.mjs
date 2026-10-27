@@ -1,5 +1,5 @@
 // Builds dist/library/** from content/ and web/. Zero dependencies at build time beyond
-// the font and aurora-field files copied out of node_modules.
+// the font files copied out of node_modules.
 import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import path from 'node:path';
@@ -26,26 +26,23 @@ export function build({ quiet } = {}) {
   if (existsSync(hireFile)) site.hire = JSON.parse(readFileSync(hireFile, 'utf8'));
   rmSync(path.join(ROOT, 'dist'), { recursive: true, force: true });
   mkdirSync(path.join(OUT, 'fonts'), { recursive: true });
-  mkdirSync(path.join(OUT, 'vendor'), { recursive: true });
 
   // Springs for the page motion, as CSS custom properties (see web/library.css).
   const page = spring(0.55, 1), soft = spring(0.42, 0.82), snap = spring(0.3, 0.9);
   const springs = `:root{--spring:${page.easing};--spring-ms:${page.ms}ms;--spring-soft:${soft.easing};--spring-soft-ms:${soft.ms}ms;--spring-snap:${snap.easing};--spring-snap-ms:${snap.ms}ms}\n`;
   // studio.css restyles the app form (scoped to :root:not(.duo)); duo.css is the book
-  // form's Apple (HIG) layer. They come after library.css, in that order, so they win.
-  const css = springs + ['library.css', 'studio.css', 'duo.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
+  // form's Apple (HIG) layer; music.css (Read Now) lights both and adds the new pieces.
+  // They come after library.css, in that order, so they win.
+  const css = springs + ['library.css', 'studio.css', 'duo.css', 'music.css'].map((f) => readFileSync(path.join(ROOT, 'web', f), 'utf8')).join('\n');
   const js = readFileSync(path.join(ROOT, 'web', 'library.js'), 'utf8');
-  const shapes = readFileSync(path.join(ROOT, 'web', 'shapes.js'), 'utf8');
-  const version = createHash('sha256').update(css + js + shapes).digest('hex').slice(0, 10);
+  const version = createHash('sha256').update(css + js).digest('hex').slice(0, 10);
 
   writeFileSync(path.join(OUT, 'library.css'), css);
   writeFileSync(path.join(OUT, 'library.js'), js);
-  writeFileSync(path.join(OUT, 'shapes.js'), shapes);
   cpSync(path.join(ROOT, 'web', 'icon.svg'), path.join(OUT, 'icon.svg'));
   // The owner's résumé, exported from their own .docx (content/hire.json names it).
   if (site.hire) cpSync(path.join(ROOT, 'content', 'resume.pdf'), path.join(OUT, site.hire.resume));
   if (existsSync(path.join(ROOT, 'content', 'covers'))) cpSync(path.join(ROOT, 'content', 'covers'), path.join(OUT, 'covers'), { recursive: true });
-  cpSync(path.join(NM, 'aurora-field', 'dist', 'aurora-field.min.js'), path.join(OUT, 'vendor', 'aurora-field.min.js'));
   const fonts = {
     'instrument-serif-400.woff2': '@fontsource/instrument-serif/files/instrument-serif-latin-400-normal.woff2',
     'instrument-serif-400-italic.woff2': '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2',
@@ -70,7 +67,6 @@ export function build({ quiet } = {}) {
     path.join(ROOT, 'dist', '_headers'),
     '/library/*\n  Cache-Control: no-transform, max-age=300\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n' +
       '/library/fonts/*\n  ! Cache-Control\n  Cache-Control: public, max-age=31536000, immutable\n' +
-      '/library/vendor/*\n  ! Cache-Control\n  Cache-Control: public, max-age=86400\n' +
       '/library/covers/*\n  ! Cache-Control\n  Cache-Control: public, max-age=604800\n',
   );
   if (!quiet) {

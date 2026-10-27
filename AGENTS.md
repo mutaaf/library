@@ -17,7 +17,7 @@ content format is in [docs/CONTENT.md](docs/CONTENT.md).
 4. **Links only once verified.** A resource needs `verifiedAt`. Full text is allowed only
    when the copy is authorized free or a library loan. Never link an unauthorized PDF.
 5. **Pages work without JavaScript.** Every page is complete HTML. `library.js` only
-   enhances it: the form, transitions, the shelf tools and the sky.
+   enhances it: the form, transitions, the shelf tools and the tab bar.
 6. **ES5 in `web/*.js`** (var, function, no arrows or template literals), like the
    personal site. Node code in `src/` and `test/` is modern ESM.
 7. **Motion is springs on transform and opacity**, generated in `src/render/spring.mjs`.
@@ -35,17 +35,17 @@ src/duo.mjs         the iPhone Duo screen table used before first paint
 src/build.mjs       → dist/library/** (+ dist/_headers)
 scripts/add-book.mjs a book from a title/ISBN/link via Open Library (the Add a book issue
                     form + .github/workflows/add-book.yml; owner-only, pushes to main)
-web/                library.css, library.js, shapes.js (aurora-field shapes), icon.svg
+web/                library.css → studio.css → duo.css → music.css (Read Now, last), library.js, icon.svg
 test/               node:test unit tests (+ fixtures/)
 tests/e2e/          Playwright, WebKit + Chromium
 ```
 
 ## 2 · The two forms
 
-- **The app form** is the default, and what every device gets without JS. It is Hearth's
-  landing pattern: `.nav` pill, `.night` with a sticky `.sky` behind `.hero` and the
-  `.story` steps, then the shelf, the `.closer` and the `.foot`. Keep its vocabulary in step
-  with `hearth/site`.
+- **The app form** is the default, and what every device gets without JS: the `.nav`, the
+  `.night` hero (a `.mesh` of cover colours), Recently Added (`.fresh`), the sections, the
+  shelf, `.hire`, the `.closer` and the `.foot`; on phones a `.dock` tab bar with a Now
+  Reading mini-player. The look is music.css (Read Now, docs/DESIGN.md).
 - **The book form** applies when `html.duo` is set, with `data-fold="closed|open"`.
   - **Detection:** the `<head>` script sets it before paint. An iPhone user agent plus
     the screen table in `src/duo.mjs` means a Duo. So do two horizontal viewport segments
