@@ -109,6 +109,23 @@ test.describe('sponsor slots (Marquee)', () => {
     expect(external).toEqual([]);
   });
 
+  test('a slot whose AdSense unit Google marks unfilled takes no space', async ({ page }) => {
+    await page.goto('/library/the-48-laws-of-power/');
+    const h = await page.evaluate(() => {
+      const el = document.querySelector('aside.mq[data-marquee="inline"]');
+      el.hidden = false;
+      const ins = document.createElement('ins');
+      ins.className = 'adsbygoogle';
+      ins.style.cssText = 'display:block;height:280px';
+      el.appendChild(ins);
+      const pending = el.offsetHeight;
+      ins.setAttribute('data-ad-status', 'unfilled');
+      return [pending, el.offsetHeight];
+    });
+    expect(h[0]).toBeGreaterThan(0);
+    expect(h[1]).toBe(0);
+  });
+
   test('the book form keeps an Ads & privacy link next to the inline slot', async ({ page }) => {
     await page.goto('/library/the-48-laws-of-power/?duo=open');
     await expect(page.locator('.provenance a[href="/ads/privacy/"]')).toBeAttached();

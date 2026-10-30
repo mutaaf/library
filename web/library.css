@@ -1094,6 +1094,9 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
 /* Sponsor slots (Marquee, mutaafaziz.com/ads; AGENTS.md §0.8). An empty slot takes no
    space: the loader fills it or sets [hidden]. min-height only applies once it has a child. */
 .mq:empty, .mq[hidden] { display: none; }
+/* Google lazy-fills units below the fold, after the loader's 6 s check; a unit it marks
+   unfilled must not leave its reserved box behind. */
+.mq:has(ins.adsbygoogle[data-ad-status="unfilled"]) { display: none; }
 .mq { display: block; min-height: 90px; max-width: 728px; border-radius: 14px; overflow: hidden; background: var(--card); }
 .mq-inline { margin: 28px auto 0; }
 .mq-footer { margin: 0 auto 32px; width: min(728px, calc(100% - 2 * var(--gutter-x))); }
