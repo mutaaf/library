@@ -30,7 +30,8 @@ content format is in [docs/CONTENT.md](docs/CONTENT.md).
    `slot()` in `page.mjs`: `inline` on a book page (between the provenance note and the
    pager) and `footer` on the home page (above the footer, app form only). An empty slot
    takes no space (`.mq:empty`, `[hidden]`), so nothing looks broken while only direct
-   sponsors run. The footer links "Ads & privacy" (`/ads/privacy/`). The loader, and the
+   sponsors run. The footer links "Ads & privacy" (`/ads/privacy/`), and so does each book
+   page's provenance note, because the book form hides the footer but keeps the `inline` slot. The loader, and the
    Google ad hosts it loads in the browser once AdSense is approved and after consent, are the
    only third-party content: no other trackers, scripts or ad tags.
 

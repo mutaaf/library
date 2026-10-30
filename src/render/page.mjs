@@ -93,7 +93,7 @@ function nav(page) {
 function foot() {
   return `<footer class="foot">
     <a href="/">← mutaafaziz.com</a>
-    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a> · <a href="https://mutaafaziz.com/ads/privacy/">Ads &amp; privacy</a></span>
+    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a> · <a href="/ads/privacy/">Ads &amp; privacy</a></span>
   </footer>`;
 }
 
@@ -644,7 +644,7 @@ export function book(pub, b) {
           </div>
           ${side}
         </div>
-        <p class="provenance">${b.assistantDrafted ? 'Drafted with AI assistance from the book and its published material, edited and published by me. ' : ''}Nothing here quotes the book at length; get the book itself for the real thing.${b.coverImage ? ` Cover image: ${esc(b.coverImage.source)}.` : ''}</p>
+        <p class="provenance">${b.assistantDrafted ? 'Drafted with AI assistance from the book and its published material, edited and published by me. ' : ''}Nothing here quotes the book at length; get the book itself for the real thing.${b.coverImage ? ` Cover image: ${esc(b.coverImage.source)}.` : ''} <a href="/ads/privacy/">Ads &amp; privacy</a>.</p>
         ${slot('inline')}
         <nav class="pager" aria-label="More books">
           <a class="pg pg-prev" href="${BASE}${prev.slug}/" rel="prev"><span class="kicker">Previous</span><b>${esc(prev.title)}</b></a>

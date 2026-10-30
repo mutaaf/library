@@ -104,9 +104,15 @@ test.describe('sponsor slots (Marquee)', () => {
       const slot = page.locator(`aside.mq[data-marquee="${id}"]`);
       await expect(slot).toHaveCount(1);
       expect((await slot.boundingBox()) || { height: 0 }).toMatchObject({ height: 0 });
-      await expect(page.locator('.foot a[href="https://mutaafaziz.com/ads/privacy/"]')).toBeVisible();
+      await expect(page.locator('.foot a[href="/ads/privacy/"]')).toBeVisible();
     }
     expect(external).toEqual([]);
+  });
+
+  test('the book form keeps an Ads & privacy link next to the inline slot', async ({ page }) => {
+    await page.goto('/library/the-48-laws-of-power/?duo=open');
+    await expect(page.locator('.provenance a[href="/ads/privacy/"]')).toBeAttached();
+    await expect(page.locator('aside.mq[data-marquee="inline"]')).toHaveCount(1);
   });
 });
 
