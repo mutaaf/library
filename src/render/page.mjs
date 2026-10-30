@@ -93,12 +93,18 @@ function nav(page) {
 function foot() {
   return `<footer class="foot">
     <a href="/">← mutaafaziz.com</a>
-    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a></span>
+    <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a> · <a href="https://mutaafaziz.com/ads/privacy/">Ads &amp; privacy</a></span>
   </footer>`;
 }
 
+// The Marquee ad loader (owner decision 2026-10-30; AGENTS.md §0.8). Same origin and a
+// root-relative path, so the local and e2e servers never touch the network (it 404s there).
+const ADS = `\n  <script async src="/ads/v1/ads.js" data-app="library"></script>`;
+// A sponsor slot: takes no space until Marquee fills it (see .mq in web/library.css).
+const slot = (id) => `<aside class="mq mq-${id}" data-marquee="${id}" aria-label="Sponsor"></aside>`;
+
 function scripts(page) {
-  return `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>`;
+  return `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>` + (page === 'home' || page === 'book' ? ADS : '');
 }
 
 // A cover: the real image when we have one, over a typographic cover that shows if the
@@ -543,6 +549,7 @@ export function home(pub, opts = {}) {
       <div class="ctas"><a class="cta" href="/#control">About me</a><a class="cta-link" href="#books">Back to the books <span aria-hidden="true">›</span></a></div>
     </section>
   </main>
+  ${slot('footer')}
   ${tabbar('home', pub)}
   ${foot()}${scripts('home')}
 </body>
@@ -638,6 +645,7 @@ export function book(pub, b) {
           ${side}
         </div>
         <p class="provenance">${b.assistantDrafted ? 'Drafted with AI assistance from the book and its published material, edited and published by me. ' : ''}Nothing here quotes the book at length; get the book itself for the real thing.${b.coverImage ? ` Cover image: ${esc(b.coverImage.source)}.` : ''}</p>
+        ${slot('inline')}
         <nav class="pager" aria-label="More books">
           <a class="pg pg-prev" href="${BASE}${prev.slug}/" rel="prev"><span class="kicker">Previous</span><b>${esc(prev.title)}</b></a>
           <a class="pg pg-next" href="${BASE}${next.slug}/" rel="next"><span class="kicker">Next</span><b>${esc(next.title)}</b></a>

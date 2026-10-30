@@ -94,6 +94,22 @@ test.describe('app form', () => {
   }
 });
 
+test.describe('sponsor slots (Marquee)', () => {
+  test('the loader is same-origin, and an empty slot takes no space', async ({ page }) => {
+    const external = [];
+    page.on('request', (r) => { if (!r.url().startsWith('http://127.0.0.1')) external.push(r.url()); });
+    for (const [url, id] of [['/library/', 'footer'], ['/library/the-48-laws-of-power/', 'inline']]) {
+      await page.goto(url);
+      await expect(page.locator('script[src="/ads/v1/ads.js"][data-app="library"]')).toHaveCount(1);
+      const slot = page.locator(`aside.mq[data-marquee="${id}"]`);
+      await expect(slot).toHaveCount(1);
+      expect((await slot.boundingBox()) || { height: 0 }).toMatchObject({ height: 0 });
+      await expect(page.locator('.foot a[href="https://mutaafaziz.com/ads/privacy/"]')).toBeVisible();
+    }
+    expect(external).toEqual([]);
+  });
+});
+
 test.describe('work with me', () => {
   test('the nav and the hero lead to every way to connect', async ({ page }) => {
     await page.goto('/library/');

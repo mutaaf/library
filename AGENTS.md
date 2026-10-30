@@ -22,6 +22,17 @@ content format is in [docs/CONTENT.md](docs/CONTENT.md).
    personal site. Node code in `src/` and `test/` is modern ESM.
 7. **Motion is springs on transform and opacity**, generated in `src/render/spring.mjs`.
    Under `prefers-reduced-motion` it is a crossfade of 150ms or less, or nothing.
+8. **Ads come only through Marquee** (owner decision 2026-10-30: every app at mutaafaziz.com
+   carries ads; this one is general-audience). Home and book pages load
+   `<script async src="/ads/v1/ads.js" data-app="library">` (same origin, root-relative, so
+   the local and e2e servers never touch the network; it 404s there). The integration
+   contract is the marquee repo's AGENTS.md. Two banner slots, both `<aside class="mq">` from
+   `slot()` in `page.mjs`: `inline` on a book page (between the provenance note and the
+   pager) and `footer` on the home page (above the footer, app form only). An empty slot
+   takes no space (`.mq:empty`, `[hidden]`), so nothing looks broken while only direct
+   sponsors run. The footer links "Ads & privacy" (`/ads/privacy/`). The loader, and the
+   Google ad hosts it loads in the browser once AdSense is approved and after consent, are the
+   only third-party content: no other trackers, scripts or ad tags.
 
 ## 1 · Map
 

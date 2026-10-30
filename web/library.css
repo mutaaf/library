@@ -1090,3 +1090,11 @@ html[data-fold-anim="closing"]::view-transition-old(lib-shelf):only-child { tran
   .pt-bust svg { max-width: 380px; }
 }
 @media (max-width: 560px) { .pt-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* Sponsor slots (Marquee, mutaafaziz.com/ads; AGENTS.md §0.8). An empty slot takes no
+   space: the loader fills it or sets [hidden]. min-height only applies once it has a child. */
+.mq:empty, .mq[hidden] { display: none; }
+.mq { display: block; min-height: 90px; max-width: 728px; border-radius: 14px; overflow: hidden; background: var(--card); }
+.mq-inline { margin: 28px auto 0; }
+.mq-footer { margin: 0 auto 32px; width: min(728px, calc(100% - 2 * var(--gutter-x))); }
+.duo .mq-footer { display: none; }
