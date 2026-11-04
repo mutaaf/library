@@ -42,7 +42,7 @@ var f=window.libForm();if(f){d.className+=' duo';d.setAttribute('data-fold',f)}
 var t=window.libPosture();if(t)d.setAttribute('data-posture',t);
 if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)d.className+=' still'})();`;
 
-function head({ title, description, canonical, jsonld, type }) {
+function head({ title, description, canonical, jsonld, type, image }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -56,7 +56,10 @@ function head({ title, description, canonical, jsonld, type }) {
   <meta property="og:title" content="${esc(title)}">
   <meta property="og:description" content="${esc(description)}">
   <meta property="og:url" content="${ORIGIN + canonical}">
-  <meta name="theme-color" content="#000000">
+${image ? `  <meta property="og:image" content="${esc(image.url)}">
+  <meta property="og:image:alt" content="${esc(image.alt)}">
+  <meta name="twitter:card" content="summary">
+` : ''}  <meta name="theme-color" content="#000000">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="${BASE}icon.svg" type="image/svg+xml">
   <link rel="preload" href="${BASE}fonts/instrument-serif-400.woff2" as="font" type="font/woff2" crossorigin>
@@ -604,12 +607,29 @@ export function book(pub, b) {
   const prev = pub.books[(i - 1 + pub.books.length) % pub.books.length];
   const next = pub.books[(i + 1) % pub.books.length];
   // Name only what the page has: a book added with just its facts claims no analysis.
-  const has = [b.sections.length || b.ideas.length || b.framework ? 'analysis' : '', b.reading && isNum(b.reading.rating) ? 'rating' : '', b.pullQuote || b.sections.some((s) => s.kind === 'takeaways') ? 'takeaways' : ''].filter(Boolean);
-  const description = (b.pullQuote ? b.pullQuote.text + ' ' : b.oneLine ? b.oneLine.text + ' ' : '') + b.title + ' by ' + authorsText(b.authors) + (has.length ? ': my ' + (has.length > 1 ? has.slice(0, -1).join(', ') + ' and ' + has[has.length - 1] : has[0]) + ' in the Leadership Library.' : ', on the shelf in the Leadership Library.');
+  const has = [b.sections.length || b.ideas.length || b.framework ? 'analysis' : '', b.reading && isNum(b.reading.rating) ? 'rating' : '', b.pullQuote || b.sections.some((s) => s.kind === 'takeaways') ? 'takeaways' : '', b.reflections.length ? 'reflections' : ''].filter(Boolean);
+  const list = (xs) => xs.length > 1 ? xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1] : xs[0];
+  // Search titles: "<Book> summary and takeaways" only when the page carries both.
+  const summarized = has.includes('analysis') && b.sections.some((s) => s.kind === 'takeaways');
+  const rest = has.filter((h) => h !== 'analysis' && h !== 'takeaways');
+  const byline = b.title + ' by ' + authorsText(b.authors);
+  const title = summarized ? b.title + ' summary and takeaways for engineering leaders | The Leadership Library' : byline + ' · The Leadership Library';
+  const gist = b.oneLine ? b.oneLine.text : b.pullQuote ? b.pullQuote.text : '';
+  const description = summarized
+    ? byline + ': summary and takeaways for engineering leaders.' + (gist ? ' ' + gist : '') + (rest.length ? ' With my ' + list(rest) + '.' : '')
+    : (gist ? gist + ' ' : '') + byline + (has.length ? ': my ' + list(has) + ' in the Leadership Library.' : ', on the shelf in the Leadership Library.');
+  const url = ORIGIN + BASE + b.slug + '/';
+  const image = b.coverImage ? { url: ORIGIN + BASE + b.coverImage.file, alt: 'Cover of ' + b.title } : null;
+  const owner = { '@type': 'Person', name: 'Mutaaf Aziz', url: ORIGIN + '/' };
   const jsonld = {
-    '@context': 'https://schema.org', '@type': 'WebPage', name: b.title + ' · The Leadership Library', url: ORIGIN + BASE + b.slug + '/', dateModified: b.updatedAt,
-    mainEntity: Object.assign({ '@type': 'Book', name: b.title, author: b.authors.map((n) => ({ '@type': 'Person', name: n })), datePublished: String(b.firstPublishedYear) },
-      b.subtitle ? { alternativeHeadline: b.subtitle } : {}, b.isbn13 ? { isbn: b.isbn13 } : {}, b.pages ? { numberOfPages: b.pages } : {}, b.edition ? { bookEdition: b.edition } : {}, b.publisher ? { publisher: { '@type': 'Organization', name: b.publisher } } : {}),
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'WebPage', '@id': url, url, name: title, description, inLanguage: 'en', dateModified: b.updatedAt, isPartOf: { '@type': 'CollectionPage', '@id': ORIGIN + BASE, name: 'The Leadership Library', url: ORIGIN + BASE }, breadcrumb: { '@id': url + '#breadcrumb' }, mainEntity: { '@id': url + '#article' } },
+      Object.assign({ '@type': 'Article', '@id': url + '#article', headline: summarized ? b.title + ' summary and takeaways for engineering leaders' : byline, description, url, mainEntityOfPage: { '@id': url }, about: { '@id': url + '#book' }, author: owner, publisher: owner, inLanguage: 'en', datePublished: b.addedAt, dateModified: b.updatedAt, isPartOf: { '@id': ORIGIN + BASE } }, image ? { image: image.url } : {}),
+      Object.assign({ '@type': 'Book', '@id': url + '#book', name: b.title, author: b.authors.map((n) => ({ '@type': 'Person', name: n })), datePublished: String(b.firstPublishedYear) },
+        b.subtitle ? { alternativeHeadline: b.subtitle } : {}, b.isbn13 ? { isbn: b.isbn13 } : {}, b.pages ? { numberOfPages: b.pages } : {}, b.edition ? { bookEdition: b.edition } : {}, b.publisher ? { publisher: { '@type': 'Organization', name: b.publisher } } : {}, image ? { image: image.url } : {}),
+      { '@type': 'BreadcrumbList', '@id': url + '#breadcrumb', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'The Leadership Library', item: ORIGIN + BASE }, { '@type': 'ListItem', position: 2, name: b.title, item: url }] },
+    ],
   };
   const meta = [b.firstPublishedYear, b.pages ? b.pages + ' pages' : '', b.edition || '', CATEGORIES[b.category]].filter(Boolean).map((x) => `<span>${esc(String(x))}</span>`).join('');
   const body = `
@@ -658,7 +678,7 @@ export function book(pub, b) {
 </body>
 </html>
 `;
-  return head({ title: b.title + ' by ' + authorsText(b.authors) + ' · The Leadership Library', description, canonical: BASE + b.slug + '/', jsonld, type: 'article' }) + body;
+  return head({ title, description, canonical: BASE + b.slug + '/', jsonld, type: 'article', image }) + body;
 }
 
 export function notFound(pub) {

@@ -71,9 +71,35 @@ test('build output contains no draft text and valid JSON-LD', () => {
       assert.ok(!JSON.stringify(data).includes('Rating'), 'no ratings in structured data');
     }
   }
-  const one = JSON.parse(readFileSync(path.join(ROOT, 'dist/library/peopleware/index.html'), 'utf8').match(/application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
-  assert.equal(one.mainEntity['@type'], 'Book');
-  assert.equal(one.mainEntity.isbn, pub.bySlug.get('peopleware').isbn13);
+  const page = readFileSync(path.join(ROOT, 'dist/library/peopleware/index.html'), 'utf8');
+  const one = JSON.parse(page.match(/application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+  const node = (t) => one['@graph'].find((n) => n['@type'] === t);
+  assert.equal(node('Book').isbn, pub.bySlug.get('peopleware').isbn13);
+  assert.equal(node('Article').about['@id'], node('Book')['@id']);
+  assert.equal(node('WebPage').mainEntity['@id'], node('Article')['@id']);
+  assert.ok(node('BreadcrumbList'));
+});
+
+test('every book page is a search landing page: unique title, description, canonical, OG', () => {
+  const pub = build({ quiet: true });
+  const titles = new Set(), descs = new Set();
+  const index = readFileSync(path.join(ROOT, 'dist/library/index.html'), 'utf8');
+  for (const b of pub.books) {
+    const html = readFileSync(path.join(ROOT, 'dist/library', b.slug, 'index.html'), 'utf8');
+    const t = html.match(/<title>([^<]*)<\/title>/)[1];
+    const d = html.match(/<meta name="description" content="([^"]*)">/)[1];
+    const summarized = (b.sections.length || b.ideas.length || b.framework) && b.sections.some((s) => s.kind === 'takeaways');
+    if (summarized) assert.ok(t.endsWith(' summary and takeaways for engineering leaders | The Leadership Library'), b.slug + ': ' + t);
+    else assert.ok(t.endsWith(' · The Leadership Library') && t.includes(' by '), b.slug + ': ' + t);
+    assert.ok(!d.includes('notes.'), b.slug + ' names only what the page has');
+    titles.add(t); descs.add(d);
+    assert.ok(html.includes(`<link rel="canonical" href="https://mutaafaziz.com/library/${b.slug}/">`), b.slug + ' canonical');
+    assert.ok(html.includes('<meta property="og:url" content="https://mutaafaziz.com/library/' + b.slug + '/">'), b.slug + ' og:url');
+    assert.ok(index.includes(`href="/library/${b.slug}/"`), 'index links ' + b.slug);
+    assert.ok(html.includes('data-marquee="inline"'), b.slug + ' ad slot');
+  }
+  assert.equal(titles.size, pub.books.length);
+  assert.equal(descs.size, pub.books.length);
 });
 
 test('schema rejects the mistakes that matter', () => {
