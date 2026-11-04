@@ -610,12 +610,13 @@ export function book(pub, b) {
   const has = [b.sections.length || b.ideas.length || b.framework ? 'analysis' : '', b.reading && isNum(b.reading.rating) ? 'rating' : '', b.pullQuote || b.sections.some((s) => s.kind === 'takeaways') ? 'takeaways' : '', b.reflections.length ? 'reflections' : ''].filter(Boolean);
   const list = (xs) => xs.length > 1 ? xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1] : xs[0];
   // Search titles: "<Book> summary and takeaways" only when the page carries both.
-  const summarized = has.includes('analysis') && has.includes('takeaways');
+  const summarized = has.includes('analysis') && b.sections.some((s) => s.kind === 'takeaways');
+  const rest = has.filter((h) => h !== 'analysis' && h !== 'takeaways');
   const byline = b.title + ' by ' + authorsText(b.authors);
   const title = summarized ? b.title + ' summary and takeaways for engineering leaders | The Leadership Library' : byline + ' · The Leadership Library';
   const gist = b.oneLine ? b.oneLine.text : b.pullQuote ? b.pullQuote.text : '';
   const description = summarized
-    ? byline + ': summary and takeaways for engineering leaders. ' + (gist ? gist + ' ' : '') + 'With my ' + list(has.filter((h) => h !== 'analysis' && h !== 'takeaways').concat('notes')) + '.'
+    ? byline + ': summary and takeaways for engineering leaders.' + (gist ? ' ' + gist : '') + (rest.length ? ' With my ' + list(rest) + '.' : '')
     : (gist ? gist + ' ' : '') + byline + (has.length ? ': my ' + list(has) + ' in the Leadership Library.' : ', on the shelf in the Leadership Library.');
   const url = ORIGIN + BASE + b.slug + '/';
   const image = b.coverImage ? { url: ORIGIN + BASE + b.coverImage.file, alt: 'Cover of ' + b.title } : null;

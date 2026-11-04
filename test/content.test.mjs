@@ -88,7 +88,10 @@ test('every book page is a search landing page: unique title, description, canon
     const html = readFileSync(path.join(ROOT, 'dist/library', b.slug, 'index.html'), 'utf8');
     const t = html.match(/<title>([^<]*)<\/title>/)[1];
     const d = html.match(/<meta name="description" content="([^"]*)">/)[1];
-    assert.ok(t.includes(' summary and takeaways for engineering leaders | The Leadership Library'), b.slug + ': ' + t);
+    const summarized = (b.sections.length || b.ideas.length || b.framework) && b.sections.some((s) => s.kind === 'takeaways');
+    if (summarized) assert.ok(t.endsWith(' summary and takeaways for engineering leaders | The Leadership Library'), b.slug + ': ' + t);
+    else assert.ok(t.endsWith(' · The Leadership Library') && t.includes(' by '), b.slug + ': ' + t);
+    assert.ok(!d.includes('notes.'), b.slug + ' names only what the page has');
     titles.add(t); descs.add(d);
     assert.ok(html.includes(`<link rel="canonical" href="https://mutaafaziz.com/library/${b.slug}/">`), b.slug + ' canonical');
     assert.ok(html.includes('<meta property="og:url" content="https://mutaafaziz.com/library/' + b.slug + '/">'), b.slug + ' og:url');
