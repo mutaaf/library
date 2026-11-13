@@ -33,7 +33,14 @@ content format is in [docs/CONTENT.md](docs/CONTENT.md).
    sponsors run. The footer links "Ads & privacy" (`/ads/privacy/`), and so does each book
    page's provenance note, because the book form hides the footer but keeps the `inline` slot. The loader, and the
    Google ad hosts it loads in the browser once AdSense is approved and after consent, are the
-   only third-party content: no other trackers, scripts or ad tags.
+   only third-party content: no other trackers, scripts or ad tags (Box Office, below, is first-party).
+9. **Analytics come only through Box Office** (owner decision 2026-11-12; github.com/mutaaf/box-office).
+   Every page ends `<body>` with `<script async src="/boxoffice/v1/insights.js"></script>` (`INSIGHTS`
+   in `page.mjs`; same origin, 404s locally). It sends anonymous usage (pages, clicks, approximate
+   city, masked replays) to PostHog through a mutaafaziz.com relay that truncates IPs, and loads nothing
+   under Global Privacy Control or Do Not Track. Custom events in `library.js` carry public values only:
+   `book_open` {book: slug, from}, `shelf_view` {view}, `shelf_filter` {cat}; never typed search text.
+   `PRIVACY` in `page.mjs` says so in the footer and in each book's provenance note; keep it true.
 
 ## 1 · Map
 

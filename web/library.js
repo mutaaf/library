@@ -1,6 +1,6 @@
 // mutaafaziz.com/library: progressive enhancement. Without this file every page still
 // reads top to bottom. ES5 on purpose (old devices are part of the audience).
-// Sections: form (fold/unfold) · open-book transitions · shelf tools · tab bar.
+// Sections: form (fold/unfold) · open-book transitions · shelf tools · tab bar · analytics.
 (function () {
   var root = document.documentElement;
   var still = root.classList.contains('still');
@@ -8,6 +8,11 @@
   var store = {
     get: function (k, s) { try { return (s ? sessionStorage : localStorage).getItem(k); } catch (e) { return null; } },
     set: function (k, v, s) { try { (s ? sessionStorage : localStorage).setItem(k, v); } catch (e) {} },
+  };
+  // Box Office (AGENTS.md §0.9): anonymous events, safe before the loader arrives. Public
+  // values only (a book's slug, a shelf view or category); never what someone types.
+  var track = function (name, props) {
+    try { (window.boxoffice = window.boxoffice || { q: [], track: function () { this.q.push([].slice.call(arguments)); } }).track(name, props || {}); } catch (e) {}
   };
   var shelf = $('shelf');
   var defaultView = function () {}; // the shelf section replaces this
@@ -219,6 +224,7 @@
       b.addEventListener('click', function () {
         var v = b.getAttribute('data-set-view');
         store.set('lib-view', v);
+        track('shelf_view', { view: v });
         glide(function () { setView(v); });
       });
     });
@@ -329,7 +335,7 @@
       glide(apply);
     };
     [].forEach.call(shelf.querySelectorAll('.cat'), function (c) {
-      c.addEventListener('click', function () { state.cat = c.getAttribute('data-cat'); read(); glide(apply); });
+      c.addEventListener('click', function () { state.cat = c.getAttribute('data-cat'); track('shelf_filter', { cat: state.cat }); read(); glide(apply); });
     });
     $('clearAll').addEventListener('click', function () { reset(); q.focus(); });
 
@@ -857,5 +863,11 @@
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
+  }
+  // A book page: which book was opened, and from where (shelf, pager or straight in).
+  if (document.body.classList.contains('page-book')) {
+    var bookSlug = slugOf(location.href), back = document.referrer || '';
+    var ref = back.indexOf(location.protocol + '//' + location.host + '/library') === 0 ? (slugOf(back) ? 'book' : 'shelf') : 'direct';
+    if (bookSlug) track('book_open', { book: bookSlug, from: ref });
   }
 })();

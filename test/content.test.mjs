@@ -132,3 +132,20 @@ test('Markdown escapes markup and unsafe links', () => {
   assert.equal(inline('[shelf](/library/drive/)'), '<a href="/library/drive/">shelf</a>');
   assert.equal(md('- **a**\n- *b*'), '<ul><li><strong>a</strong></li><li><em>b</em></li></ul>');
 });
+
+// Box Office analytics (AGENTS.md §0.9): every built page ends <body> with the same-origin loader.
+test('every page carries the Box Office tag last in <body>, and says so', () => {
+  build({ quiet: true });
+  const read = readFileSync, join = path.join;
+  const dir = path.join(ROOT, 'dist', 'library');
+  const pages = [join(dir, 'index.html'), join(dir, '404.html')];
+  for (const d of readdirSync(dir, { withFileTypes: true })) if (d.isDirectory()) { try { read(join(dir, d.name, 'index.html')); pages.push(join(dir, d.name, 'index.html')); } catch {} }
+  assert.ok(pages.length > 3);
+  const tag = '<script async src="/boxoffice/v1/insights.js"></script>';
+  for (const f of pages) {
+    const html = read(f, 'utf8');
+    const body = html.slice(0, html.lastIndexOf('</body>')).trimEnd();
+    assert.ok(body.endsWith(tag), `${f}: Box Office is not last in <body>`);
+    if (!f.endsWith('404.html')) assert.match(html, /approximate city-level location/, `${f}: privacy line missing`);
+  }
+});
