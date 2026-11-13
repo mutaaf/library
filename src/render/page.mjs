@@ -93,10 +93,14 @@ function nav(page) {
   </header>`;
 }
 
+// What the site collects, in plain words (AGENTS.md §0.9). Shown in the footer and each book's provenance note.
+export const PRIVACY = 'Anonymous usage analytics (pages, clicks, approximate city-level location and session replays with typing masked) go to PostHog through mutaafaziz.com with your IP shortened; Global Privacy Control and Do Not Track turn it off.';
+
 function foot() {
   return `<footer class="foot">
     <a href="/">← mutaafaziz.com</a>
     <span>Code MIT · <a href="https://github.com/mutaaf/library">github.com/mutaaf/library</a> · cover images via <a href="https://openlibrary.org">Open Library</a> · <a href="/ads/privacy/">Ads &amp; privacy</a></span>
+    <span class="foot-privacy">${PRIVACY}</span>
   </footer>`;
 }
 
@@ -106,8 +110,12 @@ const ADS = `\n  <script async src="/ads/v1/ads.js" data-app="library"></script>
 // A sponsor slot: takes no space until Marquee fills it (see .mq in web/library.css).
 const slot = (id) => `<aside class="mq mq-${id}" data-marquee="${id}" aria-label="Sponsor"></aside>`;
 
+// Box Office analytics (owner decision 2026-11-12; AGENTS.md §0.9): same origin, last in <body>
+// on every page. It 404s on the local and e2e servers, so tests never touch the network.
+export const INSIGHTS = `\n  <script async src="/boxoffice/v1/insights.js"></script>`;
+
 function scripts(page) {
-  return `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>` + (page === 'home' || page === 'book' ? ADS : '');
+  return `\n  <script src="${BASE}library.js?v=__V__" defer blocking="render"></script>` + (page === 'home' || page === 'book' ? ADS : '') + INSIGHTS;
 }
 
 // A cover: the real image when we have one, over a typographic cover that shows if the
@@ -664,7 +672,7 @@ export function book(pub, b) {
           </div>
           ${side}
         </div>
-        <p class="provenance">${b.assistantDrafted ? 'Drafted with AI assistance from the book and its published material, edited and published by me. ' : ''}Nothing here quotes the book at length; get the book itself for the real thing.${b.coverImage ? ` Cover image: ${esc(b.coverImage.source)}.` : ''} <a href="/ads/privacy/">Ads &amp; privacy</a>.</p>
+        <p class="provenance">${b.assistantDrafted ? 'Drafted with AI assistance from the book and its published material, edited and published by me. ' : ''}Nothing here quotes the book at length; get the book itself for the real thing.${b.coverImage ? ` Cover image: ${esc(b.coverImage.source)}.` : ''} <a href="/ads/privacy/">Ads &amp; privacy</a>. ${PRIVACY}</p>
         ${slot('inline')}
         <nav class="pager" aria-label="More books">
           <a class="pg pg-prev" href="${BASE}${prev.slug}/" rel="prev"><span class="kicker">Previous</span><b>${esc(prev.title)}</b></a>
@@ -691,7 +699,7 @@ export function notFound(pub) {
     <p>It may have moved, or it was never here. These are:</p>
     <ul class="lost-list">${pub.books.map((b) => `<li><a href="${BASE}${b.slug}/">${esc(b.title)}</a> <span>${esc(authorsText(b.authors))}</span></li>`).join('')}</ul>
   </main>
-  ${foot()}
+  ${foot()}${INSIGHTS}
 </body>
 </html>
 `;
